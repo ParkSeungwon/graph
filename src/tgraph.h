@@ -1,5 +1,8 @@
 #pragma once
+#include<climits>
 #include<iostream>
+#include<map>
+#define min(a, b) a < b ? a : b
 
 template <typename T> class Vertex;
 template<typename T> class Edge
@@ -49,6 +52,40 @@ public:
 	Vertex<T>* data() {
 		return root;
 	}
+	void prim() {
+		root->v = 1;//below for syntax is just to call n-1 times
+		for(Vertex<T>* q = root->vertex; q; q = q->vertex) shortest(root);
+	}
+	void clearv() {
+		for(Vertex<T>* p = root; p; p = p->vertex) {
+			p->v = 0;
+			for(Edge<T>* e = p->edge; e; e = e->edge) e->v = 0;
+		}
+	}
+
+	void topology() {//check v to entry and print data
+		for(Vertex<T>* q; q = find_entry(root);) {
+			q->v = 1;
+			std::cout << q->data << " - ";
+		}
+	}
+
+	int floyd(T a, T b) {
+		std::map<T, std::map<T, int>> A;
+		for(Vertex<T>* q = root; q; q = q->vertex) 
+			for(Vertex<T>* p = root; p; p = p->vertex) 
+				A[q->data][p->data] = INT_MAX / 2;
+		for(Vertex<T>* q = root; q; q = q->vertex) 
+			for(Edge<T>* e = q->edge; e; e = e->edge) 
+				A[q->data][e->vertex->data] = e->weight;
+		
+		for(Vertex<T>* k = root; k; k = k->vertex) 
+			for(Vertex<T>* i = root; i; i = i->vertex) 
+				for(Vertex<T>* j = root; j; j = j->vertex) 
+					A[i->data][j->data] = min(A[i->data][j->data], 
+							A[i->data][k->data] + A[k->data][j->data]);
+		return A[a][b];
+	}
 
 protected:
 	Vertex<T>* root = nullptr;
@@ -88,6 +125,38 @@ private:
 		efree(p->edge);
 		gfree(p->vertex);
 		free(p);
+	}
+	void shortest(Vertex<T>* p) {
+		Edge<T>* me;
+		int min = INT_MAX;
+		for(; p; p = p->vertex) {
+			if(p->v) {
+				for(Edge<T>* e = p->edge; e; e = e->edge) {
+					if(e->v) continue;
+					if(e->weight < min && !e->vertex->v) {
+						min = e->weight;
+						me = e;
+					}
+				}
+			}
+		}
+		me->v = 1;
+		me->vertex->v = 1;
+	}
+	Vertex<T>* find_entry(Vertex<T>* p) {//return NULL when no more
+		for(Vertex<T>* q = p; q; q = q->vertex) {
+			if(q->v != 1) {//1 or 2 or 0
+				for(Edge<T>* e = q->edge; e; e = e->edge) {
+					if(!e->vertex->v) e->vertex->v = 2;//entry marking
+				}
+			}
+		}
+		Vertex<T>* r = NULL;
+		for(Vertex<T>* q = p; q; q = q->vertex) {
+			if(q->v == 2) q->v = 0;
+			else if(!q->v) r = q;
+		}
+		return r;
 	}
 };
 

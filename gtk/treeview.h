@@ -22,6 +22,7 @@ public:
 	Win();
 
 protected:
+	bool on_button_press_event(GdkEventButton* e);
 	Gtk::ScrolledWindow scwin_;
 	SketchBook sketch_;
 };

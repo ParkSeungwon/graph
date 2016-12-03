@@ -6,19 +6,19 @@
 #include"tgraph.h"
 using namespace std;
 
-GraphView<Vertex<int>, Edge<int>, int>* pgv;
+GraphView<Vertex<const char*>, Edge<const char*>, const char*>* pgv;
 
 Win::Win() 
 {
 	add(scwin_);
 	scwin_.add(sketch_);
-	set_default_size(1500, 900);
+	set_default_size(1000, 900);
 	show_all_children();
 }
 
 SketchBook::SketchBook()
 {
-	set_size_request(3000, 1000);
+	set_size_request(1000, 1000);
 	add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK);
 }
 
@@ -41,6 +41,11 @@ bool SketchBook::on_button_press_event(GdkEventButton* e)
 {
 	x = e->x;
 	y = e->y;
+	return false;
+}
+bool Win::on_button_press_event(GdkEventButton* e)
+{
+	cout << e->x << ' ' << e->y << endl;
 	return true;
 }
 

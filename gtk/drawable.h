@@ -1,3 +1,4 @@
+//this is a Cairomm drawable class, just give a cairo context as argument to draw.
 #pragma once
 #include<complex>
 #include<vector>

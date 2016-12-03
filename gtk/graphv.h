@@ -1,7 +1,10 @@
+//A class to view a graph data structure
 #pragma once
 #include<complex>
 #include"drawable.h"
-
+//V Vertex should have vertex, edge, data, v
+//E Edge should have vertex, edge, weight, v
+//D Data can be anything
 template <typename V, typename E, typename D> class GraphView 
 {
 public:
