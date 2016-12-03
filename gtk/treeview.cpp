@@ -4,7 +4,6 @@
 #include"src/tgraph.h"
 using namespace std;
 
-extern GraphView<Vertex<int>, Edge<int>, int>* pgv;
 int main(int c, char** av)
 {
 	Tree<int> t;
@@ -17,12 +16,10 @@ int main(int c, char** av)
 	t.insert(6);
 
 	auto app = Gtk::Application::create(c, av);
-	Win win;
 //	for(auto& a : tv) win.draw(a);
 
 	GraphView<Vertex<int>, Edge<int>, int> gv{t.data()};
-	pgv = &gv;
-	for(auto& a : gv) win.draw(a);
+	Win<GraphView<Vertex<int>, Edge<int>, int>> win(gv);
 	return app->run(win);
 }
 
