@@ -42,9 +42,12 @@ public:
 		for(Vertex<T>* p = root; p; p = p->vertex) {
 			std::cout << p->data << " : ";
 			for(Edge<T>* e = p->edge; e; e = e->edge) 
-				if(e->vertex) std::cout << '<' << p->data << ',' << e->vertex->data << '>' << e->weight << ' '; 
+				std::cout << '<' << p->data << ',' << e->vertex->data << '>' << e->weight << ' '; 
 			std::cout << std::endl;
 		}
+	}
+	Vertex<T>* data() {
+		return root;
 	}
 
 protected:
@@ -96,16 +99,25 @@ public:
 		Graph<T>::insert_vertex(n);
 		Vertex<T>* p;
 		for(p = Graph<T>::root; p->vertex; p = p->vertex);
-		p->edge = Graph<T>::insert(p->edge, nullptr, 0);
-		p->edge = Graph<T>::insert(p->edge, nullptr, 0);
 		if(Graph<T>::root->vertex) Graph<T>::root = insert(Graph<T>::root, p);
 	}
 		
 private:
 	Vertex<T>* insert(Vertex<T>* p, Vertex<T>* n) {
 		if(!p) return n;
-		if(n->data < p->data) p->edge->vertex = insert(p->edge->vertex, n);
-		else p->edge->edge->vertex = insert(p->edge->edge->vertex, n);
+		if(!p->edge) p->edge = Graph<T>::insert(p->edge, n, 0);//no son
+		else if(!p->edge->edge) {//1 son
+			int son = p->edge->vertex->data;
+			if(n->data < p->data && p->data < son || son < p->data && p->data < n->data)
+				p->edge = Graph<T>::insert(p->edge, n, 0);
+			else p->edge->vertex = insert(p->edge->vertex, n);
+		} else {//2 son
+			int son1 = p->edge->vertex->data;
+			int son2 = p->edge->edge->vertex->data;
+			Vertex<T>* f = (n->data < p->data == son1 < son2) //follow correct line
+				? p->edge->vertex : p->edge->edge->vertex;
+			f = insert(f, n);
+		}
 		return p;
 	}
 };
