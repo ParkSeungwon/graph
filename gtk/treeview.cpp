@@ -18,11 +18,8 @@ int main(int c, char** av)
 
 	auto app = Gtk::Application::create(c, av);
 	Win win;
-//	for(auto& a : tv) win.draw(a);
-
 	GraphView<Vertex<int>, Edge<int>, int> gv{t.data()};
 	pgv = &gv;
-	for(auto& a : gv) win.draw(a);
 	return app->run(win);
 }
 

@@ -16,15 +16,6 @@ Win::Win()
 	show_all_children();
 }
 
-void Win::draw(shared_ptr<Drawable> dr)
-{
-	sketch_.draw(dr);
-}
-
-void SketchBook::draw(shared_ptr<Drawable> d)
-{
-	to_draws_.push_back(d);
-}
 SketchBook::SketchBook()
 {
 	set_size_request(3000, 1000);
@@ -33,7 +24,7 @@ SketchBook::SketchBook()
 
 bool SketchBook::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) 
 {
-	for(auto& a : to_draws_) (*a)(cr);
+	for(auto& a : *pgv) (*a)(cr);
 	return true;
 }
 
@@ -58,8 +49,6 @@ bool SketchBook::on_button_release_event(GdkEventButton* e)
 	tx = e->x;
 	ty = e->y;
 	pgv->drag({x, y}, {tx, ty});
-	to_draws_.clear();
-	for(auto& a : *pgv) to_draws_.push_back(a);
 	refresh();	
 	return true;
 }
