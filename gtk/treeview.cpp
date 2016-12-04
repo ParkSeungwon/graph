@@ -4,7 +4,7 @@
 #include"src/tgraph.h"
 using namespace std;
 
-//extern GraphView<Vertex<int>, Edge<int>, int>* pgv;
+extern GraphView<Vertex<int>, Edge<int>, int>* tgv;
 extern GraphView<Vertex<const char*>, Edge<const char*>, const char*>* pgv;
 int main(int c, char** av)
 {
@@ -16,8 +16,9 @@ int main(int c, char** av)
 	t.insert(2);
 	t.insert(11);
 	t.insert(6);
+	t.view();
 	GraphView<Vertex<int>, Edge<int>, int> gv{t.data()};
-//	pgv = &gv;
+	tgv = &gv;
 
 	Graph<const char*> city;
 	city.insert_vertex("Seoul");

@@ -178,7 +178,7 @@ private:
 	Vertex<T>* find(Vertex<T>* p, T n) {
 		if(p->data == n) return p;//all below is <else if> due to return
 		if(!p->edge) return nullptr;
-		if(n < p->data == p->edge->vertex->data < p->data) 
+		if(p->data < n == p->data < p->edge->vertex->data) 
 			return find(p->edge->vertex, n);
 		if(!p->edge->edge) return nullptr;
 		return find(p->edge->edge->vertex, n);
@@ -187,16 +187,13 @@ private:
 		if(!p) return n;
 		if(!p->edge) p->edge = Graph<T>::insert(p->edge, n, 0);//no son
 		else if(!p->edge->edge) {//1 son
-			int son = p->edge->vertex->data;
-			if(n->data < p->data && p->data < son || son < p->data && p->data < n->data)
-				p->edge = Graph<T>::insert(p->edge, n, 0);
-			else p->edge->vertex = insert(p->edge->vertex, n);
-		} else {//2 son
-			int son1 = p->edge->vertex->data;
-			int son2 = p->edge->edge->vertex->data;
-			Vertex<T>* f = (n->data < p->data == son1 < son2) //follow correct line
-				? p->edge->vertex : p->edge->edge->vertex;
-			f = insert(f, n);
+			if(p->data < p->edge->vertex->data == p->data < n->data)
+				insert(p->edge->vertex, n);
+			else p->edge = Graph<T>::insert(p->edge, n, 0);
+		} else {//2son
+			if(p->data < p->edge->vertex->data == p->data < n->data)
+				insert(p->edge->vertex, n);
+			else insert(p->edge->edge->vertex, n);
 		}
 		return p;
 	}
