@@ -19,4 +19,5 @@ int main()
 	t.insert(6);
 	t.insert(1);
 	t.view();
+	std::cout << t.find(5)->data;
 }

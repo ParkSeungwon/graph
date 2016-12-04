@@ -170,8 +170,19 @@ public:
 		for(p = Graph<T>::root; p->vertex; p = p->vertex);
 		if(Graph<T>::root->vertex) Graph<T>::root = insert(Graph<T>::root, p);
 	}
+	Vertex<T>* find(T n) {
+		return find(Graph<T>::root, n);
+	}
 		
 private:
+	Vertex<T>* find(Vertex<T>* p, T n) {
+		if(p->data == n) return p;//all below is <else if> due to return
+		if(!p->edge) return nullptr;
+		if(n < p->data == p->edge->vertex->data < p->data) 
+			return find(p->edge->vertex, n);
+		if(!p->edge->edge) return nullptr;
+		return find(p->edge->edge->vertex, n);
+	}
 	Vertex<T>* insert(Vertex<T>* p, Vertex<T>* n) {
 		if(!p) return n;
 		if(!p->edge) p->edge = Graph<T>::insert(p->edge, n, 0);//no son
