@@ -3,6 +3,7 @@
 #include<iostream>
 #include<map>
 #define min(a, b) a < b ? a : b
+extern std::ostream& operator<<(std::ostream& o, const std::array<int, 5>& r);
 
 template <typename T> class Vertex;
 template<typename T> class Edge
@@ -86,6 +87,9 @@ public:
 							A[i->data][k->data] + A[k->data][j->data]);
 		return A[a][b];
 	}
+	void depth() {
+		depth(root);
+	}
 
 protected:
 	Vertex<T>* root = nullptr;
@@ -115,6 +119,13 @@ protected:
 	}
 
 private:
+	void depth(Vertex<T>* p) {
+		if(!p || p->v) return;
+		p->v = 1;
+		std::cout << p->data << ' ';
+		for(Edge<T>* e = p->edge; e; e = e->edge) depth(e->vertex);
+	}
+
 	void efree(Edge<T>* e) {
 		if(!e) return;
 		efree(e->edge);

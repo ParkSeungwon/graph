@@ -4,20 +4,19 @@
 #include"src/tgraph.h"
 using namespace std;
 
-extern GraphView<Vertex<int>, Edge<int>, int>* tgv;
+extern GraphView<Vertex<array<int, 5>>, Edge<array<int, 5>>, array<int, 5>>* tgv;
 extern GraphView<Vertex<const char*>, Edge<const char*>, const char*>* pgv;
 int main(int c, char** av)
 {
-	Tree<int> t;
-	t.insert(5);
-	t.insert(3);
-	t.insert(4);
-	t.insert(7);
-	t.insert(2);
-	t.insert(11);
-	t.insert(6);
+
+	Tree<array<int, 5>> t;
+	t.insert({5, -1, 2, 1, -4});
+	t.insert({3, 4, -1, -1, 3});
+	t.insert({7, -1, 1, -3, 1});
+	t.insert({4, 3, -1, -1, 2});
+	t.insert({3, -1, 1, 1, -5});
 	t.view();
-	GraphView<Vertex<int>, Edge<int>, int> gv{t.data()};
+	GraphView<Vertex<array<int, 5>>, Edge<array<int, 5>>, array<int, 5>> gv{t.data()};
 	tgv = &gv;
 
 	Graph<const char*> city;
