@@ -6,6 +6,7 @@ using namespace std;
 
 extern GraphView<Vertex<array<int, 5>>, Edge<array<int, 5>>, array<int, 5>>* tgv;
 extern GraphView<Vertex<const char*>, Edge<const char*>, const char*>* pgv;
+extern GraphView<Vertex<string>, Edge<string>, string>* sv;
 int main(int c, char** av)
 {
 
@@ -36,6 +37,10 @@ int main(int c, char** av)
 	city.topology();
 	cout << "from 서울 - 인천 : " << city.floyd("Seoul", "Daejun") << endl;
 	GraphView<Vertex<const char*>, Edge<const char*>, const char*> gvv{city.data()};
+	Graph<string> gr;
+	gr.read_file("data.txt");
+	GraphView<Vertex<string>, Edge<string>, string> gg{gr.data()};
+	sv = &gg;
 
 	pgv = &gvv;
 	auto app = Gtk::Application::create(c, av);

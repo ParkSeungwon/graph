@@ -115,7 +115,7 @@ protected:
 	Vertex<T>* root = nullptr;
 	Vertex<T>* insert(Vertex<T>* p, T n) {
 		if(!p) {
-			p = (Vertex<T>*)malloc(sizeof(Vertex<T>));
+			p = new(Vertex<T>);
 			p->data = n;
 			p->v = 0;
 			p->edge = nullptr;
@@ -127,7 +127,7 @@ protected:
 	}
 	Edge<T>* insert(Edge<T>* e, Vertex<T>* v, int weight) {
 		if(!e) {
-			e = (Edge<T>*)malloc(sizeof(Edge<T>));
+			e = new(Edge<T>);
 			e->edge = nullptr;
 			e->vertex = v;
 			e->weight = weight;
@@ -161,13 +161,13 @@ private:
 	void efree(Edge<T>* e) {
 		if(!e) return;
 		efree(e->edge);
-		free(e);
+		delete e;
 	}
 	void gfree(Vertex<T>* p) {
 		if(!p) return;
 		efree(p->edge);
 		gfree(p->vertex);
-		free(p);
+		delete p;
 	}
 	void shortest(Vertex<T>* p) {
 		Edge<T>* me;
