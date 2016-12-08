@@ -11,7 +11,7 @@ int main(int c, char** av)
 	graph.read_file("data.txt");
 	graph.prim();
 	graph.clearv();
-	cout << graph.dijkstra("seoul", "pusan") << endl;;
+	cout << graph.dijkstra("seoul", "kangwon") << endl;;
 	GraphV<string> gv{graph.data()};
 	pv = &gv;
 
