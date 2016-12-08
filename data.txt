@@ -9,3 +9,7 @@ seoul suwon 30
 suwon incheon 50
 pusan daejun 90
 incheon daejun 65
+suwon kangwon 80
+seoul incheon 70
+daejun pusan 300
+kangwon seoul 250

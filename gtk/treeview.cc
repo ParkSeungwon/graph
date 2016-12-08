@@ -6,9 +6,20 @@
 #include"tgraph.h"
 using namespace std;
 
-GraphView<Vertex<const char*>, Edge<const char*>, const char*>* pgv;
-GraphView<Vertex<array<int, 5>>, Edge<array<int, 5>>, array<int, 5>>* tgv;
-GraphView<Vertex<string>, Edge<string>, string>* sv;
+GraphV<string>* pv;
+bool SketchBook::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) 
+{
+	for(auto& a : *pv) (*a)(cr);
+	return true;
+}
+bool SketchBook::on_button_release_event(GdkEventButton* e)
+{
+	tx = e->x;
+	ty = e->y;
+	pv->drag({x, y}, {tx, ty});
+	refresh();	
+	return true;
+}
 
 Win::Win() 
 {
@@ -22,14 +33,6 @@ SketchBook::SketchBook()
 {
 	set_size_request(1000, 1000);
 	add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK);
-	tgv->drag({700, 500}, {900, 500});
-}
-
-bool SketchBook::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) 
-{
-	//for(auto& a : *pgv) (*a)(cr);
-	for(auto& a : *sv) (*a)(cr);
-	return true;
 }
 
 void SketchBook::refresh()
@@ -50,16 +53,6 @@ bool SketchBook::on_button_press_event(GdkEventButton* e)
 bool Win::on_button_press_event(GdkEventButton* e)
 {
 	cout << e->x << ' ' << e->y << endl;
-	return true;
-}
-
-bool SketchBook::on_button_release_event(GdkEventButton* e)
-{
-	tx = e->x;
-	ty = e->y;
-	//pgv->drag({x, y}, {tx, ty});
-	sv->drag({x, y}, {tx, ty});
-	refresh();	
 	return true;
 }
 

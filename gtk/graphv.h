@@ -2,6 +2,7 @@
 #pragma once
 #include<complex>
 #include"drawable.h"
+#include"src/tgraph.h"
 //V Vertex should have vertex, edge, data, v
 //E Edge should have vertex, edge, weight, v
 //D Data can be anything
@@ -63,3 +64,10 @@ private:
 		}
 	}
 };
+
+template <typename T> class GraphV : public GraphView<Vertex<T>, Edge<T>, T>
+{
+public:
+	GraphV(Vertex<T>* data) : GraphView<Vertex<T>, Edge<T>, T>(data) {}
+};
+
