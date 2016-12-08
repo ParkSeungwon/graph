@@ -1,20 +1,42 @@
 #include"tgraph.h"
-using namespace std;
+#include<iostream>
+#include<string>
+#include<cstring>
+#include<istream>
 
+using namespace std;
+//struct H {
+//	char s[30];
+//	bool operator==(const H& r) {
+//		return !strcmp(s, r.s);
+//	}
+//	void operator=(const H& r) {
+//		strcpy(s, r.s);
+//	}
+//};
+//
+//istream& operator>>(istream& i, H& r) {
+//	string s;
+//	i >> s;
+//	strcpy(r.s, s.data());
+//	return i;
+//}
+//ostream& operator<<(ostream& o, H& r) {
+//	cout << r.s;
+//	return o;
+//}
+
+//istream& operator>>(istream& i, const char* r) {
+//	static char bf[30][30];
+//	static int c = 0;
+//	i >> bf[c];
+//	r = bf[c++];
+//}
 int main()
 {
-	Graph<int> g;
-	for(int i=0; i<10; i++) g.insert_vertex(i);
-	g.insert_edge(1,2,3);
-	g.insert_edge(3,2,4);
-	g.insert_edge(5,2,4);
-	g.insert_edge(7,2,4);
-	g.insert_edge(3,6,1);
-	g.insert_edge(0,1,4);
-	g.insert_edge(2,3,1);
-	g.insert_edge(0,5,1);
-	g.view();
-	g.depth();
+	Graph<string> g2;
+	g2.read_file("data.txt");
+	g2.view();
 
 	Tree<int> t;
 	t.insert(3);

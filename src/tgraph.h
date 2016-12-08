@@ -1,7 +1,9 @@
 #pragma once
 #include<climits>
+#include<fstream>
 #include<iostream>
 #include<map>
+#include<vector>
 #define min(a, b) a < b ? a : b
 extern std::ostream& operator<<(std::ostream& o, const std::array<int, 5>& r);
 
@@ -42,6 +44,19 @@ public:
 		}
 		va->edge = insert(va->edge, vb, weight);
 	}
+	void read_file(std::string file) {
+		T n1, n2;
+		std::ifstream f(file);
+		int vc;
+		f >> vc;
+		for(int i=0; i<vc; i++) {
+			f >> n1;
+			insert_vertex(n1);
+		}
+		int wt;
+		while(f >> n1 >> n2 >> wt) insert_edge(n1, n2, wt);
+	}
+
 	void view() {
 		for(Vertex<T>* p = root; p; p = p->vertex) {
 			std::cout << p->data << " : ";
@@ -90,6 +105,11 @@ public:
 	void depth() {
 		depth(root);
 	}
+	void breadth() {
+		std::cout << root->data << ' ';
+		root->v = 1;
+		breadth(root);
+	}
 
 protected:
 	Vertex<T>* root = nullptr;
@@ -125,6 +145,18 @@ private:
 		std::cout << p->data << ' ';
 		for(Edge<T>* e = p->edge; e; e = e->edge) depth(e->vertex);
 	}
+	void breadth(Vertex<T>* p) {
+		std::vector<Vertex<T>*> q;
+		for(Edge<T>* e = p->edge; e; e = e->edge) {
+			if(!e->vertex->v) {
+				q.push_back(e->vertex);
+				std::cout << e->vertex->data << ' ';
+				e->vertex->v = 1;
+			}
+		}
+		for(auto& a : q) breadth(a);
+	}
+
 
 	void efree(Edge<T>* e) {
 		if(!e) return;
