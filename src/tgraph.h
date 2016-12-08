@@ -1,5 +1,6 @@
 #pragma once
 #include<climits>
+#include<cassert>
 #include<fstream>
 #include<iostream>
 #include<map>
@@ -102,6 +103,27 @@ public:
 							A[i->data][k->data] + A[k->data][j->data]);
 		return A[a][b];
 	}
+	int dijkstra(T a, T b) {
+		distance.clear();
+		for(Vertex<T>* p = root; p; p = p->vertex) distance[p] = INT_MAX / 2;
+		Vertex<T>* p = find(root, a); assert(p);
+		Vertex<T>* pb = find(root, b); assert(pb);
+//		p->v = 1;
+		distance[p] = 0;
+//		for(Edge<T>* e = p->edge; e; e = e->edge) distance[e->vertex] = e->weight;
+		while(pb != find_closest());
+		return distance[pb];
+	}
+
+	Vertex<T>* find_closest() {
+		int min = INT_MAX / 2;
+		Vertex<T>* p = nullptr;
+		for(auto& a : distance) if(min > a.second && !a.first->v) p = a.first;
+		p->v = 1;
+		for(Edge<T>* e = p->edge; e; e = e->edge) if(!e->vertex->v) 
+			distance[e->vertex] = min(distance[e->vertex], distance[p] + e->weight);
+		return p;
+	}
 	void depth() {
 		depth(root);
 	}
@@ -115,7 +137,7 @@ protected:
 	Vertex<T>* root = nullptr;
 	Vertex<T>* insert(Vertex<T>* p, T n) {
 		if(!p) {
-			p = new(Vertex<T>);
+			p = new Vertex<T>;
 			p->data = n;
 			p->v = 0;
 			p->edge = nullptr;
@@ -127,7 +149,7 @@ protected:
 	}
 	Edge<T>* insert(Edge<T>* e, Vertex<T>* v, int weight) {
 		if(!e) {
-			e = new(Edge<T>);
+			e = new Edge<T>;
 			e->edge = nullptr;
 			e->vertex = v;
 			e->weight = weight;
@@ -139,6 +161,11 @@ protected:
 	}
 
 private:
+	std::map<Vertex<T>*, int> distance;
+	std::map<Vertex<T>*, std::vector<Edge<T>*>> waypoint;
+	Vertex<T>* find(Vertex<T>* p, T n) {
+		for(Vertex<T>* v = p; v; v = v->vertex) if(v->data == n) return v;
+	}
 	void depth(Vertex<T>* p) {
 		if(!p || p->v) return;
 		p->v = 1;

@@ -9,6 +9,9 @@ int main(int c, char** av)
 {
 	Graph<string> graph;
 	graph.read_file("data.txt");
+	graph.prim();
+	graph.clearv();
+	cout << graph.dijkstra("seoul", "pusan") << endl;;
 	GraphV<string> gv{graph.data()};
 	pv = &gv;
 
