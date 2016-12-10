@@ -106,9 +106,9 @@ public:
 	int dijkstra(T a, T b) {
 		distance.clear();
 		for(Vertex<T>* p = root; p; p = p->vertex) distance[p] = INT_MAX / 2;
-		Vertex<T>* p = find(root, a); assert(p);
+		Vertex<T>* pa = find(root, a); assert(pa);
 		Vertex<T>* pb = find(root, b); assert(pb);
-		distance[p] = 0;
+		distance[pa] = 0;
 		while(pb != find_closest());
 		for(auto& a : waypoint[pb]) a->v = 1;
 		return distance[pb];
@@ -176,16 +176,22 @@ private:
 		for(Vertex<T>* v = p; v; v = v->vertex) if(v->data == n) return v;
 	}
 	void depth(Vertex<T>* p) {
-		if(!p || p->v) return;
+		assert(p);
 		p->v = 1;
 		std::cout << p->data << ' ';
-		for(Edge<T>* e = p->edge; e; e = e->edge) depth(e->vertex);
+		for(Edge<T>* e = p->edge; e; e = e->edge) {
+			if(!e->vertex->v) {
+				e->v = 1;
+				depth(e->vertex);
+			}
+		}
 	}
 	void breadth(Vertex<T>* p) {
 		std::vector<Vertex<T>*> q;
 		for(Edge<T>* e = p->edge; e; e = e->edge) {
 			if(!e->vertex->v) {
 				q.push_back(e->vertex);
+				e->v = 1;
 				std::cout << e->vertex->data << ' ';
 				e->vertex->v = 1;
 			}
