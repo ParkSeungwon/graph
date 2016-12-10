@@ -70,17 +70,12 @@ public:
 		return root;
 	}
 	void prim() {
+		clearv();
 		root->v = 1;//below for syntax is just to call n-1 times
 		for(Vertex<T>* q = root->vertex; q; q = q->vertex) shortest(root);
 	}
-	void clearv() {
-		for(Vertex<T>* p = root; p; p = p->vertex) {
-			p->v = 0;
-			for(Edge<T>* e = p->edge; e; e = e->edge) e->v = 0;
-		}
-	}
-
 	void topology() {//check v to entry and print data
+		clearv();
 		for(Vertex<T>* q; q = find_entry(root);) {
 			q->v = 1;
 			std::cout << q->data << " - ";
@@ -88,6 +83,7 @@ public:
 	}
 
 	int floyd(T a, T b) {
+		clearv();
 		std::map<T, std::map<T, int>> A;
 		for(Vertex<T>* q = root; q; q = q->vertex) 
 			for(Vertex<T>* p = root; p; p = p->vertex) 
@@ -104,6 +100,7 @@ public:
 		return A[a][b];
 	}
 	int dijkstra(T a, T b) {
+		clearv();
 		distance.clear();
 		for(Vertex<T>* p = root; p; p = p->vertex) distance[p] = INT_MAX / 2;
 		Vertex<T>* pa = find(root, a); assert(pa);
@@ -114,14 +111,17 @@ public:
 		return distance[pb];
 	}
 	void depth() {
+		clearv();
 		depth(root);
 	}
 	void breadth() {
+		clearv();
 		std::cout << root->data << ' ';
 		root->v = 1;
 		breadth(root);
 	}
 	void bridge() {
+		clearv();
 		std::vector<Edge<T>*> v;
 		for(Vertex<T>* p = root; p; p = p->vertex) 
 			for(Edge<T>* e = p->edge; e; e = e->edge)
@@ -129,6 +129,7 @@ public:
 		for(auto& a : v) a->v = 1;
 	}
 	void greedy() {
+		clearv();
 		union_set.clear();
 		int i = 1;
 		for(Vertex<T>* p = root; p; p = p->vertex) union_set[p] = i++;
@@ -140,25 +141,6 @@ public:
 	}
 
 protected:
-	Edge<T>* find_greed() {
-		int min = INT_MAX / 2;
-		Edge<T>* eg;
-		Vertex<T>* vt;
-		for(Vertex<T>* p = root; p; p = p->vertex) {
-			for(Edge<T>* e = p->edge; e; e = e->edge) {
-				if(!e->v && e->weight < min) {
-					min = e->weight;
-					eg = e;
-					vt = p;
-				}
-			}
-		}
-		eg->v = 1;
-		if(union_set[vt] != union_set[eg->vertex]) {
-			unite(vt, eg->vertex);
-			return eg;
-		} else return find_greed();
-	}
 	Vertex<T>* root = nullptr;
 	Vertex<T>* insert(Vertex<T>* p, T n) {
 		if(!p) {
@@ -254,6 +236,12 @@ private:
 		gfree(p->vertex);
 		delete p;
 	}
+	void clearv() {
+		for(Vertex<T>* p = root; p; p = p->vertex) {
+			p->v = 0;
+			for(Edge<T>* e = p->edge; e; e = e->edge) e->v = 0;
+		}
+	}
 	void shortest(Vertex<T>* p) {
 		Edge<T>* me;
 		int min = INT_MAX;
@@ -289,6 +277,25 @@ private:
 	void unite(Vertex<T>* a, Vertex<T>* b) {
 		for(auto& u : union_set) 
 			if(u.second == union_set[a]) u.second = union_set[b];
+	}
+	Edge<T>* find_greed() {
+		int min = INT_MAX / 2;
+		Edge<T>* eg;
+		Vertex<T>* vt;
+		for(Vertex<T>* p = root; p; p = p->vertex) {
+			for(Edge<T>* e = p->edge; e; e = e->edge) {
+				if(!e->v && e->weight < min) {
+					min = e->weight;
+					eg = e;
+					vt = p;
+				}
+			}
+		}
+		eg->v = 1;
+		if(union_set[vt] != union_set[eg->vertex]) {
+			unite(vt, eg->vertex);
+			return eg;
+		} else return find_greed();
 	}
 };
 
