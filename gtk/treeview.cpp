@@ -11,9 +11,15 @@ int main(int c, char** av)
 	graph.read_file("data.txt");
 	graph.prim();
 	graph.clearv();
-	//cout << graph.dijkstra("seoul", "kangwon") << endl;;
+	graph.bridge();
+	graph.clearv();
+	cout << graph.dijkstra("daejun", "kangwon") << endl;;
+	graph.clearv();
 	graph.depth();
+	graph.clearv();
+	graph.greedy();
 	GraphV<string> gv{graph.data()};
+	graph.clearv();
 	pv = &gv;
 
 	auto app = Gtk::Application::create(c, av);

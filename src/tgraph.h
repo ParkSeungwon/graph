@@ -113,7 +113,6 @@ public:
 		for(auto& a : waypoint[pb]) a->v = 1;
 		return distance[pb];
 	}
-
 	void depth() {
 		depth(root);
 	}
@@ -122,8 +121,44 @@ public:
 		root->v = 1;
 		breadth(root);
 	}
+	void bridge() {
+		std::vector<Edge<T>*> v;
+		for(Vertex<T>* p = root; p; p = p->vertex) 
+			for(Edge<T>* e = p->edge; e; e = e->edge)
+				if(is_bridge(p, e)) v.push_back(e);
+		for(auto& a : v) a->v = 1;
+	}
+	void greedy() {
+		union_set.clear();
+		int i = 1;
+		for(Vertex<T>* p = root; p; p = p->vertex) union_set[p] = i++;
+		std::vector<Edge<T>*> v;
+		for(Vertex<T>* p = root->vertex; p; p = p->vertex) 
+			v.push_back(find_greed());
+		clearv();
+		for(auto& a : v) a->v = 1;
+	}
 
 protected:
+	Edge<T>* find_greed() {
+		int min = INT_MAX / 2;
+		Edge<T>* eg;
+		Vertex<T>* vt;
+		for(Vertex<T>* p = root; p; p = p->vertex) {
+			for(Edge<T>* e = p->edge; e; e = e->edge) {
+				if(!e->v && e->weight < min) {
+					min = e->weight;
+					eg = e;
+					vt = p;
+				}
+			}
+		}
+		eg->v = 1;
+		if(union_set[vt] != union_set[eg->vertex]) {
+			unite(vt, eg->vertex);
+			return eg;
+		} else return find_greed();
+	}
 	Vertex<T>* root = nullptr;
 	Vertex<T>* insert(Vertex<T>* p, T n) {
 		if(!p) {
@@ -149,10 +184,20 @@ protected:
 		e->edge = insert(e->edge, v, weight);
 		return e;
 	}
+	bool is_bridge(Vertex<T>* p, Edge<T>* eg) {
+		eg->v = 1;
+		for(Edge<T>* e = eg->vertex->edge; e; e = e->edge) 
+			if(e->vertex == p) e->v = 1;
+		depth(eg->vertex);
+		bool r = !p->v;
+		clearv();
+		return r;
+	}
 
 private:
 	std::map<Vertex<T>*, int> distance;
 	std::map<Vertex<T>*, std::vector<Edge<T>*>> waypoint;
+	std::map<Vertex<T>*, int> union_set;
 	Vertex<T>* find_closest() {
 		int min = INT_MAX / 2;
 		Vertex<T>* p = nullptr;
@@ -180,7 +225,7 @@ private:
 		p->v = 1;
 		std::cout << p->data << ' ';
 		for(Edge<T>* e = p->edge; e; e = e->edge) {
-			if(!e->vertex->v) {
+			if(!e->vertex->v && !e->v) {//!e->v is for bridge func
 				e->v = 1;
 				depth(e->vertex);
 			}
@@ -198,8 +243,6 @@ private:
 		}
 		for(auto& a : q) breadth(a);
 	}
-
-
 	void efree(Edge<T>* e) {
 		if(!e) return;
 		efree(e->edge);
@@ -242,6 +285,10 @@ private:
 			else if(!q->v) r = q;
 		}
 		return r;
+	}
+	void unite(Vertex<T>* a, Vertex<T>* b) {
+		for(auto& u : union_set) 
+			if(u.second == union_set[a]) u.second = union_set[b];
 	}
 };
 
