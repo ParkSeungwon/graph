@@ -337,7 +337,20 @@ template <typename T> class ParseTree : public Tree<T>
 {
 public:
 	ParseTree(std::string expression) {
-		Graph<T>::root = insert(expression);
+		int type = 0;
+		if(is_operator(expression.front())) type = -1;
+		else if(is_operator(expression.back())) type = 1;
+		for(auto& a : expression) expr.push_back(a);
+		switch(type) {
+			case -1:
+				Graph<T>::root = finsert();
+				break;
+			case 0:
+				Graph<T>::root = insert(expression);
+				break;
+			case 1:
+				Graph<T>::root = binsert();
+		}
 		connect(Graph<T>::root);
 		Vertex<T>* p = Graph<T>::root;
 		for(int i=1; i<vts.size(); i++) {
@@ -345,6 +358,7 @@ public:
 			p = p->vertex;
 		}
 	}
+
 	void forward() {
 		forward(Graph<T>::root);
 	}
@@ -356,6 +370,7 @@ public:
 	}
 
 private:
+	std::deque<char> expr;
 	std::vector<Vertex<T>*> vts;
 	void forward(Vertex<T>* p) {
 		std::cout << p->data;
@@ -411,6 +426,38 @@ private:
 		}
 		return token;
 	}
+	bool is_operator(char c) {
+		for(auto& a : {'+', '-', '*', '/'}) if(c == a) return true;
+		return false;
+	}
+	Vertex<T>* finsert() {
+		Vertex<T>* p = new Vertex<T>;
+		p->data = expr.front();
+		expr.pop_front();
+		if(is_operator(p->data)) {
+			p->edge = Graph<T>::insert(p->edge, finsert(), 0);
+			p->edge = Graph<T>::insert(p->edge, finsert(), 0);
+		}
+		return p;
+	}
+	Vertex<T>* binsert() {
+		std::stack<Vertex<T>*> st;
+		while(!expr.empty()) {
+			do {
+				Vertex<T>* vt = new Vertex<T>;
+				vt->data = expr.front(); expr.pop_front();
+				st.push(vt); 
+			} while(!is_operator(st.top()->data)); 
+			Vertex<T>* p1 = st.top(); st.pop();
+			Vertex<T>* p3 = st.top(); st.pop();
+			Vertex<T>* p2 = st.top(); st.pop();
+			p1->edge = Graph<T>::insert(p1->edge, p2, 0);
+			p1->edge = Graph<T>::insert(p1->edge, p3, 0);
+			st.push(p1);
+		}
+		return st.top();
+	}
+
 
 };
 

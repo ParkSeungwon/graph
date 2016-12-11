@@ -20,7 +20,7 @@ int main()
 	t.view();
 	std::cout << t.find(5)->data << endl;
 
-	ParseTree<char> tr{"7*8+9/1"};
+	ParseTree<char> tr{"817+*37+5*+2-"};
 	tr.view();
 	tr.forward();
 	cout << endl;
