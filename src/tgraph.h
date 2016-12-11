@@ -5,6 +5,7 @@
 #include<iostream>
 #include<map>
 #include<vector>
+#include<stack>
 #define min(a, b) a < b ? a : b
 extern std::ostream& operator<<(std::ostream& o, const std::array<int, 5>& r);
 
@@ -12,19 +13,19 @@ template <typename T> class Vertex;
 template<typename T> class Edge
 {
 public:
-	int weight;
-	int v;
-	struct Vertex<T>* vertex;
-	struct Edge<T>* edge;
+	int weight = 0;
+	int v = 0;
+	struct Vertex<T>* vertex = nullptr;
+	struct Edge<T>* edge = nullptr;
 };
 
 template<typename T> class Vertex
 {
 public:
 	T data;
-	int v;
-	struct Edge<T>* edge;
-	struct Vertex<T>* vertex;
+	int v = 0;
+	struct Edge<T>* edge = nullptr;
+	struct Vertex<T>* vertex = nullptr;
 };
 
 template<typename T> class Graph
@@ -141,31 +142,26 @@ public:
 
 protected:
 	Vertex<T>* root = nullptr;
-	Vertex<T>* insert(Vertex<T>* p, T n) {
+	Vertex<T>* insert(Vertex<T>* p, T n) {//recursively insert a value 'n'
 		if(!p) {
 			p = new Vertex<T>;
 			p->data = n;
-			p->v = 0;
-			p->edge = nullptr;
-			p->vertex = nullptr;
 			return p;
 		}
 		p->vertex = insert(p->vertex, n);
 		return p;
 	}
 	Edge<T>* insert(Edge<T>* e, Vertex<T>* v, int weight) {
-		if(!e) {
+		if(!e) {//recursively insert edge in at the end of e pointint to v
 			e = new Edge<T>;
-			e->edge = nullptr;
 			e->vertex = v;
 			e->weight = weight;
-			e->v = 0;
 			return e;
 		}
 		e->edge = insert(e->edge, v, weight);
 		return e;
 	}
-	bool is_bridge(Vertex<T>* p, Edge<T>* eg) {
+	bool is_bridge(Vertex<T>* p, Edge<T>* eg) {//check all the bridges in the graph
 		eg->v = 1;
 		for(Edge<T>* e = eg->vertex->edge; e; e = e->edge) 
 			if(e->vertex == p) e->v = 1;
@@ -198,10 +194,10 @@ private:
 		//	' ' << a.first->v << std::endl;
 		return p;
 	}
-	Vertex<T>* find(Vertex<T>* p, T n) {
+	Vertex<T>* find(Vertex<T>* p, T n) {//find value 'n' and return the address
 		for(Vertex<T>* v = p; v; v = v->vertex) if(v->data == n) return v;
 	}
-	void depth(Vertex<T>* p) {
+	void depth(Vertex<T>* p) {//depth search the graph
 		assert(p);
 		p->v = 1;
 		std::cout << p->data << ' ';
@@ -321,8 +317,8 @@ private:
 		if(!p->edge->edge) return nullptr;
 		return find(p->edge->edge->vertex, n);
 	}
-	Vertex<T>* insert(Vertex<T>* p, Vertex<T>* n) {
-		if(!p) return n;
+	Vertex<T>* insert(Vertex<T>* p, Vertex<T>* n) {//insert by comparing value
+		if(!p) return n;						//to make binary tree
 		if(!p->edge) p->edge = Graph<T>::insert(p->edge, n, 0);//no son
 		else if(!p->edge->edge) {//1 son
 			if(p->data < p->edge->vertex->data == p->data < n->data)
@@ -336,5 +332,87 @@ private:
 		return p;
 	}
 };
+
+template <typename T> class ParseTree : public Tree<T>
+{
+public:
+	ParseTree(std::string expression) {
+		Graph<T>::root = insert(expression);
+		connect(Graph<T>::root);
+		Vertex<T>* p = Graph<T>::root;
+		for(int i=1; i<vts.size(); i++) {
+			p->vertex = vts[i];
+			p = p->vertex;
+		}
+	}
+	void forward() {
+		forward(Graph<T>::root);
+	}
+	void middle() {
+		middle(Graph<T>::root);
+	}
+	void back() {
+		back(Graph<T>::root);
+	}
+
+private:
+	std::vector<Vertex<T>*> vts;
+	void forward(Vertex<T>* p) {
+		std::cout << p->data;
+		if(p->edge) {
+			forward(p->edge->vertex);
+			forward(p->edge->edge->vertex);
+		}
+	}
+	void middle(Vertex<T>* p) {
+		if(p->edge) middle(p->edge->vertex);
+		std::cout << p->data;
+		if(p->edge) middle(p->edge->edge->vertex);
+	}
+	void back(Vertex<T>* p) {
+		if(p->edge) {
+			back(p->edge->vertex);
+			back(p->edge->edge->vertex);
+		}
+		std::cout << p->data;
+	}
+	void connect(Vertex<T>* p) {//connect vertexes for graph compatibility
+		vts.push_back(p);
+		if(p->edge) {
+			connect(p->edge->vertex);
+			connect(p->edge->edge->vertex);
+		}
+	}
+	Vertex<T>* insert(std::string s) {
+		int token = div_point(s);
+		Vertex<T>* p = new Vertex<T>;
+		p->data = s[token];
+		if(token) {
+			std::string rhs = s.substr(token + 1);
+			s.erase(token);
+			p->edge = Graph<T>::insert(p->edge, insert(s), 0);//crash
+			p->edge = Graph<T>::insert(p->edge, insert(rhs), 0);
+		}
+		return p;
+	}
+	
+	int div_point(std::string s) {
+		std::stack<char> parenthesis;
+		int token = 0;
+		for(int i=0; i<s.size(); i++) {
+			if(s[i] == '(') parenthesis.push('(');
+			else if(s[i] == ')') parenthesis.pop();
+			else if(parenthesis.empty()) {
+				if(s[i] == '+' || s[i] == '-') {
+					token = i;
+					break;
+				} else if(s[i] == '*' || s[i] == '/') if(!token) token = i;
+			}
+		}
+		return token;
+	}
+
+};
+
 
 

@@ -18,5 +18,14 @@ int main()
 	t.insert(6);
 	t.insert(1);
 	t.view();
-	std::cout << t.find(5)->data;
+	std::cout << t.find(5)->data << endl;
+
+	ParseTree<char> tr{"7*8+9/1"};
+	tr.view();
+	tr.forward();
+	cout << endl;
+	tr.middle();
+	cout << endl;
+	tr.back();
+	cout << endl;
 }

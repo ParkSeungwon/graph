@@ -4,7 +4,7 @@
 #include"src/tgraph.h"
 using namespace std;
 
-extern GraphV<string>* pv;
+extern GraphV<char>* pv;
 int main(int c, char** av)
 {
 	Graph<string> graph;
@@ -14,7 +14,10 @@ int main(int c, char** av)
 	cout << graph.dijkstra("daejun", "kangwon") << endl;;
 	graph.depth();
 	graph.greedy();
-	GraphV<string> gv{graph.data()};
+
+	ParseTree<char> pt{"7*9+8/1"};
+	GraphV<char> gv{pt.data()};
+
 	pv = &gv;
 
 	auto app = Gtk::Application::create(c, av);

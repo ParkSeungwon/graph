@@ -6,7 +6,7 @@
 #include"tgraph.h"
 using namespace std;
 
-GraphV<string>* pv;
+GraphV<char>* pv;
 bool SketchBook::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) 
 {
 	for(auto& a : *pv) (*a)(cr);
