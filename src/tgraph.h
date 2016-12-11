@@ -134,8 +134,7 @@ public:
 		int i = 1;
 		for(Vertex<T>* p = root; p; p = p->vertex) union_set[p] = i++;
 		std::vector<Edge<T>*> v;
-		for(Vertex<T>* p = root->vertex; p; p = p->vertex) 
-			v.push_back(find_greed());
+		for(Vertex<T>* p = root->vertex; p; p = p->vertex) v.push_back(find_greed());
 		clearv();
 		for(auto& a : v) a->v = 1;
 	}
@@ -180,7 +179,7 @@ private:
 	std::map<Vertex<T>*, int> distance;
 	std::map<Vertex<T>*, std::vector<Edge<T>*>> waypoint;
 	std::map<Vertex<T>*, int> union_set;
-	Vertex<T>* find_closest() {
+	Vertex<T>* find_closest() {//dijkstra
 		int min = INT_MAX / 2;
 		Vertex<T>* p = nullptr;
 		for(auto& a : distance) if(min > a.second && !a.first->v) {
@@ -242,7 +241,7 @@ private:
 			for(Edge<T>* e = p->edge; e; e = e->edge) e->v = 0;
 		}
 	}
-	void shortest(Vertex<T>* p) {
+	void shortest(Vertex<T>* p) {//prim
 		Edge<T>* me;
 		int min = INT_MAX;
 		for(; p; p = p->vertex) {
@@ -259,7 +258,7 @@ private:
 		me->v = 1;
 		me->vertex->v = 1;
 	}
-	Vertex<T>* find_entry(Vertex<T>* p) {//return NULL when no more
+	Vertex<T>* find_entry(Vertex<T>* p) {//return NULL when no more,topology
 		for(Vertex<T>* q = p; q; q = q->vertex) {
 			if(q->v != 1) {//1 or 2 or 0
 				for(Edge<T>* e = q->edge; e; e = e->edge) {
@@ -274,7 +273,7 @@ private:
 		}
 		return r;
 	}
-	void unite(Vertex<T>* a, Vertex<T>* b) {
+	void unite(Vertex<T>* a, Vertex<T>* b) {//greed
 		for(auto& u : union_set) 
 			if(u.second == union_set[a]) u.second = union_set[b];
 	}
