@@ -38,7 +38,7 @@ private:
 	std::deque<char> expr;
 	std::vector<Vertex<char>*> vts;
 	std::string compose(int n) {
-		if(n < 0) compose(-n) + "12-*";
+		if(n < 0) return compose(-n) + "12-*";
 		else {
 			if(n < 10) return std::to_string(n);
 			int share = n / 9;

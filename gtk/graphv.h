@@ -3,6 +3,7 @@
 #include<complex>
 #include"drawable.h"
 #include"src/parsetree.h"
+#define CIRCLE_SIZE 30
 //V Vertex should have vertex, edge, data, v
 //E Edge should have vertex, edge, weight, v
 //D Data can be anything
@@ -10,6 +11,7 @@ template <typename V, typename E, typename D> class GraphView
 {
 public:
 	GraphView(V* gr) {
+		root = gr;
 		Point im{500, 500};
 		int i = 0, sz = 0;
 		for(V* p = gr; p; p = p->vertex) sz++;
@@ -38,14 +40,34 @@ public:
 	std::vector<std::shared_ptr<Drawable>>::const_iterator end() const {
 		return drawables_.end();
 	}
+	void treeview(int height) {
+		width_ = pow(2, height) * CIRCLE_SIZE;
+		treeview(root, width_ / 2, 100);
+		generate_graph();
+	}
 	
 
 protected:
+	V* root = nullptr;
 	std::map<V*, Point> map_;
 	std::vector<std::tuple<V*, V*, int, int>> arrows_;
 	std::vector<std::shared_ptr<Drawable>> drawables_;
 
 private:
+	int width_;
+	void treeview(V* p, int x, int y) {
+		static int h = 0;
+		map_[p] = {x, y};
+		if(p->edge) {
+			h++;
+			treeview(p->edge->vertex, x - width_ /pow(2, h + 1), y + 100);
+			if(p->edge->edge) {
+				h++;
+				treeview(p->edge->edge->vertex, x + width_ / pow(2, h + 1), y + 100);
+			}
+		}
+		h--;
+	}
 	void generate_graph() {
 		for(auto& a : arrows_) {
 			auto d1 = map_[std::get<0>(a)];

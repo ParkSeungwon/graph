@@ -20,6 +20,7 @@ int main(int c, char** av)
 	GraphV<char> gv{pt.data()};
 	pt.back();
 	//cout << "height is " << pt.height() << endl;
+	gv.treeview(pt.height());
 
 	pv = &gv;
 
