@@ -19,6 +19,7 @@ int main(int c, char** av)
 	ParseTree pt{-358};
 	GraphV<char> gv{pt.data()};
 	pt.back();
+	//cout << "height is " << pt.height() << endl;
 
 	pv = &gv;
 

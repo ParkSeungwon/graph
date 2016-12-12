@@ -40,4 +40,5 @@ int main(int c, char** v)
 	pt.back();
 	cout << endl;
 	cout << pt.calc() << endl;
+	cout << "height is " << pt.height() << endl;
 }

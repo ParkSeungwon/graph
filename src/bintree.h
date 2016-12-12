@@ -12,8 +12,24 @@ public:
 	Vertex<T>* find(T n) {
 		return find(Graph<T>::root, n);
 	}
+	int height() {
+		return height(Graph<T>::root);
+	}
 		
 private:
+	int height(Vertex<T>* tree) {
+		static int max=0;
+		static int i = 1;
+		if(!tree->edge) return max = max > --i ? max : i;
+		i++;
+		height(tree->edge->vertex);
+		if(tree->edge->edge) {
+			i++;
+			height(tree->edge->edge->vertex);
+		}
+		i--;
+		return max;
+	}
 	Vertex<T>* find(Vertex<T>* p, T n) {
 		if(p->data == n) return p;//all below is <else if> due to return
 		if(!p->edge) return nullptr;
