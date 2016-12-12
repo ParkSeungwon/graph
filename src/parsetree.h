@@ -20,29 +20,7 @@ public:
 			p = p->vertex;
 		}
 	}
-	ParseTree(int n) {
-		if(n < 0) {
-			Vertex<char>* p1 = new Vertex<char>;
-			Vertex<char>* p2 = new Vertex<char>;
-			Vertex<char>* p3 = new Vertex<char>;
-			Vertex<char>* p4 = new Vertex<char>;
-			p1->data = '1';
-			p2->data = '2';
-			p3->data = '-';
-			p4->data = '*';
-			p3->edge = Graph<char>::insert(p3->edge, p1, 0);
-			p3->edge = Graph<char>::insert(p3->edge, p2, 0);
-			p4->edge = Graph<char>::insert(p4->edge, p3, 0);
-			p4->edge = Graph<char>::insert(p4->edge, compose(-n), 0);
-			Graph<char>::root = p4;
-		} else Graph<char>::root = compose(n);
-		connect(Graph<char>::root);
-		Vertex<char>* p = Graph<char>::root;
-		for(int i=1; i<vts.size(); i++) {
-			p->vertex = vts[i];
-			p = p->vertex;
-		}
-	}
+	ParseTree(int n) : ParseTree(compose(n)) {}
 	int calc() {
 		return calc(Graph<char>::root);
 	}
@@ -59,30 +37,16 @@ public:
 private:
 	std::deque<char> expr;
 	std::vector<Vertex<char>*> vts;
-	Vertex<char>* compose(int n) {//express an integer over 10 by character tree
-		assert(n >= 0);
-		if(n < 10) {
-			Vertex<char>* p = new Vertex<char>;
-			p->data = '0' + n;
-			return p;
+	std::string compose(int n) {
+		if(n < 0) compose(-n) + "12-*";
+		else {
+			if(n < 10) return std::to_string(n);
+			int share = n / 9;
+			int rest = n % 9;
+			char r = '0' + rest;
+			return compose(share) + "9*" + r + '+';
 		}
-		int share = n / 9;
-		int rest = n % 9;
-		Vertex<char>* p2 = new Vertex<char>;
-		Vertex<char>* p3 = new Vertex<char>;
-		Vertex<char>* p4 = new Vertex<char>;
-		Vertex<char>* p5 = new Vertex<char>;
-		p2->data = '0' + rest;
-		p3->data = '+';
-		p4->data = '*';
-		p5->data = '9';
-		p3->edge = Graph<char>::insert(p3->edge, p4, 0);
-		p3->edge = Graph<char>::insert(p3->edge, p2, 0);
-		p4->edge = Graph<char>::insert(p4->edge, compose(share), 0);
-		p4->edge = Graph<char>::insert(p4->edge, p5, 0);
-		return p3;
 	}
-
 	int calc(Vertex<char>* p) {
 		switch(p->data) {
 			case '+': return calc(p->edge->vertex) + calc(p->edge->edge->vertex);
