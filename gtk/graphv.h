@@ -14,10 +14,10 @@ public:
 		int i = 0, sz = 0;
 		for(V* p = gr; p; p = p->vertex) sz++;
 		for(V* p = gr; p; p = p->vertex) {
-			map_[p->data] = im + std::polar(200.0, M_PI * 2.0 * i++ / sz);
-			std::cout << "coordination is " << map_[p->data] << std::endl;
+			map_[p] = im + std::polar(200.0, M_PI * 2.0 * i++ / sz);
+			std::cout << "coordination is " << map_[p] << std::endl;
 			for(E* q = p->edge; q; q = q->edge) 
-				arrows_.push_back(std::make_tuple(p->data, q->vertex->data, q->weight, q->v));
+				arrows_.push_back(std::make_tuple(p, q->vertex, q->weight, q->v));
 		}
 		generate_graph();
 	}
@@ -41,8 +41,8 @@ public:
 	
 
 protected:
-	std::map<D, Point> map_;
-	std::vector<std::tuple<D, D, int, int>> arrows_;
+	std::map<V*, Point> map_;
+	std::vector<std::tuple<V*, V*, int, int>> arrows_;
 	std::vector<std::shared_ptr<Drawable>> drawables_;
 
 private:
@@ -60,7 +60,7 @@ private:
 		}
 		for(auto& a : map_) {
 			Ellipse el{a.second - Point{15, 15}, a.second + Point{15, 15}};
-			el.txt(a.first);
+			el.txt(a.first->data);
 			drawables_.push_back(std::make_shared<Ellipse>(el));
 		}
 	}

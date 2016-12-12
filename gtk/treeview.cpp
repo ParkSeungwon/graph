@@ -16,7 +16,7 @@ int main(int c, char** av)
 	graph.greedy();
 
 	//ParseTree pt{"817+*37+5*+2-"};
-	ParseTree pt{983};
+	ParseTree pt{-358};
 	GraphV<char> gv{pt.data()};
 
 	pv = &gv;

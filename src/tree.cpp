@@ -5,8 +5,9 @@
 #include<istream>
 using namespace std;
 
-int main()
+int main(int c, char** v)
 {
+	if(c < 2) return 0;
 	Graph<string> g2;
 	g2.read_file("data.txt");
 	g2.view();
@@ -30,7 +31,7 @@ int main()
 	cout << endl;
 	cout << tr.calc() << endl;
 
-	ParseTree pt{-345};
+	ParseTree pt{atoi(v[1])};
 	pt.view();
 	pt.forward();
 	cout << endl;
