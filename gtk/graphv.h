@@ -2,7 +2,7 @@
 #pragma once
 #include<complex>
 #include"drawable.h"
-#include"src/tgraph.h"
+#include"src/parsetree.h"
 //V Vertex should have vertex, edge, data, v
 //E Edge should have vertex, edge, weight, v
 //D Data can be anything
@@ -14,7 +14,7 @@ public:
 		int i = 0, sz = 0;
 		for(V* p = gr; p; p = p->vertex) sz++;
 		for(V* p = gr; p; p = p->vertex) {
-			map_[p->data] = im + std::polar(200.0, M_PI * 2 * i++ / sz);
+			map_[p->data] = im + std::polar(200.0, M_PI * 2.0 * i++ / sz);
 			for(E* q = p->edge; q; q = q->edge) 
 				arrows_.push_back(std::make_tuple(p->data, q->vertex->data, q->weight, q->v));
 		}

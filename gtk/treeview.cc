@@ -3,7 +3,7 @@
 #include"drawable.h"
 #include"treeview.h"
 #include"graphv.h"
-#include"tgraph.h"
+#include"src/parsetree.h"
 using namespace std;
 
 GraphV<char>* pv;

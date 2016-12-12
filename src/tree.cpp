@@ -1,4 +1,4 @@
-#include"tgraph.h"
+#include"parsetree.h"
 #include<iostream>
 #include<string>
 #include<cstring>
@@ -28,4 +28,5 @@ int main()
 	cout << endl;
 	tr.back();
 	cout << endl;
+	cout << tr.calc() << endl;
 }

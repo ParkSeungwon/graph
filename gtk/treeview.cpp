@@ -1,7 +1,7 @@
 #include<gtkmm.h>
 #include"treeview.h"
 #include"graphv.h"
-#include"src/tgraph.h"
+#include"src/parsetree.h"
 using namespace std;
 
 extern GraphV<char>* pv;
