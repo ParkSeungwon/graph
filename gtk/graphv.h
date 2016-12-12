@@ -41,7 +41,7 @@ public:
 		return drawables_.end();
 	}
 	void treeview(int height) {
-		width_ = pow(2, height) * CIRCLE_SIZE;
+		width_ = pow(2, height+1) * CIRCLE_SIZE;
 		treeview(root, width_ / 2, 100);
 		generate_graph();
 	}
@@ -81,7 +81,8 @@ private:
 			drawables_.push_back(std::make_shared<Arrow>(arrow));
 		}
 		for(auto& a : map_) {
-			Ellipse el{a.second - Point{15, 15}, a.second + Point{15, 15}};
+			int sz = CIRCLE_SIZE / 2;
+			Ellipse el{a.second - Point{sz, sz}, a.second + Point{sz, sz}};
 			el.txt(a.first->data);
 			drawables_.push_back(std::make_shared<Ellipse>(el));
 		}

@@ -6,7 +6,7 @@
 #include"src/parsetree.h"
 using namespace std;
 
-GraphV<char>* pv;
+GraphV<int>* pv;
 bool SketchBook::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) 
 {
 	for(auto& a : *pv) (*a)(cr);
