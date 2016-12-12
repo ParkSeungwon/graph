@@ -15,6 +15,7 @@ public:
 		for(V* p = gr; p; p = p->vertex) sz++;
 		for(V* p = gr; p; p = p->vertex) {
 			map_[p->data] = im + std::polar(200.0, M_PI * 2.0 * i++ / sz);
+			std::cout << "coordination is " << map_[p->data] << std::endl;
 			for(E* q = p->edge; q; q = q->edge) 
 				arrows_.push_back(std::make_tuple(p->data, q->vertex->data, q->weight, q->v));
 		}

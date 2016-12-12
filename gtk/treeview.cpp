@@ -15,7 +15,8 @@ int main(int c, char** av)
 	graph.depth();
 	graph.greedy();
 
-	ParseTree<char> pt{"817+*37+5*+2-"};
+	//ParseTree pt{"817+*37+5*+2-"};
+	ParseTree pt{983};
 	GraphV<char> gv{pt.data()};
 
 	pv = &gv;
