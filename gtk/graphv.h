@@ -18,7 +18,7 @@ public:
 		for(V* p = gr; p; p = p->vertex) {
 			map_[p] = im + std::polar(200.0, M_PI * 2.0 * i++ / sz);
 			std::cout << "coordination is " << map_[p] << std::endl;
-			for(E* q = p->edge; q; q = q->edge) 
+			for(E* q = p->edge; q; q = q->edge) if(q->vertex) //if is for treeview
 				arrows_.push_back(std::make_tuple(p, q->vertex, q->weight, q->v));
 		}
 		generate_graph();
@@ -41,7 +41,7 @@ public:
 		return drawables_.end();
 	}
 	void treeview(int height) {
-		width_ = pow(2, height+1) * CIRCLE_SIZE;
+		width_ = pow(2, height) * CIRCLE_SIZE;
 		treeview(root, width_ / 2, 100);
 		generate_graph();
 	}
@@ -55,21 +55,15 @@ protected:
 
 private:
 	int width_;
-	void treeview(V* p, int x, int y) {
+	int treeview(V* p, int x, int y) {
 		static int h = 0;//height level
+		if(!p) return h--;
 		map_[p] = {x, y};
-		if(p->edge) {
-			h++;
-			if(!p->edge->edge) { //if 1 node, consider value is bigger or not
-				treeview(p->edge->vertex, x - width_ / pow(2, h + 1) * (
-							p->edge->vertex->data < p->data ? 1 : -1), y + 100);
-			} else {//if 2 node, just show as it is
-				treeview(p->edge->vertex, x - width_ / pow(2, h + 1), y + 100);
-				h++;
-				treeview(p->edge->edge->vertex, x + width_ / pow(2, h + 1), y + 100);
-			}
-		}
-		h--;
+		h++;
+		treeview(p->edge->vertex, x - width_ / pow(2, h + 1), y + 100);
+		h++;
+		treeview(p->edge->edge->vertex, x + width_ / pow(2, h + 1), y + 100);
+		return h--;
 	}
 	void generate_graph() {
 		for(auto& a : arrows_) {
