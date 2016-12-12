@@ -22,13 +22,10 @@ int main(int c, char** av)
 
 
 	Tree<int> t;
-	srand(time(0));
-	for(int i=0; i<10; i++) t.insert(rand() % 100);
-	t.insert(3);
-	t.insert(2);
-	t.insert(5);
-	t.insert(6);
-	t.insert(1);
+	vector<int> v;
+	for(int i=0; i<30; i++) v.push_back(i);
+	shuffle(v.begin(), v.end(), random_device());
+	for(auto& a : v) t.insert(a);
 	t.view();
 	GraphV<int> gv{t.data()};
 	pv = &gv;

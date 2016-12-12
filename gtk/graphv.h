@@ -56,12 +56,15 @@ protected:
 private:
 	int width_;
 	void treeview(V* p, int x, int y) {
-		static int h = 0;
+		static int h = 0;//height level
 		map_[p] = {x, y};
 		if(p->edge) {
 			h++;
-			treeview(p->edge->vertex, x - width_ /pow(2, h + 1), y + 100);
-			if(p->edge->edge) {
+			if(!p->edge->edge) { //if 1 node, consider value is bigger or not
+				treeview(p->edge->vertex, x - width_ / pow(2, h + 1) * (
+							p->edge->vertex->data < p->data ? 1 : -1), y + 100);
+			} else {//if 2 node, just show as it is
+				treeview(p->edge->vertex, x - width_ / pow(2, h + 1), y + 100);
 				h++;
 				treeview(p->edge->edge->vertex, x + width_ / pow(2, h + 1), y + 100);
 			}

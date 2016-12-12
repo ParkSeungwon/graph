@@ -31,7 +31,7 @@ Win::Win()
 
 SketchBook::SketchBook()
 {
-	set_size_request(1000, 1000);
+	set_size_request(5000, 5000);
 	add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK);
 }
 

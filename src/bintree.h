@@ -44,7 +44,15 @@ private:
 		else if(!p->edge->edge) {//1 son
 			if(p->data < p->edge->vertex->data == p->data < n->data)
 				insert(p->edge->vertex, n);
-			else p->edge = Graph<T>::insert(p->edge, n, 0);
+			else {
+				p->edge = Graph<T>::insert(p->edge, n, 0);
+				if(p->edge->vertex->data > p->data) {
+					auto tmp = p->edge;
+					p->edge = p->edge->edge;
+					p->edge->edge = tmp;
+					p->edge->edge->edge = nullptr;
+				}
+			}
 		} else {//2son
 			if(p->data < p->edge->vertex->data == p->data < n->data)
 				insert(p->edge->vertex, n);
