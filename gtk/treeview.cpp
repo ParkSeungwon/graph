@@ -26,8 +26,6 @@ int main(int c, char** av)
 	for(int i=0; i<30; i++) v.push_back(i);
 	shuffle(v.begin(), v.end(), random_device());
 	for(auto& a : v) t.insert(a);
-	t.view();
-	t.connect();
 	GraphV<int> gv{t.data()};
 	gv.treeview(t.height());
 	pv = &gv;

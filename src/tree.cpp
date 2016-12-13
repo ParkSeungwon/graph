@@ -14,6 +14,5 @@ int main(int c, char** v)
 	t.insert(4);
 	t.insert(5);
 	t.insert(6);
-	t.connect();
 	t.view();
 }

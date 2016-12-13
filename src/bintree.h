@@ -17,6 +17,17 @@ public:
 	int height() {
 		return height(Graph<T>::root);
 	}
+	Vertex<T>* data() {
+		connect();
+		return Graph<T>::root;
+	}
+	void view() {
+		connect();
+		Graph<T>::view();
+	}
+		
+protected:
+	std::vector<Vertex<T>*> vts;
 	void connect() {
 		vts.clear();
 		connect(Graph<T>::root);
@@ -26,9 +37,8 @@ public:
 			p = p->vertex;
 		}
 	}
-		
-protected:
-	std::vector<Vertex<T>*> vts;
+
+private:
 	void connect(Vertex<T>* p) {//connect vertexes for graph compatibility
 		if(!p) return;
 		vts.push_back(p);
@@ -37,8 +47,6 @@ protected:
 			connect(p->edge->edge->vertex);
 		}
 	}
-
-private:
 	int height(Vertex<T>* tree) {
 		if(!tree) return 0;
 		return 1 + std::max(height(tree->edge->vertex), height(tree->edge->edge->vertex));
