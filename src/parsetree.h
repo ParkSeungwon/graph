@@ -23,22 +23,25 @@ public:
 		return calc(Graph<char>::root);
 	}
 	
-	void forward() {
+	std::string forward() {
+		expr.clear();
 		forward(Graph<char>::root);
+		return std::string(expr.begin(), expr.end());
 	}
 	
-	void middle() {
+	std::string middle() {
+		expr.clear();
 		middle(Graph<char>::root);
+		return std::string(expr.begin(), expr.end());
 	}
 	
-	void back() {
+	std::string back() {
+		expr.clear();
 		back(Graph<char>::root);
+		return std::string(expr.begin(), expr.end());
 	}
 
-private:
-	std::deque<char> expr;
-	
-	std::string compose(int n) {
+	static std::string compose(int n) {
 		if(n < 0) return compose(-n) + "12-*";
 		else {
 			if(n < 10) return std::to_string(n);
@@ -48,6 +51,9 @@ private:
 			return compose(share) + "9*" + r + '+';
 		}
 	}
+
+private:
+	std::deque<char> expr;
 	
 	int calc(Vertex<char>* p) {
 		switch(p->data) {
@@ -60,7 +66,7 @@ private:
 	}			
 	
 	void forward(Vertex<char>* p) {
-		std::cout << p->data;
+		expr.push_back(p->data);
 		if(p->edge) {
 			forward(p->edge->vertex);
 			forward(p->edge->edge->vertex);
@@ -69,7 +75,7 @@ private:
 	
 	void middle(Vertex<char>* p) {
 		if(p->edge) middle(p->edge->vertex);
-		std::cout << p->data;
+		expr.push_back(p->data);
 		if(p->edge) middle(p->edge->edge->vertex);
 	}
 	
@@ -78,7 +84,7 @@ private:
 			back(p->edge->vertex);
 			back(p->edge->edge->vertex);
 		}
-		std::cout << p->data;
+		expr.push_back(p->data);
 	}
 	
 	Vertex<char>* insert(std::string s) {

@@ -63,8 +63,13 @@ private:
 	Vertex<T>* find(Vertex<T>* p, T n) {
 		if(!p) return nullptr;
 		if(p->data == n) return p;//all below is <else if> due to return
-		if(n< p->data) return find(p->edge->vertex, n);
-		else return find(p->edge->edge->vertex, n);
+		if(n < p->data) {
+			p->edge->v = 1;
+			return find(p->edge->vertex, n);
+		} else {
+			p->edge->edge->v = 1;
+			return find(p->edge->edge->vertex, n);
+		}
 	}
 
 	Vertex<T>* insert(Vertex<T>* p, Vertex<T>* n) {//insert by comparing value
