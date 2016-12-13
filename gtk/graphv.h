@@ -63,10 +63,13 @@ private:
 		static int h = 0;//height level
 		if(!p) return h--;
 		map_[p] = {x, y};
-		h++;
-		treeview(p->edge->vertex, x - width_ / pow(2, h + 1), y + 100);
-		h++;
-		treeview(p->edge->edge->vertex, x + width_ / pow(2, h + 1), y + 100);
+		if(p->edge) {
+			h++;
+			treeview(p->edge->vertex, x - width_ / pow(2, h + 1), y + 100);
+			h++;
+			if(p->edge->edge) 
+				treeview(p->edge->edge->vertex, x + width_ / pow(2, h + 1), y + 100);
+		}
 		return h--;
 	}
 	

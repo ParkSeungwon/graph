@@ -56,6 +56,7 @@ private:
 
 	int height(Vertex<T>* tree) {
 		if(!tree) return 0;
+		if(!tree->edge) return 1;
 		return 1 + std::max(height(tree->edge->vertex), height(tree->edge->edge->vertex));
 	}
 
@@ -71,6 +72,7 @@ private:
 		if(n->data < p->data) p->edge->vertex = insert(p->edge->vertex, n);
 		else p->edge->edge->vertex = insert(p->edge->edge->vertex, n);
 
+		//avl tree rotate
 		int ll=0, rr=0, lr=0, rl=0, r=0, l=0;
 		if(p->edge->vertex) {
 			ll = height(p->edge->vertex->edge->vertex);
@@ -82,7 +84,7 @@ private:
 			rl = height(p->edge->edge->vertex->edge->vertex);
 			r = 1 + std::max(rl, rr);
 		}
-		if(abs(l-r) > 1) {//avl tree rotate
+		if(abs(l-r) > 1) {
 			int ar[] = {ll, lr, rr, rl};
 			int biggest = *std::max_element(ar, ar+4);
 			if(biggest == ll) return rotate_LL(p);
