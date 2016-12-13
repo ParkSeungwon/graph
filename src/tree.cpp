@@ -14,5 +14,6 @@ int main(int c, char** v)
 	t.insert(4);
 	t.insert(5);
 	t.insert(6);
+	cout << "find 5 " << t.find(5)->data << endl;
 	t.view();
 }

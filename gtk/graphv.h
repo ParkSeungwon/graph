@@ -23,6 +23,7 @@ public:
 		}
 		generate_graph();
 	}
+
 	void drag(Point f, Point t) {
 		drawables_.clear();
 		for(auto& a : map_) {
@@ -37,9 +38,11 @@ public:
 	std::vector<std::shared_ptr<Drawable>>::const_iterator begin() const {
 		return drawables_.begin();
 	}
+	
 	std::vector<std::shared_ptr<Drawable>>::const_iterator end() const {
 		return drawables_.end();
 	}
+	
 	void treeview(int height) {
 		width_ = pow(2, height) * CIRCLE_SIZE;
 		treeview(root, width_ / 2, 100);
@@ -55,6 +58,7 @@ protected:
 
 private:
 	int width_;
+	
 	int treeview(V* p, int x, int y) {
 		static int h = 0;//height level
 		if(!p) return h--;
@@ -65,6 +69,7 @@ private:
 		treeview(p->edge->edge->vertex, x + width_ / pow(2, h + 1), y + 100);
 		return h--;
 	}
+	
 	void generate_graph() {
 		for(auto& a : arrows_) {
 			auto d1 = map_[std::get<0>(a)];

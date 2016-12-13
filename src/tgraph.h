@@ -7,9 +7,9 @@
 #include<vector>
 #include<stack>
 #define min(a, b) a < b ? a : b
-extern std::ostream& operator<<(std::ostream& o, const std::array<int, 5>& r);
 
 template <typename T> class Vertex;
+
 template<typename T> class Edge
 {
 public:
@@ -35,9 +35,11 @@ public:
 		gfree(root);
 		root = nullptr;
 	}
+
 	void insert_vertex(T n) {
 		root = insert(root, n);
 	}
+	
 	void insert_edge(T a, T b, int weight) {
 		Vertex<T> *va, *vb;
 		for(Vertex<T>* p = root; p; p = p->vertex) {
@@ -46,6 +48,7 @@ public:
 		}
 		va->edge = insert(va->edge, vb, weight);
 	}
+	
 	void read_file(std::string file) {
 		T n1, n2;
 		std::ifstream f(file);
@@ -67,14 +70,17 @@ public:
 			std::cout << std::endl;
 		}
 	}
+	
 	Vertex<T>* data() {
 		return root;
 	}
+	
 	void prim() {
 		clearv();
 		root->v = 1;//below for syntax is just to call n-1 times
 		for(Vertex<T>* q = root->vertex; q; q = q->vertex) shortest(root);
 	}
+	
 	void topology() {//check v to entry and print data
 		clearv();
 		for(Vertex<T>* q; q = find_entry(root);) {
@@ -100,6 +106,7 @@ public:
 							A[i->data][k->data] + A[k->data][j->data]);
 		return A[a][b];
 	}
+	
 	int dijkstra(T a, T b) {
 		clearv();
 		distance.clear();
@@ -111,16 +118,19 @@ public:
 		for(auto& a : waypoint[pb]) a->v = 1;
 		return distance[pb];
 	}
+	
 	void depth() {
 		clearv();
 		depth(root);
 	}
+	
 	void breadth() {
 		clearv();
 		std::cout << root->data << ' ';
 		root->v = 1;
 		breadth(root);
 	}
+	
 	void bridge() {
 		clearv();
 		std::vector<Edge<T>*> v;
@@ -129,6 +139,7 @@ public:
 				if(is_bridge(p, e)) v.push_back(e);
 		for(auto& a : v) a->v = 1;
 	}
+	
 	void greedy() {
 		clearv();
 		union_set.clear();
@@ -142,6 +153,7 @@ public:
 
 protected:
 	Vertex<T>* root = nullptr;
+	
 	Vertex<T>* insert(Vertex<T>* p, T n) {//recursively insert a value 'n'
 		if(!p) {
 			p = new Vertex<T>;
@@ -151,6 +163,7 @@ protected:
 		p->vertex = insert(p->vertex, n);
 		return p;
 	}
+	
 	Edge<T>* insert(Edge<T>* e, Vertex<T>* v, int weight) {
 		if(!e) {//recursively insert edge in at the end of e pointint to v
 			e = new Edge<T>;
@@ -161,6 +174,7 @@ protected:
 		e->edge = insert(e->edge, v, weight);
 		return e;
 	}
+	
 	bool is_bridge(Vertex<T>* p, Edge<T>* eg) {//check all the bridges in the graph
 		eg->v = 1;
 		for(Edge<T>* e = eg->vertex->edge; e; e = e->edge) 
@@ -175,6 +189,7 @@ private:
 	std::map<Vertex<T>*, int> distance;
 	std::map<Vertex<T>*, std::vector<Edge<T>*>> waypoint;
 	std::map<Vertex<T>*, int> union_set;
+	
 	Vertex<T>* find_closest() {//dijkstra
 		int min = INT_MAX / 2;
 		Vertex<T>* p = nullptr;
@@ -194,9 +209,11 @@ private:
 		//	' ' << a.first->v << std::endl;
 		return p;
 	}
+	
 	Vertex<T>* find(Vertex<T>* p, T n) {//find value 'n' and return the address
 		for(Vertex<T>* v = p; v; v = v->vertex) if(v->data == n) return v;
 	}
+	
 	void depth(Vertex<T>* p) {//depth search the graph
 		assert(p);
 		p->v = 1;
@@ -208,6 +225,7 @@ private:
 			}
 		}
 	}
+	
 	void breadth(Vertex<T>* p) {
 		std::vector<Vertex<T>*> q;
 		for(Edge<T>* e = p->edge; e; e = e->edge) {
@@ -220,23 +238,27 @@ private:
 		}
 		for(auto& a : q) breadth(a);
 	}
+	
 	void efree(Edge<T>* e) {
 		if(!e) return;
 		efree(e->edge);
 		delete e;
 	}
+	
 	void gfree(Vertex<T>* p) {
 		if(!p) return;
 		efree(p->edge);
 		gfree(p->vertex);
 		delete p;
 	}
+	
 	void clearv() {
 		for(Vertex<T>* p = root; p; p = p->vertex) {
 			p->v = 0;
 			for(Edge<T>* e = p->edge; e; e = e->edge) e->v = 0;
 		}
 	}
+	
 	void shortest(Vertex<T>* p) {//prim
 		Edge<T>* me;
 		int min = INT_MAX;
@@ -254,6 +276,7 @@ private:
 		me->v = 1;
 		me->vertex->v = 1;
 	}
+	
 	Vertex<T>* find_entry(Vertex<T>* p) {//return NULL when no more,topology
 		for(Vertex<T>* q = p; q; q = q->vertex) {
 			if(q->v != 1) {//1 or 2 or 0
@@ -269,10 +292,12 @@ private:
 		}
 		return r;
 	}
+	
 	void unite(Vertex<T>* a, Vertex<T>* b) {//greed
 		for(auto& u : union_set) 
 			if(u.second == union_set[a]) u.second = union_set[b];
 	}
+	
 	Edge<T>* find_greed() {
 		int min = INT_MAX / 2;
 		Edge<T>* eg;

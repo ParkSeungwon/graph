@@ -1,5 +1,6 @@
 #pragma once
 #include"bintree.h"
+
 class ParseTree : public Tree<char>
 {
 public:
@@ -15,22 +16,28 @@ public:
 		}
 		Tree<char>::connect();
 	}
+
 	ParseTree(int n) : ParseTree(compose(n)) {}
+	
 	int calc() {
 		return calc(Graph<char>::root);
 	}
+	
 	void forward() {
 		forward(Graph<char>::root);
 	}
+	
 	void middle() {
 		middle(Graph<char>::root);
 	}
+	
 	void back() {
 		back(Graph<char>::root);
 	}
 
 private:
 	std::deque<char> expr;
+	
 	std::string compose(int n) {
 		if(n < 0) return compose(-n) + "12-*";
 		else {
@@ -41,6 +48,7 @@ private:
 			return compose(share) + "9*" + r + '+';
 		}
 	}
+	
 	int calc(Vertex<char>* p) {
 		switch(p->data) {
 			case '+': return calc(p->edge->vertex) + calc(p->edge->edge->vertex);
@@ -50,6 +58,7 @@ private:
 			default: return p->data - '0';
 		}
 	}			
+	
 	void forward(Vertex<char>* p) {
 		std::cout << p->data;
 		if(p->edge) {
@@ -57,11 +66,13 @@ private:
 			forward(p->edge->edge->vertex);
 		}
 	}
+	
 	void middle(Vertex<char>* p) {
 		if(p->edge) middle(p->edge->vertex);
 		std::cout << p->data;
 		if(p->edge) middle(p->edge->edge->vertex);
 	}
+	
 	void back(Vertex<char>* p) {
 		if(p->edge) {
 			back(p->edge->vertex);
@@ -69,6 +80,7 @@ private:
 		}
 		std::cout << p->data;
 	}
+	
 	Vertex<char>* insert(std::string s) {
 		int token = div_point(s);
 		Vertex<char>* p = new Vertex<char>;
@@ -97,10 +109,12 @@ private:
 		}
 		return token;
 	}
+	
 	bool is_operator(char c) {
 		for(auto& a : {'+', '-', '*', '/'}) if(c == a) return true;
 		return false;
 	}
+	
 	Vertex<char>* finsert() {
 		Vertex<char>* p = new Vertex<char>;
 		p->data = expr.front();
@@ -111,6 +125,7 @@ private:
 		}
 		return p;
 	}
+	
 	Vertex<char>* binsert() {
 		std::stack<Vertex<char>*> st;
 		while(!expr.empty()) {

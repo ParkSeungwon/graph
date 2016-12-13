@@ -23,7 +23,7 @@ int main(int c, char** av)
 
 	Tree<int> t;
 	vector<int> v;
-	for(int i=0; i<30; i++) v.push_back(i);
+	for(int i=0; i<64; i++) v.push_back(i);
 	shuffle(v.begin(), v.end(), random_device());
 	for(auto& a : v) t.insert(a);
 	GraphV<int> gv{t.data()};
