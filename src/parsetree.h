@@ -13,12 +13,7 @@ public:
 			case 0: Graph<char>::root = insert(expression); break;
 			case 1: Graph<char>::root = binsert();
 		}
-		connect(Graph<char>::root);
-		Vertex<char>* p = Graph<char>::root;
-		for(int i=1; i<vts.size(); i++) {
-			p->vertex = vts[i];
-			p = p->vertex;
-		}
+		Tree<char>::connect();
 	}
 	ParseTree(int n) : ParseTree(compose(n)) {}
 	int calc() {
@@ -36,7 +31,6 @@ public:
 
 private:
 	std::deque<char> expr;
-	std::vector<Vertex<char>*> vts;
 	std::string compose(int n) {
 		if(n < 0) return compose(-n) + "12-*";
 		else {
@@ -74,13 +68,6 @@ private:
 			back(p->edge->edge->vertex);
 		}
 		std::cout << p->data;
-	}
-	void connect(Vertex<char>* p) {//connect vertexes for graph compatibility
-		vts.push_back(p);
-		if(p->edge) {
-			connect(p->edge->vertex);
-			connect(p->edge->edge->vertex);
-		}
 	}
 	Vertex<char>* insert(std::string s) {
 		int token = div_point(s);

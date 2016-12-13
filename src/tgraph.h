@@ -63,7 +63,7 @@ public:
 		for(Vertex<T>* p = root; p; p = p->vertex) {
 			std::cout << p->data << " : ";
 			for(Edge<T>* e = p->edge; e; e = e->edge) 
-				std::cout << '<' << p->data << ',' << e->vertex->data << '>' << e->weight << ' '; 
+				if(e->vertex) std::cout << '<' << p->data << ',' << e->vertex->data << '>' << e->weight << ' '; 
 			std::cout << std::endl;
 		}
 	}

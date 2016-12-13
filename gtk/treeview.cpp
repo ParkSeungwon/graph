@@ -27,9 +27,10 @@ int main(int c, char** av)
 	shuffle(v.begin(), v.end(), random_device());
 	for(auto& a : v) t.insert(a);
 	t.view();
+	t.connect();
 	GraphV<int> gv{t.data()};
-	pv = &gv;
 	gv.treeview(t.height());
+	pv = &gv;
 	
 	auto app = Gtk::Application::create(c, av);
 	Win win;
