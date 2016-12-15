@@ -12,22 +12,19 @@ int main(int c, char** av)
 	graph.prim();
 	graph.bridge();
 	cout << graph.dijkstra("daejun", "kangwon") << endl;;
+	GraphV<string> gv3{graph.data()};
 	graph.depth();
-//	GraphV<string> gv{graph.data()};
 	graph.greedy();
-//	gv.treeview(pt.height());
-//	pv = &gv;
+//	pv = &gv3;
 
-	string s = ParseTree::compose(45);
-	ParseTree pt{"817+*"+s+"-37+5*+2-"};
+	string s45 = ParseTree::compose(45);
+	string s126 = ParseTree::compose(126);
+	ParseTree pt{"817+*"+s45+"-37+5*+2-"+s126+'+'};
 	cout << pt.forward() << endl;
-	assert(pt.calc() == 67);
+	//assert(pt.calc() == 67);
 	GraphV<char> gv{pt.data()};
 	gv.treeview(pt.height());
-	pv = &gv;
-
-	//cout << "height is " << pt.height() << endl;
-
+//	pv = &gv;
 
 	Tree<char> t;
 	vector<char> v;
@@ -35,9 +32,9 @@ int main(int c, char** av)
 	shuffle(v.begin(), v.end(), random_device());
 	for(auto& a : v) t.insert(a);
 	t.find('Q');
-//	GraphV<char> gv{t.data()};
-//	gv.treeview(t.height());
-//	pv = &gv;
+	GraphV<char> gv2{t.data()};
+	gv2.treeview(t.height());
+	pv = &gv2;
 	
 	auto app = Gtk::Application::create(c, av);
 	Win win;

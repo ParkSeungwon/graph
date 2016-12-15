@@ -3,7 +3,7 @@
 #include<complex>
 #include"drawable.h"
 #include"src/parsetree.h"
-#define CIRCLE_SIZE 30
+#define CIRCLE_SIZE 30.0
 //V Vertex should have vertex, edge, data, v
 //E Edge should have vertex, edge, weight, v
 //D Data can be anything
@@ -45,7 +45,7 @@ public:
 	
 	void treeview(int height) {
 		width_ = pow(2, height) * CIRCLE_SIZE;
-		treeview(root, width_ / 2, 100);
+		treeview(root, width_ / 2, 100, 1);
 		generate_graph();
 	}
 	
@@ -59,25 +59,21 @@ protected:
 private:
 	int width_;
 	
-	int treeview(V* p, int x, int y) {
-		static int h = 0;//height level
-		if(!p) return h--;
+	void treeview(V* p, int x, int y, int h) {
+		if(!p) return;
 		map_[p] = {x, y};
 		if(p->edge) {
-			h++;
-			treeview(p->edge->vertex, x - width_ / pow(2, h + 1), y + 100);
-			h++;
-			if(p->edge->edge) 
-				treeview(p->edge->edge->vertex, x + width_ / pow(2, h + 1), y + 100);
+			treeview(p->edge->vertex, x - width_ / pow(2, h + 1), y+100, h + 1);
+			if(p->edge->edge) treeview(p->edge->edge->vertex, 
+					x + width_ / pow(2, h + 1), y + 100, h + 1);
 		}
-		return h--;
 	}
 	
 	void generate_graph() {
 		for(auto& a : arrows_) {
 			auto d1 = map_[std::get<0>(a)];
 			auto d2 = map_[std::get<1>(a)];
-			auto d3 = 30.0 * (d2 - d1) / abs(d2 - d1);
+			auto d3 = CIRCLE_SIZE * (d2 - d1) / abs(d2 - d1);
 			d1 += d3;
 			d2 -= d3;
 			Arrow arrow{d1, d2, 1};
