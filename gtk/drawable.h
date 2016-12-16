@@ -20,6 +20,7 @@ class Drawable
 {
 public:
 	virtual void operator()(const Cairo::RefPtr<Cairo::Context>& cr);
+	virtual void operator()();
 	void line_width(int w);
 	void set_rgb(double r, double g, double b);
 	template <typename T> void txt(T s) { 
@@ -44,6 +45,7 @@ class Line : public Drawable
 public:
 	Line(std::initializer_list<Point> li);
 	virtual void operator()(const Cairo::RefPtr<Cairo::Context>& cr);
+	virtual void operator()();
 protected:
 	Line();
 	std::vector<Point> points_;
@@ -66,10 +68,16 @@ public:
 protected:
 };
 
+class GLUquadricObj;
 class Ellipse : public Drawable
 {
 public:
 	Ellipse(Point s, Point e);
 	virtual void operator()(const Cairo::RefPtr<Cairo::Context>& cr);
+	virtual void operator()();
+	virtual ~Ellipse();
+
+protected:
+	GLUquadricObj* obj;
 	
 };

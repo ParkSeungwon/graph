@@ -1,6 +1,7 @@
 all : 
 	make -C gtk/
 	make -C src/
+	make -C gl/
 	make -C obj/
 
 PHONY : clean

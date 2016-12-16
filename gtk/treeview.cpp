@@ -1,3 +1,4 @@
+#define NDEBUG
 #include<gtkmm.h>
 #include"treeview.h"
 #include"graphv.h"
@@ -21,7 +22,7 @@ int main(int c, char** av)
 	string s126 = ParseTree::compose(126);
 	ParseTree pt{"817+*"+s45+"-37+5*+2-"+s126+'+'};
 	cout << pt.forward() << endl;
-	//assert(pt.calc() == 67);
+	assert(pt.calc() == 67);
 	GraphV<char> gv{pt.data()};
 	gv.treeview(pt.height());
 //	pv = &gv;
