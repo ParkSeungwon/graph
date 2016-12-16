@@ -68,7 +68,7 @@ public:
 protected:
 };
 
-class GLUquadricObj;
+class GLUquadric;
 class Ellipse : public Drawable
 {
 public:
@@ -78,6 +78,6 @@ public:
 	virtual ~Ellipse();
 
 protected:
-	GLUquadricObj* obj;
+	GLUquadric* obj;
 	
 };

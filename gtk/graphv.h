@@ -44,6 +44,7 @@ public:
 	}
 	
 	void treeview(int height) {
+		drawables_.clear();
 		width_ = pow(2, height) * CIRCLE_SIZE;
 		treeview(root, width_ / 2, 100, 1);
 		generate_graph();

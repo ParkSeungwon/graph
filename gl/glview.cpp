@@ -2,14 +2,29 @@
 #include"gtk/graphv.h"
 using namespace std;
 
-int main(int c, char** v)
+void render();
+void init();
+extern GraphV<char>* grv;
+
+int main(int ac, char** av)
 {
-	glutInit(&c, v);
-	glutInitWindowSize(2000, 1000);
+	glutInit(&ac, av);
+	glutInitWindowSize(1000, 700);
 	glutInitWindowPosition(0, 0);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutCreateWindow("TreeView");
+	init();
 
-	glutDisplayFunc();
+	Tree<char> t;
+	vector<char> v;
+	for(char i=60; i<120; i++) v.push_back(i);
+	shuffle(v.begin(), v.end(), random_device());
+	for(auto& a : v) t.insert(a);
+	t.find('Q');
+	GraphV<char> gv2{t.data()};
+	gv2.treeview(t.height());
+	grv = &gv2;
+
+	glutDisplayFunc(render);
 	glutMainLoop();
 }
