@@ -1,3 +1,4 @@
+#define NDEBUG
 #include<glut.h>
 #include"gtk/graphv.h"
 using namespace std;
@@ -23,7 +24,16 @@ int main(int ac, char** av)
 	t.find('Q');
 	GraphV<char> gv2{t.data()};
 	gv2.treeview(t.height());
-	grv = &gv2;
+//	grv = &gv2;
+
+	string s45 = ParseTree::compose(45);
+	string s126 = ParseTree::compose(126);
+	ParseTree pt{"817+*"+s45+"-37+5*+2-"+s126+'+'};
+	cout << pt.forward() << endl;
+	assert(pt.calc() == 67);
+	GraphV<char> gv{pt.data()};
+	gv.treeview(pt.height());
+	grv = &gv;
 
 	glutDisplayFunc(render);
 	glutMainLoop();
