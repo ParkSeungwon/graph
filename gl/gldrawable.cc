@@ -7,7 +7,7 @@ GraphV<char>* grv;
 void Line::operator()() 
 {
 	//Drawable::operator()();
-	glColor3f(r_, g_, b_);
+	glColor4f(r_, g_, b_, 0.5);
 	glLineWidth(line_width_);
 	glBegin(GL_LINE_STRIP);
 	for(auto& a : points_) glVertex3f(a.x(), -a.y(), 0);
@@ -19,7 +19,7 @@ void Drawable::operator()()
 	glColor3f(r_, g_, b_);
 	auto a = (start_ + end_) / 2.0;
 	for(int i=0; i<txt_.size(); i++) {
-		glRasterPos2f(a.real() - 12 + i * 10, -a.imag() - 12);
+		glRasterPos2f(a.real() - 12 + i * 30, -a.imag() - 12);
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, txt_[i]);
 	}
 }
@@ -42,15 +42,6 @@ void Ellipse::operator()()
 		glVertex3f(p.x(), -p.y(), 0);
 	}
 	glEnd();
-//	glTranslatef(a.real(), a.imag(), 0);
-//	glutWireSphere(1.5, 50, 50);
-//	glLoadIdentity();
-//	obj = gluNewQuadric();
-}
-
-Ellipse::~Ellipse() 
-{
-	//if(obj) gluDeleteQuadric(obj);
 }
 
 void render()
@@ -62,6 +53,8 @@ void render()
 void init()
 {
 	glClearColor(1,1,1,1);
+	//glEnable(GL_LINE_SMOOTH);
 	glMatrixMode(GL_PROJECTION);
 	glOrtho(0, 4000, -1000, 0, -1, 1);
+	glMatrixMode(GL_MODELVIEW);
 }

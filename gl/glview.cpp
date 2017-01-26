@@ -9,13 +9,6 @@ extern GraphV<char>* grv;
 
 int main(int ac, char** av)
 {
-	glutInit(&ac, av);
-	glutInitWindowSize(1000, 700);
-	glutInitWindowPosition(0, 0);
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-	glutCreateWindow("TreeView");
-	init();
-
 	Tree<char> t;
 	vector<char> v;
 	for(char i=60; i<120; i++) v.push_back(i);
@@ -24,7 +17,7 @@ int main(int ac, char** av)
 	t.find('Q');
 	GraphV<char> gv2{t.data()};
 	gv2.treeview(t.height());
-//	grv = &gv2;
+	grv = &gv2;
 
 	string s45 = ParseTree::compose(45);
 	string s126 = ParseTree::compose(126);
@@ -33,7 +26,24 @@ int main(int ac, char** av)
 	assert(pt.calc() == 67);
 	GraphV<char> gv{pt.data()};
 	gv.treeview(pt.height());
-	grv = &gv;
+//	grv = &gv;
+
+	Graph<string> graph;
+	graph.read_file("data.txt");
+	graph.prim();
+	graph.bridge();
+	cout << graph.dijkstra("daejun", "kangwon") << endl;;
+	GraphV<string> gv3{graph.data()};
+	graph.depth();
+	graph.greedy();
+//	grv = &gv3;
+
+	glutInit(&ac, av);
+	glutInitWindowSize(1000, 700);
+	glutInitWindowPosition(0, 0);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
+	glutCreateWindow("TreeView");
+	init();
 
 	glutDisplayFunc(render);
 	glutMainLoop();

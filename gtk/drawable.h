@@ -68,16 +68,10 @@ public:
 protected:
 };
 
-class GLUquadric;
 class Ellipse : public Drawable
 {
 public:
 	Ellipse(Point s, Point e);
 	virtual void operator()(const Cairo::RefPtr<Cairo::Context>& cr);
 	virtual void operator()();
-	virtual ~Ellipse();
-
-protected:
-	GLUquadric* obj;
-	
 };
