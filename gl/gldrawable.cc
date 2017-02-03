@@ -3,7 +3,7 @@
 #include"gtk/graphv.h"
 using namespace std;
 
-GraphV<char>* grv;
+GraphV<shared_ptr<Node>>* grv;
 void Line::operator()() 
 {
 	//Drawable::operator()();

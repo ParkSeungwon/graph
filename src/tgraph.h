@@ -6,8 +6,10 @@
 #include<map>
 #include<vector>
 #include<stack>
+#include"mindmap.h"
 #define min(a, b) a < b ? a : b
 
+std::ostream& operator<<(std::ostream& o, const std::shared_ptr<Node>& node);
 template <typename T> class Vertex;
 
 template<typename T> class Edge
