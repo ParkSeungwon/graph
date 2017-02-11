@@ -11,8 +11,8 @@ extern Graph<shared_ptr<Node>> graph;//declared in mindmap.cc
 
 int main(int ac, char** av)
 {
-	init(av[1]);//populate graph
-	GraphV<shared_ptr<Node>> gv2{graph.data()};//make view from data
+	MindMap md(av[1]);//populate graph
+	GraphV<shared_ptr<Node>> gv2{md.data()};//make view from data
 	grv = &gv2;//그림을 그리는 gldrawable에 있는 포인터에 할당한다.
 
 	glutInit(&ac, av);

@@ -1,4 +1,4 @@
-CFLAG = -g -c -std=c++11 -fmax-errors=1
+CFLAG = -g -c -std=c++14 -fmax-errors=1
 INCLUDE = -I../
 CC = g++
 OBJ = $(patsubst %.cc, ../obj/%.o, $(wildcard *.cc))

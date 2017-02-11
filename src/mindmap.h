@@ -18,3 +18,15 @@ std::ostream& operator<<(std::ostream& o, const std::shared_ptr<Node>& node);
 std::map<std::string, int> getdir(std::string dir);
 std::shared_ptr<Node> init(std::string dir);
 
+#include"tgraph.h"
+
+class MindMap : public Graph<std::shared_ptr<Node>>
+{
+public:
+	MindMap(std::string s);
+
+private:
+	std::shared_ptr<Node> init(std::string s);
+};
+
+
