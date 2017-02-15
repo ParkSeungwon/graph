@@ -15,17 +15,16 @@ MindMap::MindMap(string directory)
 
 Node MindMap::init(string dir)
 {
-	auto p = new Node;
-	p->name = dir;
-	insert_vertex(*p);
-
+	Node n;
+	n.name = dir;
 	auto fs = getdir(dir);
-	for(auto& a : fs) {
+	for(auto& a : fs) if(a.second == Node::File) n.files.insert(a.first);
+	insert_vertex(n);
+
+	for(auto& a : fs)
 		if(a.second == Node::Dir) 
-			insert_edge(*p, init(dir + '/' + a.first), 0);//recursive
-		else p->files.insert(a.first);
-	}
-	return *p;
+			insert_edge(n, init(dir + '/' + a.first), 0);//recursive
+	return n;
 }
 
 bool Node::operator==(const Node& r) 
@@ -36,7 +35,7 @@ bool Node::operator==(const Node& r)
 ostream& operator<<(ostream& o, const Node& node)
 {
 	o << node.name;
-	for(auto& a : node.files) o << a << ' ';
+	//for(auto& a : node.files) o << a << ' ';
 	return o;
 }
 
