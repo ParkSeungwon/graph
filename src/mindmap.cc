@@ -18,7 +18,7 @@ shared_ptr<Node> MindMap::init(string dir)
 	auto fs = getdir(dir);
 	for(auto& a : fs) {
 		if(a.second == Node::Dir) {
-			insert_edge(r, init(dir + '/' + a.first), 0);
+			insert_edge(r, init(dir + '/' + a.first), 0);//recursive
 		} else p->files.insert(a.first);
 	}
 	return r;

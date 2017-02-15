@@ -6,9 +6,9 @@
 
 struct Node
 {
-	int x,y;
+	int x,y;//realative position to parent
 	double r,g,b,a;
-	std::string name;
+	std::string name;//equals directory name
 	std::set<std::string> files;
 	enum Shape {Circle, Rect, Diamond, Ellipse} outline;
 	enum Line {Plant, Direct} line;

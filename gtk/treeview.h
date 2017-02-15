@@ -5,6 +5,7 @@ class SketchBook : public Gtk::DrawingArea
 {
 public:
 	SketchBook();
+	template <typename T> void draw(Graph<T> gr);
 
 protected:
 	bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr);

@@ -12,6 +12,10 @@ bool SketchBook::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 	for(auto& a : *pv) (*a)(cr);
 	return true;
 }
+
+template <typename T> void SketchBook::draw(Graph<T> gr)
+{
+	
 bool SketchBook::on_button_release_event(GdkEventButton* e)
 {
 	tx = e->x;
