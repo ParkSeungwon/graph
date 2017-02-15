@@ -3,7 +3,7 @@
 #include"mindmap.h"
 using namespace std;
 
-extern Graph<shared_ptr<Node>> graph;
+extern Graph<Node> graph;
 
 int main(int ac, char** av)
 {

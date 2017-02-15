@@ -14,7 +14,7 @@ bool SketchBook::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 }
 
 template <typename T> void SketchBook::draw(Graph<T> gr)
-{
+{}
 	
 bool SketchBook::on_button_release_event(GdkEventButton* e)
 {

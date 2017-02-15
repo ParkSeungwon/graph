@@ -6,13 +6,13 @@ using namespace std;
 
 void render();
 void init();
-extern GraphV<shared_ptr<Node>>* grv;//drawing module will use this
-extern Graph<shared_ptr<Node>> graph;//declared in mindmap.cc
+extern GraphV<Node>* grv;//drawing module will use this
+extern Graph<Node> graph;//declared in mindmap.cc
 
 int main(int ac, char** av)
 {
 	MindMap md(av[1]);//populate graph
-	GraphV<shared_ptr<Node>> gv2{md.data()};//make view from data
+	GraphV<Node> gv2{md.data()};//make view from data
 	grv = &gv2;//그림을 그리는 gldrawable에 있는 포인터에 할당한다.
 
 	glutInit(&ac, av);

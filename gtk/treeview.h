@@ -1,5 +1,7 @@
 #pragma once
 #include<vector>
+#include"tgraph.h"
+
 class Drawable;
 class SketchBook : public Gtk::DrawingArea
 {

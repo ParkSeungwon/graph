@@ -1,8 +1,8 @@
 #pragma once
 #include<string>
-#include<memory>
 #include<map>
 #include<set>
+#include"tgraph.h"
 
 struct Node
 {
@@ -13,20 +13,20 @@ struct Node
 	enum Shape {Circle, Rect, Diamond, Ellipse} outline;
 	enum Line {Plant, Direct} line;
 	enum Type {Dir = 4, File = 8} type;
+	bool operator==(const Node& r);
 };
-std::ostream& operator<<(std::ostream& o, const std::shared_ptr<Node>& node);
+std::ostream& operator<<(std::ostream& o, const Node& node);
 std::map<std::string, int> getdir(std::string dir);
-std::shared_ptr<Node> init(std::string dir);
+Node init(std::string dir);
 
-#include"tgraph.h"
-
-class MindMap : public Graph<std::shared_ptr<Node>>
+class Test : public Graph<int> {};
+class MindMap : public Graph<Node>
 {
 public:
 	MindMap(std::string s);
 
 private:
-	std::shared_ptr<Node> init(std::string s);
+	Node init(std::string s);
 };
 
 

@@ -6,10 +6,8 @@
 #include<map>
 #include<vector>
 #include<stack>
-#include"mindmap.h"
 #define min(a, b) a < b ? a : b
 
-std::ostream& operator<<(std::ostream& o, const std::shared_ptr<Node>& node);
 template <typename T> class Vertex;
 
 template<typename T> class Edge
@@ -73,8 +71,8 @@ public:
 		}
 	}
 	
-	Vertex<T>* data() {
-		return root;
+	Vertex<T>* data() {//this is to make compatible with C structure, 
+		return root;//return root pointer, GraphV will access it.
 	}
 	
 	void prim() {

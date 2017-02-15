@@ -2,8 +2,8 @@
 #include"gtk/drawable.h"
 #include"gtk/graphv.h"
 using namespace std;
-
-GraphV<shared_ptr<Node>>* grv;
+struct Node;
+GraphV<Node>* grv;
 void Line::operator()() 
 {
 	//Drawable::operator()();

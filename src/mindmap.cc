@@ -5,29 +5,38 @@
 #include"mindmap.h"
 using namespace std;
 
-Graph<shared_ptr<Node>> graph;
+Graph<Node> graph;
 struct Node;
 
-shared_ptr<Node> MindMap::init(string dir)
+MindMap::MindMap(string directory)
+{
+	init(directory);
+}
+
+Node MindMap::init(string dir)
 {
 	auto p = new Node;
 	p->name = dir;
-	auto r = shared_ptr<Node>(p);
-	insert_vertex(r);
+	insert_vertex(*p);
 
 	auto fs = getdir(dir);
 	for(auto& a : fs) {
-		if(a.second == Node::Dir) {
-			insert_edge(r, init(dir + '/' + a.first), 0);//recursive
-		} else p->files.insert(a.first);
+		if(a.second == Node::Dir) 
+			insert_edge(*p, init(dir + '/' + a.first), 0);//recursive
+		else p->files.insert(a.first);
 	}
-	return r;
+	return *p;
 }
 
-ostream& operator<<(ostream& o, const shared_ptr<Node>& node)
+bool Node::operator==(const Node& r) 
 {
-	o << node->name;
-	//for(auto& a : node->files) cout << a << ' ';
+	return name == r.name;
+}
+
+ostream& operator<<(ostream& o, const Node& node)
+{
+	o << node.name;
+	for(auto& a : node.files) o << a << ' ';
 	return o;
 }
 
@@ -48,9 +57,4 @@ map<string, int> getdir(string dir)
     closedir(dp);
 	for(auto& a : files) if(a.first[0] == '.') files.erase(a.first);
     return files;//error
-}
-
-MindMap::MindMap(string s)
-{
-	init(s);
 }
