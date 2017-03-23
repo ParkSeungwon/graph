@@ -6,12 +6,12 @@ class ParseTree : public Tree<char>
 public:
 	ParseTree(std::string expression) {
 		int type = 0;
-		if(is_operator(expression.front())) type = -1;
-		else if(is_operator(expression.back())) type = 1;
+		if(is_operator(expression.front())) type = -1;//앞에 연산자가 있는 전위식
+		else if(is_operator(expression.back())) type = 1;//후위식
 		for(auto& a : expression) expr.push_back(a);
 		switch(type) {
 			case -1: Graph<char>::root = finsert(); break;
-			case 0: Graph<char>::root = insert(expression); break;
+			case 0: Graph<char>::root = insert(expression); break;//default
 			case 1: Graph<char>::root = binsert();
 		}
 		Tree<char>::connect();
@@ -92,8 +92,8 @@ private:
 		Vertex<char>* p = new Vertex<char>;
 		p->data = s[token];
 		if(token) {
-			std::string rhs = s.substr(token + 1);
-			s.erase(token);
+			std::string rhs = s.substr(token + 1);//right of token
+			s.erase(token);//left of token
 			p->edge = Graph<char>::insert(p->edge, insert(s), 0);//crash
 			p->edge = Graph<char>::insert(p->edge, insert(rhs), 0);
 		}
@@ -106,7 +106,7 @@ private:
 		for(int i=0; i<s.size(); i++) {
 			if(s[i] == '(') parenthesis.push('(');
 			else if(s[i] == ')') parenthesis.pop();
-			else if(parenthesis.empty()) {
+			else if(parenthesis.empty()) {//괄호안이 아닌 연산자일 경우 나누는 점.
 				if(s[i] == '+' || s[i] == '-') {
 					token = i;
 					break;

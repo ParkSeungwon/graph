@@ -1,15 +1,13 @@
 #include<map>
 #include<dirent.h>
 #include<iostream>
-#include<memory>
 #include"mindmap.h"
 using namespace std;
 
-Graph<Node> graph;
-struct Node;
+map<string, int> getdir(string dir);
 
 MindMap::MindMap(string directory)
-{
+{//populate Graph vertex and edge with subdirectories
 	init(directory);
 }
 
@@ -19,7 +17,7 @@ Node MindMap::init(string dir)
 	n.name = dir;
 	auto fs = getdir(dir);
 	for(auto& a : fs) if(a.second == Node::File) n.files.insert(a.first);
-	insert_vertex(n);
+	insert_vertex(n);//insert vertex -> insert edge. order matters
 
 	for(auto& a : fs)
 		if(a.second == Node::Dir) 
@@ -40,8 +38,8 @@ ostream& operator<<(ostream& o, const Node& node)
 }
 
 map<string, int> getdir(string dir)
-{
-	map<string, int> files;
+{//return files and directories in directory dir.
+	map<string, int> files;//string is name, int is type : 4 = dir, 8 = file
     DIR *dp;
     struct dirent *dirp;
 	int errno;

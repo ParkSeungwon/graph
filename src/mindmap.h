@@ -16,10 +16,7 @@ struct Node
 	bool operator==(const Node& r);
 };
 std::ostream& operator<<(std::ostream& o, const Node& node);
-std::map<std::string, int> getdir(std::string dir);
-Node init(std::string dir);
 
-class Test : public Graph<int> {};
 class MindMap : public Graph<Node>
 {
 public:

@@ -5,18 +5,18 @@
 #include"src/parsetree.h"
 using namespace std;
 
-extern GraphV<char>* pv;
+extern GraphV<int>* pv;
 int main(int c, char** av)
 {
-	Graph<string> graph;
+	Graph<int> graph;
 	graph.read_file("data.txt");
 	graph.prim();
 	graph.bridge();
-	cout << graph.dijkstra("daejun", "kangwon") << endl;;
-	GraphV<string> gv3{graph.data()};
-	graph.depth();
-	graph.greedy();
-//	pv = &gv3;
+	//cout << graph.dijkstra("daejun", "kangwon") << endl;;
+	GraphV<int> gv3{graph.data()};
+//	graph.depth();
+//	graph.greedy();
+	pv = &gv3;
 
 	string s45 = ParseTree::compose(45);
 	string s126 = ParseTree::compose(126);
@@ -35,7 +35,7 @@ int main(int c, char** av)
 	t.find('Q');
 	GraphV<char> gv2{t.data()};
 	gv2.treeview(t.height());
-	pv = &gv2;
+//	pv = &gv2;
 	
 	auto app = Gtk::Application::create(c, av);
 	Win win;
