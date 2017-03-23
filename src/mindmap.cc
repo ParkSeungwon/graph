@@ -4,54 +4,38 @@
 #include"mindmap.h"
 using namespace std;
 
-map<string, int> getdir(string dir);
 
-MindMap::MindMap(string directory)
-{//populate Graph vertex and edge with subdirectories
-	init(directory);
-}
-
-Node MindMap::init(string dir)
+MindNode::MindNode(string fname, MindNode::Type type)
 {
-	Node n;
-	n.name = dir;
-	auto fs = getdir(dir);
-	for(auto& a : fs) if(a.second == Node::File) n.files.insert(a.first);
-	insert_vertex(n);//insert vertex -> insert edge. order matters
-
-	for(auto& a : fs)
-		if(a.second == Node::Dir) 
-			insert_edge(n, init(dir + '/' + a.first), 0);//recursive
-	return n;
+	name = fname;
+	this->type = type;
+	show = type == Dir ? true : false;
 }
 
-bool Node::operator==(const Node& r) 
+shared_ptr<MindNode> construct_graph(Graph<shared_ptr<MindNode>>& graph, string dir)
+{
+	auto p = new MindNode(dir, MindNode::Dir);
+	p->name = dir;
+	auto r = shared_ptr<MindNode>(p);
+	graph.insert_vertex(r);
+
+	auto fs = getdir(dir);
+	for(auto& a : fs) {
+		if(a.second == MindNode::Dir) 
+			graph.insert_edge(r, construct_graph(graph, dir + '/' + a.first), 0);
+		else graph.insert_edge(r, make_shared<MindNode>(a.first, MindNode::File), 0);
+	}
+	return r;
+}
+
+bool MindNode::operator==(const MindNode& r) 
 {
 	return name == r.name;
 }
 
-ostream& operator<<(ostream& o, const Node& node)
+ostream& operator<<(ostream& o, const MindNode& node)
 {
 	o << node.name;
-	//for(auto& a : node.files) o << a << ' ';
 	return o;
 }
 
-map<string, int> getdir(string dir)
-{//return files and directories in directory dir.
-	map<string, int> files;//string is name, int is type : 4 = dir, 8 = file
-    DIR *dp;
-    struct dirent *dirp;
-	int errno;
-    if((dp  = opendir(dir.c_str())) == NULL) {
-        cout << "Error(" << errno << ") opening " << dir << endl;
-        throw errno;
-    }
-
-    while ((dirp = readdir(dp)) != NULL) {
-        files.insert({string(dirp->d_name), dirp->d_type});
-    }
-    closedir(dp);
-	for(auto& a : files) if(a.first[0] == '.') files.erase(a.first);
-    return files;//error
-}

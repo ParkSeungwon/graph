@@ -1,8 +1,21 @@
-4
-4
-1
-3
-2
-4 3 0
-4 2 0
-2 1 0
+6
+seoul
+suwon
+incheon
+pusan
+daejun
+kangwon
+seoul suwon 30
+suwon seoul 30
+suwon incheon 50
+incheon suwon 50
+pusan daejun 90
+daejun pusan 90
+incheon daejun 65
+daejun incheon 65
+suwon kangwon 80
+kangwon suwon 80
+kangwon seoul 250
+seoul kangwon 250
+pusan incheon 30
+incheon pusan 30

@@ -6,15 +6,7 @@
 #include<string>
 #include<sstream>
 #include<gtkmm.h>
-
-class Point : public std::complex<double>
-{
-public:
-	Point(int x=0, int y=0);
-	Point(std::complex<double> im);
-	int x() const; 		
-	int y() const; 	
-};
+#include"point.h"
 
 class Drawable
 {

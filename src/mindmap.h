@@ -1,29 +1,26 @@
 #pragma once
 #include<string>
 #include<map>
-#include<set>
+#include<memory>
+#include"point.h"
 #include"tgraph.h"
 
-struct Node
+std::map<std::string, int> getdir(std::string dir);
+struct MindNode
 {
-	int x,y;//realative position to parent
-	double r,g,b,a;
-	std::string name;//equals directory name
-	std::set<std::string> files;
-	enum Shape {Circle, Rect, Diamond, Ellipse} outline;
-	enum Line {Plant, Direct} line;
+	enum Shape {Circle, Rect, Diamond, Ellipse} outline = Ellipse;
+	enum Line {Plant, Direct} line = Direct;
 	enum Type {Dir = 4, File = 8} type;
-	bool operator==(const Node& r);
-};
-std::ostream& operator<<(std::ostream& o, const Node& node);
-
-class MindMap : public Graph<Node>
-{
-public:
-	MindMap(std::string s);
-
-private:
-	Node init(std::string s);
+	MindNode(std::string filename, MindNode::Type type);
+	Point pt;//realative position to parent
+	double r,g,b,a;
+	bool show;
+	std::string name;//equals directory name
+	bool operator==(const MindNode& r);
 };
 
+std::shared_ptr<MindNode> 
+construct_graph(Graph<std::shared_ptr<MindNode>>& gr, std::string dir);
+
+std::ostream& operator<<(std::ostream& o, const MindNode& node);
 

@@ -5,15 +5,15 @@
 #include"src/parsetree.h"
 using namespace std;
 
-extern GraphV<int>* pv;
+//extern GraphV<string>* pv;
 int main(int c, char** av)
 {
-	Graph<int> graph;
+/*	Graph<string> graph;
 	graph.read_file("data.txt");
 	graph.prim();
 	graph.bridge();
 	//cout << graph.dijkstra("daejun", "kangwon") << endl;;
-	GraphV<int> gv3{graph.data()};
+	GraphV<string> gv3{graph.data()};
 //	graph.depth();
 //	graph.greedy();
 	pv = &gv3;
@@ -39,6 +39,6 @@ int main(int c, char** av)
 	
 	auto app = Gtk::Application::create(c, av);
 	Win win;
-	return app->run(win);
+	return app->run(win);*/
 }
 
