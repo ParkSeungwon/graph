@@ -18,7 +18,7 @@ public:
 		if(map_.find(vt) == map_.end()) map_[vt] = {500,500};
 		for(E* e = vt->edge; e; e = e->edge) {//x, y is relative coord to parent
 			if(e->vertex) {
-				map_[e->vertex] = map_[vt] + e->vertex->data->pt;
+				map_[e->vertex] = map_[vt] + e->vertex->data->pt;//edge와 v가 바뀜
 				arrows_.push_back(std::make_tuple(vt, e->vertex, e->weight, e->v));
 				allocate_node(e->vertex);
 			}
