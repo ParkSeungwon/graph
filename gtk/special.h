@@ -24,14 +24,25 @@ public:
 			}
 		}
 	}
+	V* get_parent(V* s) {
+		if(s == root) return nullptr;
+		for(auto* v = root; v; v = v->vertex) 
+			for(auto* e = v->edge; e; e = e->edge) if(e->vertex == s) return v;
+	}
 
-	void drag(Point from, Point to) {
+	virtual void drag(Point from, Point to) {//virtual can find specialization method
 		drawables_.clear();
 		for(auto& a : map_) {
 			if(abs(a.second - from) < 20) {
-				auto parent = a.second - a.first->data->pt; 
+				auto* parent = get_parent(a.first);
 				a.second = to;
-				a.first->data->pt = to - parent;
+				//apply lambda functio to all sub of a.first vertex 
+				width_apply(a.first, [&](std::shared_ptr<MindNode> sp) {
+					for(auto& b : map_) if(b.first->data == sp && //if sub
+						abs(b.second - from) > 20)//if not clogged together
+								b.second += to - from;});
+				a.first->data->pt = to - (parent ? parent->data->pt : 0);
+				std::cout << a.second << ' ' << a.first->data->pt << std::endl;
 				break;//select only one
 			}
 		}
@@ -62,6 +73,13 @@ protected:
 
 private:
 	int width_;
+
+	template<typename T> void width_apply(V* p, T func) {
+		for(auto* e = p->edge; e; e = e->edge) {
+			func(e->vertex->data);
+			if(e->vertex->data->type == MindNode::Dir) width_apply(e->vertex, func);
+		}
+	}
 	
 	void treeview(V* p, int x, int y, int h) {
 		if(!p) return;

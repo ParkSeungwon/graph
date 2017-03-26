@@ -24,7 +24,7 @@ public:
 		generate_graph();
 	}
 
-	void drag(Point f, Point t) {
+	virtual void drag(Point f, Point t) {
 		drawables_.clear();
 		for(auto& a : map_) {
 			if(abs(a.second - f) < 20) {

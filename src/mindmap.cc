@@ -19,7 +19,7 @@ void construct_graph(Graph<shared_ptr<MindNode>>& graph, string dir,
 	auto filename_and_type = getdir(dir);
 	ifstream f(dir + ".mindmap");
 	vector<MindNode> vm;
-	MindNode mn{"", MindNode::File};
+	MindNode mn{"", MindNode::File};//as no default constructor
 	while(f >> mn) vm.push_back(mn);
 
 	for(auto& a : filename_and_type) {
@@ -27,11 +27,21 @@ void construct_graph(Graph<shared_ptr<MindNode>>& graph, string dir,
 			a.second == MindNode::Dir ? 
 			make_shared<MindNode>(a.first, MindNode::Dir) : 
 			make_shared<MindNode>(a.first, MindNode::File);
-		for(auto& m : vm) if(m.name == a.first) *sp = m;
-		graph.insert_vertex(sp);
+		for(auto& m : vm) if(m.name == a.first) *sp = m;//initialize data according
+		graph.insert_vertex(sp);						//to savefile
 		graph.insert_edge(parent, sp, 0);
 		if(a.second == MindNode::Dir) construct_graph(graph, dir + a.first, sp);
 	}
+}
+
+void save_graph(Vertex<std::shared_ptr<MindNode>>* v, std::string dir)
+{
+	if(dir.back() != '/') dir += '/';
+	ofstream f(dir + ".mindmap");
+	for(auto* e = v->edge; e; e = e->edge) f << *e->vertex->data << endl;
+	for(auto* e = v->edge; e; e = e->edge) 
+		if(e->vertex->data->type == MindNode::Dir)
+			save_graph(e->vertex, dir + e->vertex->data->name);
 }
 
 bool MindNode::operator==(const MindNode& r) 
@@ -43,7 +53,7 @@ istream& operator>>(istream& i, MindNode& r) {
 	float x, y;
 	int a, b, c;
 	i >> r.name >> r.show >> x >> y >> a >> b >> c >> r.r >> r.g >> r.b >> r.a;
-	r.pt = {x, y}; 
+	r.pt = Point{x, y}; 
 	r.outline = static_cast<MindNode::Shape>(a); 
 	r.line = static_cast<MindNode::Line>(b); 
 	r.type = static_cast<MindNode::Type>(c);
