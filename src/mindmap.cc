@@ -51,9 +51,10 @@ bool MindNode::operator==(const MindNode& r)
 
 istream& operator>>(istream& i, MindNode& r) {
 	float x, y;
-	int a, b, c;
-	i >> r.name >> r.show >> x >> y >> a >> b >> c >> r.r >> r.g >> r.b >> r.a;
-	r.pt = Point{x, y}; 
+	int a, b, c, rr, rg, rb, ra;
+	i >> r.name >> r.show >> x >> y >> a >> b >> c >> rr >> rg >> rb >> ra;
+	r.r = rr; r.g = rg; r.b = rb; r.a = ra;
+	r.pt = {x, y}; 
 	r.outline = static_cast<MindNode::Shape>(a); 
 	r.line = static_cast<MindNode::Line>(b); 
 	r.type = static_cast<MindNode::Type>(c);
