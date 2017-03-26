@@ -46,3 +46,11 @@ ostream& operator<<(ostream& o, const MindNode& node)
 	return o;
 }
 
+ostream& operator<<(ostream& o, Graph<shared_ptr<MindNode>>& r) {
+	for(Vertex<std::shared_ptr<MindNode>>* v = r.data(); v; v = v->vertex) {
+		o << v << ' ' ;
+		for(Edge<shared_ptr<MindNode>>* e = v->edge; e; e = e->edge) o << e << ' ';
+		o << std::endl << *(v->data) << std::endl;
+	}
+	return o;
+}
