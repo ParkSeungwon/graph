@@ -1,3 +1,4 @@
+#include<fstream>
 #include"mindmap.h"
 using namespace std;
 
@@ -8,7 +9,9 @@ int main(int ac, char** av)
 		return 0;
 	}
 	Graph<shared_ptr<MindNode>> graph;
-	construct_graph(graph, av[1]);
+	auto par = make_shared<MindNode>(av[1], MindNode::Dir);
+	graph.insert_vertex(par);
+	construct_graph(graph, av[1], par);
 	graph.view();
 	auto* dp = graph.data();
 	while(dp) {
@@ -21,5 +24,7 @@ int main(int ac, char** av)
 	cout << b->name << endl;
 
 	cout << graph;
+	ofstream f("graph.txt");
+	f << graph;
 }
 	

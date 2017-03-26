@@ -8,19 +8,21 @@
 std::map<std::string, int> getdir(std::string dir);
 struct MindNode
 {
+	std::string name;//equals directory name
+	bool show;
+	Point pt;//realative position to parent
 	enum Shape {Circle, Rect, Diamond, Ellipse} outline = Ellipse;
 	enum Line {Plant, Direct} line = Direct;
 	enum Type {Dir = 4, File = 8} type;
+	unsigned char r,g,b,a;
+
 	MindNode(std::string filename, MindNode::Type type);
-	Point pt;//realative position to parent
-	double r,g,b,a;
-	bool show;
-	std::string name;//equals directory name
 	bool operator==(const MindNode& r);
 };
 
-std::shared_ptr<MindNode> 
-construct_graph(Graph<std::shared_ptr<MindNode>>& gr, std::string dir);
+void construct_graph(Graph<std::shared_ptr<MindNode>>& graph, std::string dir, 
+		std::shared_ptr<MindNode> parent);
 
 std::ostream& operator<<(std::ostream& o, const MindNode& node);
 std::ostream& operator<<(std::ostream& o, Graph<std::shared_ptr<MindNode>>& r);
+std::istream& operator>>(std::istream& i, MindNode& r);
