@@ -14,15 +14,15 @@ MindNode::MindNode(string fname, MindNode::Type type)
 
 shared_ptr<MindNode> construct_graph(Graph<shared_ptr<MindNode>>& graph, string dir)
 {
+	if(dir.back() != '/') dir += '/';
 	auto r = make_shared<MindNode>(dir, MindNode::Dir);
 	graph.insert_vertex(r);
 
 	auto filename_and_type = getdir(dir);
 	for(auto& a : filename_and_type) {
 		if(a.second == MindNode::Dir) {
-			auto v = construct_graph(graph, dir + '/' + a.first);
-	//		graph.insert_vertex(v);
-			graph.insert_edge(r, v, 0);
+			auto v = construct_graph(graph, dir + a.first);//insert_vertex 
+			graph.insert_edge(r, v, 0);//inside the construct func
 		} else {
 			auto v = make_shared<MindNode>(a.first, MindNode::File);
 			graph.insert_vertex(v);
@@ -39,7 +39,10 @@ bool MindNode::operator==(const MindNode& r)
 
 ostream& operator<<(ostream& o, const MindNode& node)
 {
-	o << node.name;
+	o << node.name << ' ' << node.show << ' ';
+	o << node.pt.x() << ' ' << node.pt.y() << ' ';
+	o << node.outline << ' ' << node.line << ' ' << node.type << ' ' ;
+	o << node.r << ' ' << node.g << ' ' << node.b << ' ' << node.a << ' ';
 	return o;
 }
 

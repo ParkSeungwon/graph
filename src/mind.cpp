@@ -19,5 +19,7 @@ int main(int ac, char** av)
 	}
 	auto b = make_shared<MindNode>("fff", MindNode::File);
 	cout << b->name << endl;
+
+	cout << graph;
 }
 	

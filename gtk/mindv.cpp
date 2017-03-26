@@ -10,15 +10,17 @@ using namespace std;
 extern GraphV<shared_ptr<MindNode>>* pv;
 int main(int c, char** av)
 {
+	if(c < 2) return 0;
 	Graph<shared_ptr<MindNode>> graph;
-	construct_graph(graph, ".");
+	construct_graph(graph, av[1]);
 	//cout << graph.dijkstra("daejun", "kangwon") << endl;;
 	GraphV<shared_ptr<MindNode>> gv3{graph.data()};
 //	graph.depth();
 //	graph.greedy();
 	pv = &gv3;
 	
-	auto app = Gtk::Application::create(c, av);
+	int i=0;
+	auto app = Gtk::Application::create(i, av);
 	Win win;
 	return app->run(win);
 }
