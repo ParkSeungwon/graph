@@ -40,8 +40,8 @@ public:
 				width_apply(a.first, [&](std::shared_ptr<MindNode> sp) {
 					for(auto& b : map_) if(b.first->data == sp && //if sub
 						abs(b.second - from) > 20)//if not clogged together
-								b.second += to - from;});
-				a.first->data->pt = to - (parent ? parent->data->pt : 0);
+								b.second += to - from;});//parallel move
+				a.first->data->pt = parent ? to - map_[parent] : 0;
 				std::cout << a.second << ' ' << a.first->data->pt << std::endl;
 				break;//select only one
 			}
