@@ -10,6 +10,7 @@ MindNode::MindNode(string fname, MindNode::Type type)
 	name = fname;
 	this->type = type;
 	show = (type == Dir ? true : false);
+	outline = (type == Dir ? MindNode::Rect : MindNode::Ellipse);
 }
 
 void construct_graph(Graph<shared_ptr<MindNode>>& graph, string dir, 
@@ -28,6 +29,7 @@ void construct_graph(Graph<shared_ptr<MindNode>>& graph, string dir,
 			make_shared<MindNode>(a.first, MindNode::Dir) : 
 			make_shared<MindNode>(a.first, MindNode::File);
 		for(auto& m : vm) if(m.name == a.first) *sp = m;//initialize data according
+		sp->path = dir;
 		graph.insert_vertex(sp);						//to savefile
 		graph.insert_edge(parent, sp, 0);
 		if(a.second == MindNode::Dir) construct_graph(graph, dir + a.first, sp);

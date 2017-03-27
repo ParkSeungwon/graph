@@ -8,7 +8,7 @@
 std::map<std::string, int> getdir(std::string dir);
 struct MindNode
 {
-	std::string name;//equals directory name
+	std::string name, path;//equals directory name
 	bool show;
 	Point pt;//realative position to parent
 	enum Shape {Circle, Rect, Diamond, Ellipse} outline = Ellipse;

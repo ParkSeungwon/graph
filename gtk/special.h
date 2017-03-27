@@ -1,6 +1,7 @@
 #include<memory>
 #include"graphv.h"
 #include"mindmap.h"
+#include"image.h"
 
 template<typename V, typename E> class GraphView<V, E, std::shared_ptr<MindNode>> 
 {//template specialization for MindNode
@@ -93,22 +94,37 @@ private:
 	
 	void generate_graph() {
 		for(auto& a : arrows_) {
+			V* v = std::get<1>(a);
 			auto d1 = map_[std::get<0>(a)];//starting point
-			auto d2 = map_[std::get<1>(a)];//ending point
+			auto d2 = map_[v];//ending point
 			auto d3 = CIRCLE_SIZE * (d2 - d1) / abs(d2 - d1);
 			d1 += d3;//make arrow stop before circle
 			d2 -= d3;
 			Arrow arrow{d1, d2, 1};
 			arrow.txt(std::get<2>(a));//show weight
-			if(std::get<3>(a)) arrow.set_rgb(0,0,1);//if v is marked
+			//if(std::get<3>(a)) arrow.set_rgb(0,0,1);//if v is marked
+			arrow.set_rgb((double)v->data->r / 255, (double)v->data->b / 255, 
+					(double)v->data->g / 255);
 			drawables_.push_back(std::make_shared<Arrow>(arrow));
 		}
 		for(auto& a : map_) {
 			int sz = CIRCLE_SIZE / 2;
-			Ellipse el{a.second - Point{sz, sz}, a.second + Point{sz, sz}};
-			el.txt(a.first->data->name);
-			drawables_.push_back(std::make_shared<Ellipse>(el));
+			int w = a.first->data->name.size() * CIRCLE_SIZE / 10;
+			w = std::max(w, sz);
+			if(a.first->data->outline == MindNode::Ellipse) {
+				Ellipse el{a.second - Point{w, sz}, a.second + Point{w, sz}};
+				el.txt(a.first->data->name);
+				drawables_.push_back(std::make_shared<Ellipse>(el));
+			} else if(a.first->data->outline == MindNode::Rect) {
+				Box bx{a.second - Point{w*2, sz*2}, a.second + Point{w*2, sz*2}};
+				bx.txt(a.first->data->name);
+				drawables_.push_back(std::make_shared<Box>(bx));
+			} else if(a.first->data->outline == MindNode::Diamond) {
+				Pix im{a.first->data->path + a.first->data->name, 
+					a.second - Point{2*w, sz*2}, a.second + Point{w*2, sz * 2}};
+				//im.txt(a.first->data->name);
+				drawables_.push_back(std::make_shared<Pix>(im));
+			}
 		}
 	}
 };
-

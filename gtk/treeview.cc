@@ -29,10 +29,11 @@ bool SketchBook::on_button_release_event(GdkEventButton* e)
 
 Win::Win() 
 {
-	add(vb_);
-	vb_.pack_end(scwin_);
-	add(scwin_);
-	scwin_.add(sketch_);
+//	add(vb_);
+//	vb_.pack_end(scwin_);
+//	add(scwin_);
+//	scwin_.add(sketch_);
+	add(sketch_);
 	set_default_size(1000, 900);
 	show_all_children();
 }

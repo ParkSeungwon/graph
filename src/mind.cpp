@@ -17,14 +17,11 @@ int main(int ac, char** av)
 	while(dp) {
 		cout << dp->data->name << endl;
 		for(auto* e = dp->edge; e; e = e->edge) 
-			cout << e->weight << ' ' << e->v << ' ' << e->vertex->data->name << endl;
+			cout << e->weight << ' ' << e->v << ' ' << e->vertex->data->path << endl;
 		dp = dp->vertex;
 	}
 	auto b = make_shared<MindNode>("fff", MindNode::File);
 	cout << b->name << endl;
-
 	cout << graph;
-	ofstream f("graph.txt");
-	f << graph;
 }
 	
