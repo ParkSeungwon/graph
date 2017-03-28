@@ -126,7 +126,7 @@ private:
 			} else if(a.first->data->outline == MindNode::Diamond) {
 				Pix im{a.first->data->path + a.first->data->name, 
 					a.second - Point{2*w, sz*2}, a.second + Point{w*2, sz * 2}};
-				//im.txt(a.first->data->name);
+				im.txt(a.first->data->name);
 				drawables_.push_back(std::make_shared<Pix>(im));
 			}
 		}
