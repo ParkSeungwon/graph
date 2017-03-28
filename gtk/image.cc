@@ -11,14 +11,16 @@ void Pix::operator()(const Cairo::RefPtr<Cairo::Context>& cr)
 {///limited gtk dependency inside of this function
 	static Glib::RefPtr<Gdk::Pixbuf> image;
 	static Point im;
-	//Box::operator()(cr);
 	if(!initialized) {
 		im = end - start;//width + i * height
 		image = Gdk::Pixbuf::create_from_file(filename);
-		image = image->scale_simple(im.x(), im.y(), Gdk::INTERP_NEAREST);
+		int w = image->get_width();
+		int h = image->get_height();
+		image = image->scale_simple(w, h, Gdk::INTERP_HYPER);
 		initialized = true;
 	}
-	Gdk::Cairo::set_source_pixbuf(cr, image,0,0); 
+	Box::operator()(cr);
+	Gdk::Cairo::set_source_pixbuf(cr, image);//,im.x(),im.y()); 
 	cr->rectangle(start.x(), start.y(), im.x(), im.y());
 	cr->fill();
 }

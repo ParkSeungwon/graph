@@ -22,7 +22,6 @@ private:
 class Win : public Gtk::Window
 {
 public:
-	Gtk::VBox vb_;
 	Win();
 
 protected:

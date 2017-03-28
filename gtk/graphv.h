@@ -24,6 +24,7 @@ public:
 		generate_graph();
 	}
 
+	virtual ~GraphView(){}//need this for specialization destructor
 	virtual void drag(Point f, Point t) {
 		drawables_.clear();
 		for(auto& a : map_) {

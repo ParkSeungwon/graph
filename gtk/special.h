@@ -13,6 +13,10 @@ public:
 		allocate_node(gr);
 		generate_graph();
 	}
+	virtual ~GraphView() {
+		std::string dir = root->edge->vertex->data->path;
+		save_graph(root, dir);
+	}
 
 	void allocate_node(V* vt) {//allocate all the sub nodes of vt
 		if(!vt) return;

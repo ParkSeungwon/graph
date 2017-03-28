@@ -24,9 +24,9 @@ int main(int c, char** av)
 	int i=0;
 	auto app = Gtk::Application::create(i, av);
 	Win win;
-	Gtk::Button bt("save");
-	win.vb_.pack_start(bt, Gtk::PACK_SHRINK);
-	bt.signal_clicked().connect(bind(save_graph, graph.data(), av[1]));
+//	Gtk::Button bt("save");
+//	win.vb_.pack_start(bt, Gtk::PACK_SHRINK);
+//	bt.signal_clicked().connect(bind(save_graph, graph.data(), av[1]));
 	win.show_all_children();
 	return app->run(win);
 }
