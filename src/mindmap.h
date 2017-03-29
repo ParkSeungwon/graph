@@ -15,6 +15,7 @@ struct MindNode
 	enum Line {Plant, Direct} line = Direct;
 	enum Type {Dir = 4, File = 8} type;
 	unsigned char r,g,b,a;
+	short width, height;
 
 	MindNode(std::string filename, MindNode::Type type);
 	bool operator==(const MindNode& r);

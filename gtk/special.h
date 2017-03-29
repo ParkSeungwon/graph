@@ -2,6 +2,7 @@
 #include"graphv.h"
 #include"mindmap.h"
 #include"image.h"
+#include"popup.h"
 
 template<typename V, typename E> class GraphView<V, E, std::shared_ptr<MindNode>> 
 {//template specialization for MindNode
@@ -41,7 +42,7 @@ public:
 			if(abs(a.second - from) < 20) {
 				auto* parent = get_parent(a.first);
 				a.second = to;
-				//apply lambda functio to all sub of a.first vertex 
+				//apply lambda function to all sub of a.first vertex 
 				width_apply(a.first, [&](std::shared_ptr<MindNode> sp) {
 					for(auto& b : map_) if(b.first->data == sp && //if sub
 						abs(b.second - from) > 20)//if not clogged together
@@ -54,6 +55,15 @@ public:
 		generate_graph();
 	}
 
+	virtual void resize(Point pt) {//popup to configure node
+		for(auto& a : map_) {
+			if(abs(a.second - pt) < 20) {
+				//popup(*a.first->data);
+				break;
+			}
+		}
+	}
+	
 	std::vector<std::shared_ptr<Drawable>>::const_iterator begin() const {
 		return drawables_.begin();
 	}
@@ -125,7 +135,7 @@ private:
 				drawables_.push_back(std::make_shared<Box>(bx));
 			} else if(a.first->data->outline == MindNode::Diamond) {
 				Pix im{a.first->data->path + a.first->data->name, 
-					a.second - Point{2*w, sz*2}, a.second + Point{w*2, sz * 2}};
+					a.second - Point{w*3, sz*3}, a.second + Point{w*3, sz*3}};
 				im.txt(a.first->data->name);
 				drawables_.push_back(std::make_shared<Pix>(im));
 			}

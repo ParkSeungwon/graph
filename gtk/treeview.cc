@@ -20,11 +20,14 @@ template <typename T> void SketchBook::draw(Graph<T> gr)
 	
 bool SketchBook::on_button_release_event(GdkEventButton* e)
 {
-	tx = e->x;
-	ty = e->y;
-	pv->drag({x, y}, {tx, ty});
-	refresh();	
-	return true;
+	if(e->button == 1) {
+		tx = e->x;
+		ty = e->y;
+		pv->drag({x, y}, {tx, ty});
+		refresh();	
+		return true;//does not propagate
+	}
+	return false;//propagate
 }
 
 Win::Win() 
@@ -55,9 +58,12 @@ void SketchBook::refresh()
 
 bool SketchBook::on_button_press_event(GdkEventButton* e)
 {
-	x = e->x;
-	y = e->y;
-	return false;
+	if(e->button == 1) {
+		x = e->x;
+		y = e->y;
+		return true;//does not propagate
+	} //else if(e->button == 3) pv->resize({e->x, e->y});
+	return false;//propagate
 }
 bool Win::on_button_press_event(GdkEventButton* e)
 {

@@ -25,6 +25,7 @@ public:
 	}
 
 	virtual ~GraphView(){}//need this for specialization destructor
+	virtual void resize(Point){}
 	virtual void drag(Point f, Point t) {
 		drawables_.clear();
 		for(auto& a : map_) {

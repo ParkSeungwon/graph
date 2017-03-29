@@ -20,8 +20,8 @@ void Pix::operator()(const Cairo::RefPtr<Cairo::Context>& cr)
 		initialized = true;
 	}
 	Box::operator()(cr);
-	Gdk::Cairo::set_source_pixbuf(cr, image, start.x(), start.y()); 
-	cr->rectangle(start.x(), start.y(), w, h);
+	Gdk::Cairo::set_source_pixbuf(cr, image, start.x(), start.y());//anchor source
+	cr->rectangle(start.x(), start.y(), w, h);					//at position x, y
 	cr->fill();
 }
 		
