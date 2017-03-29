@@ -29,7 +29,20 @@ bool SketchBook::on_button_release_event(GdkEventButton* e)
 	}
 	return false;//propagate
 }
-
+bool SketchBook::on_button_press_event(GdkEventButton* e)
+{
+	if(e->button == 1) {
+		x = e->x;
+		y = e->y;
+		return true;//does not propagate
+	} else if(e->button == 3) pv->attrib_change({e->x, e->y});
+	return false;//propagate
+}
+bool Win::on_button_press_event(GdkEventButton* e)
+{
+	cout << e->x << ' ' << e->y << endl;
+	return true;
+}
 Win::Win() 
 {
 //	add(vb_);
@@ -56,20 +69,6 @@ void SketchBook::refresh()
     }
 }
 
-bool SketchBook::on_button_press_event(GdkEventButton* e)
-{
-	if(e->button == 1) {
-		x = e->x;
-		y = e->y;
-		return true;//does not propagate
-	} //else if(e->button == 3) pv->resize({e->x, e->y});
-	return false;//propagate
-}
-bool Win::on_button_press_event(GdkEventButton* e)
-{
-	cout << e->x << ' ' << e->y << endl;
-	return true;
-}
 
 ostream& operator<<(ostream& o, const array<int, 5>& r)
 {
