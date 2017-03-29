@@ -21,7 +21,7 @@ struct MindNode
 };
 
 void construct_graph(Graph<std::shared_ptr<MindNode>>& graph, std::string dir, 
-		std::shared_ptr<MindNode> parent);
+		std::shared_ptr<MindNode> parent);//read directory and construct to graph
 void save_graph(Vertex<std::shared_ptr<MindNode>>* v, std::string dir);
 
 std::ostream& operator<<(std::ostream& o, const MindNode& node);
