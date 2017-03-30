@@ -54,10 +54,10 @@ public:
 		generate_graph();
 	}
 
-	virtual void attrib_change(Point pt) {//popup to configure node
+	virtual void right_click(Point pt) {//popup to configure node
 		for(auto& a : map_) {
 			if(abs(a.second - pt) < 20) {
-				popup_parent(a.first);
+				popup(a.first);
 				break;
 			}
 		}
@@ -117,8 +117,8 @@ private:
 			Arrow arrow{d1, d2, 1};
 			arrow.txt(std::get<2>(a));//show weight
 			//if(std::get<3>(a)) arrow.set_rgb(0,0,1);//if v is marked
-			arrow.set_rgb((double)v->data->r / 255, (double)v->data->b / 255, 
-					(double)v->data->g / 255);
+			arrow.set_rgb((double)v->data->r / 255, (double)v->data->g / 255,
+					(double)v->data->b / 255);
 			drawables_.push_back(std::make_shared<Arrow>(arrow));
 		}
 		for(auto& a : map_) {
@@ -128,6 +128,7 @@ private:
 			if(a.first->data->outline == MindNode::Ellipse) {
 				Ellipse el{a.second - Point{w, sz}, a.second + Point{w, sz}};
 				el.txt(a.first->data->name);
+				el.set_rgb((double)a.first->data->r / 255, (double)a.first->data->g / 255, (double)a.first->data->b / 255);
 				drawables_.push_back(std::make_shared<Ellipse>(el));
 			} else if(a.first->data->outline == MindNode::Rect) {
 				Box bx{a.second - Point{w*2, sz*2}, a.second + Point{w*2, sz*2}};

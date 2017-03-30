@@ -39,7 +39,7 @@ public:
 	std::vector<std::shared_ptr<Drawable>>::const_iterator begin() const {
 		return drawables_.begin();
 	}
-	virtual void attrib_change(Point){}//if this line goes before drag unreasonable
+	virtual void right_click(Point){}//if this line goes before drag unreasonable
 	//bug appears. drag also triggers this virtual method. may vector table is 
 	//wrong arranged?
 	

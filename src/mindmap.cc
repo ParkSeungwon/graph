@@ -10,7 +10,7 @@ MindNode::MindNode(string fname, MindNode::Type type)
 	name = fname;
 	this->type = type;
 	show = (type == Dir ? true : false);
-//	outline = (type == Dir ? MindNode::Rect : MindNode::Ellipse);
+	outline = (type == Dir ? MindNode::Rect : MindNode::Ellipse);
 }
 
 void construct_graph(Graph<shared_ptr<MindNode>>& graph, string dir, 

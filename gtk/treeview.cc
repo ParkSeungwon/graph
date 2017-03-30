@@ -35,7 +35,7 @@ bool SketchBook::on_button_press_event(GdkEventButton* e)
 		x = e->x;
 		y = e->y;
 		return true;//does not propagate
-	} else if(e->button == 3) pv->attrib_change({e->x, e->y});
+	} else if(e->button == 3) pv->right_click({e->x, e->y});
 	return false;//propagate
 }
 bool Win::on_button_press_event(GdkEventButton* e)

@@ -28,23 +28,7 @@ AttributeDialog::AttributeDialog() : Circle(outline, "circle"),
 	show_all_children();
 }
 
-void popup_parent(Vertex<shared_ptr<MindNode>>* v) {
-	Gtk::Dialog dia;
-	dia.add_button("_Shape",1);
-	dia.add_button("_Color",2);
-	dia.add_button("_Move",3);
-	dia.add_button("_Resize",4);
-	dia.add_button("Cancel",0);
-	switch(dia.run()) {
-	case 1: popup(v); break;
-	case 2: color_chooser(v); break;
-	case 3:
-	case 4:
-	default:;
-	}
-}
-
-void popup(Vertex<shared_ptr<MindNode>>* v) {
+static void shape_chooser(Vertex<shared_ptr<MindNode>>* v) {
 	auto mn = v->data;
 	AttributeDialog ad;
 	ad.name.set_text(mn->name);
@@ -73,7 +57,7 @@ void popup(Vertex<shared_ptr<MindNode>>* v) {
 	}
 }
 
-void color_chooser(Vertex<shared_ptr<MindNode>>* v) {
+static void color_chooser(Vertex<shared_ptr<MindNode>>* v) {
 	Gtk::ColorChooserDialog dia;
 	if(dia.run() == Gtk::RESPONSE_OK) {
 		auto color = dia.get_rgba();
@@ -84,4 +68,44 @@ void color_chooser(Vertex<shared_ptr<MindNode>>* v) {
 	}
 }
 
+static void app_chooser(Vertex<shared_ptr<MindNode>>* v) {
+	string file = v->data->name;
+	string ext = file.substr(file.rfind('.') + 1);
+	
+	const char* extensions[] = {"pdf", "png", "jpg", "gif", "JPG", "xpm"};
+	const char* programs[] = {"nautilus ", "evince ", "gthumb ", "gedit "};
 
+	int i=0;
+	while(ext != extensions[i] && i < 6) i++;
+	
+	string s;
+	
+	if(v->data->type == MindNode::Dir) s = programs[0];
+	else if(!i) s = programs[1];
+	else if(i < 6) s = programs[2];
+	else s = programs[3];
+	
+	s += v->data->path + file + '&';
+	system(s.data());
+}
+
+void popup(Vertex<shared_ptr<MindNode>>* v) {
+	int result;
+	{
+		Gtk::Dialog dia;
+		dia.add_button("_Shape",1);
+		dia.add_button("_Color",2);
+		dia.add_button("_Open",3);
+		dia.add_button("_Resize",4);
+		dia.add_button("Cancel",0);
+		result = dia.run();
+	}
+
+	switch(result) {
+		case 1: shape_chooser(v); break;
+		case 2: color_chooser(v); break;
+		case 3: app_chooser(v); break;
+		case 4:
+		default:;
+	}
+}

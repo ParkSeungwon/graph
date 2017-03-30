@@ -18,6 +18,4 @@ protected:
 };
 
 void popup(Vertex<std::shared_ptr<MindNode>>* v);
-void popup_parent(Vertex<std::shared_ptr<MindNode>>* v);
-void color_chooser(Vertex<std::shared_ptr<MindNode>>* v);
 
