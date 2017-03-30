@@ -6,8 +6,8 @@ image.cc 0 -268 120 3 1 8 0 192 85 64
 image.h 0 -136 -48 3 1 8 0 0 0 0 
 imageboardtest.cpp 0 -104 101 3 1 8 0 0 0 0 
 mindv.cpp 0 -63 237 3 1 8 0 0 0 0 
-popup.cc 0 0 0 3 1 8 0 0 0 0 
-popup.h 0 0 0 3 1 8 0 0 0 0 
+popup.cc 0 23 122 3 1 8 0 0 0 0 
+popup.h 0 193 -35 3 1 8 0 0 0 0 
 special.h 0 164 257 3 1 8 0 0 0 0 
 treeview.cc 0 111 282 3 1 8 0 0 0 0 
 treeview.cpp 0 17 251 3 1 8 0 0 0 0 

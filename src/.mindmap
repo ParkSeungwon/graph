@@ -1,6 +1,6 @@
 Makefile 0 167 111 3 1 8 53 51 53 49 
 bintree.h 0 132 209 3 1 8 0 0 0 0 
-dynamic.cpp 0 0 0 3 1 8 0 0 0 0 
+dynamic.cpp 0 36 191 3 1 8 0 0 0 0 
 ls.cc 0 -35 179 3 1 8 0 0 0 0 
 mind.cpp 0 62 203 3 1 8 0 0 0 0 
 mindmap.cc 0 131 -9 3 1 8 0 0 0 0 

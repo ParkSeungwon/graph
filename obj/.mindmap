@@ -1,6 +1,6 @@
 Makefile 0 270 220 3 1 8 53 51 53 49 
 drawable.o 0 84 371 3 1 8 0 0 0 0 
-dynamic.x 0 0 0 3 1 8 0 0 0 0 
+dynamic.x 0 5 -75 3 1 8 0 0 0 0 
 gldrawable.o 0 151 416 3 1 8 0 0 0 0 
 glview.x 0 229 464 3 1 8 0 0 0 0 
 image.o 0 -163 159 3 1 8 0 0 0 0 
@@ -11,7 +11,7 @@ mindmap.o 0 -84 234 3 1 8 0 0 0 0
 mindmap.x 0 20 363 3 1 8 0 0 0 0 
 mindv.x 0 245 394 3 1 8 0 0 0 0 
 point.o 0 32 486 3 1 8 0 0 0 0 
-popup.o 0 0 0 3 1 8 0 0 0 0 
+popup.o 0 -170 42 3 1 8 0 0 0 0 
 test.x 0 346 410 3 1 8 0 0 0 0 
 tree.x 0 197 42 3 1 8 0 0 0 0 
 treeview.o 0 286 164 3 1 8 0 0 0 0 

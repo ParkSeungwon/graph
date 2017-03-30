@@ -2,12 +2,14 @@
 #include"mindmap.h"
 
 class AttributeDialog : public Gtk::Dialog
-{///sets the attributes of a node
+{///Popup window to set the attributes of a MindNode
 public:
 	AttributeDialog();
+	Gtk::RadioButton *outline_bts[4], *line_bts[2];
+	Gtk::Label lb;
+	Gtk::Entry name;
 
 protected:
-	Gtk::Label lb;
 	Gtk::RadioButton::Group outline, line;
 	Gtk::RadioButton Circle, Rect, Diamond, Ellipse;
 	Gtk::RadioButton Plant, Direct;
@@ -15,4 +17,4 @@ protected:
 	Gtk::HBox hb1, hb2;
 };
 
-MindNode popup(MindNode);
+void popup(Vertex<std::shared_ptr<MindNode>>* v);

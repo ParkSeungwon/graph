@@ -37,7 +37,6 @@ public:
 	}
 
 	virtual void drag(Point from, Point to) {//virtual can find specialization method
-		drawables_.clear();
 		for(auto& a : map_) {
 			if(abs(a.second - from) < 20) {
 				auto* parent = get_parent(a.first);
@@ -58,10 +57,11 @@ public:
 	virtual void attrib_change(Point pt) {//popup to configure node
 		for(auto& a : map_) {
 			if(abs(a.second - pt) < 20) {
-				popup(*a.first->data);
+				popup(a.first);
 				break;
 			}
 		}
+		generate_graph();
 	}
 	
 	std::vector<std::shared_ptr<Drawable>>::const_iterator begin() const {
@@ -73,7 +73,6 @@ public:
 	}
 	
 	void treeview(int height) {
-		drawables_.clear();
 		width_ = pow(2, height) * CIRCLE_SIZE;
 		treeview(root, width_ / 2, 100, 1);
 		generate_graph();
@@ -107,6 +106,7 @@ private:
 	}
 	
 	void generate_graph() {
+		drawables_.clear();
 		for(auto& a : arrows_) {
 			V* v = std::get<1>(a);
 			auto d1 = map_[std::get<0>(a)];//starting point
