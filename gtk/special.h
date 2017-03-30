@@ -57,7 +57,7 @@ public:
 	virtual void attrib_change(Point pt) {//popup to configure node
 		for(auto& a : map_) {
 			if(abs(a.second - pt) < 20) {
-				popup(a.first);
+				popup_parent(a.first);
 				break;
 			}
 		}

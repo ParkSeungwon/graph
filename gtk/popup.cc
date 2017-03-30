@@ -28,6 +28,22 @@ AttributeDialog::AttributeDialog() : Circle(outline, "circle"),
 	show_all_children();
 }
 
+void popup_parent(Vertex<shared_ptr<MindNode>>* v) {
+	Gtk::Dialog dia;
+	dia.add_button("_Shape",1);
+	dia.add_button("_Color",2);
+	dia.add_button("_Move",3);
+	dia.add_button("_Resize",4);
+	dia.add_button("Cancel",0);
+	switch(dia.run()) {
+	case 1: popup(v); break;
+	case 2: color_chooser(v); break;
+	case 3:
+	case 4:
+	default:;
+	}
+}
+
 void popup(Vertex<shared_ptr<MindNode>>* v) {
 	auto mn = v->data;
 	AttributeDialog ad;
@@ -44,20 +60,27 @@ void popup(Vertex<shared_ptr<MindNode>>* v) {
 			break;
 		}
 		bool same_name = false;
-		if(mn->name != ad.name.get_text()) {
-			for(auto* e = v->edge; e; e = e->edge) 
+		if(mn->name != ad.name.get_text()) {//if changed & no same name 
+			for(auto* e = v->edge; e; e = e->edge) //is present in the directory
 				if(e->vertex->data->name == ad.name.get_text()) same_name = true;
-			if(!same_name) {
-				char command[200] = "mv ";
-				strcat(command, mn->path.data());
-				strcat(command, mn->name.data());
-				strcat(command, " ");
-				strcat(command, mn->path.data());
-				strcat(command, ad.name.get_text().data());
-				system(command);
+			if(!same_name) {//rename it
+				string command = "mv ";
+				command += mn->path + mn->name + ' ' + mn->path + ad.name.get_text();
+				system(command.data());
 				mn->name = ad.name.get_text();
 			}
 		}
+	}
+}
+
+void color_chooser(Vertex<shared_ptr<MindNode>>* v) {
+	Gtk::ColorChooserDialog dia;
+	if(dia.run() == Gtk::RESPONSE_OK) {
+		auto color = dia.get_rgba();
+		v->data->r = color.get_red() * 255;
+		v->data->g = color.get_green() * 255;
+		v->data->b = color.get_blue() * 255;
+		v->data->a = color.get_alpha() * 255;
 	}
 }
 
