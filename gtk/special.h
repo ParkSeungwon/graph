@@ -5,6 +5,7 @@
 #include"popup.h"
 
 template<typename V, typename E> class GraphView<V, E, std::shared_ptr<MindNode>> 
+	: public GraphView<V, E, std::shared_ptr<MindNode>>
 {//template specialization for MindNode
 public:
 	GraphView(V* gr) {
@@ -35,7 +36,7 @@ public:
 		for(auto* v = root; v; v = v->vertex) 
 			for(auto* e = v->edge; e; e = e->edge) if(e->vertex == s) return v;
 	}
-	virtual void cutNpaste(V* cut, V* to) {
+/*	virtual void cutNpaste(V* cut, V* to) {
 		E* to_paste;
 		for(E* e = get_parent(cut)->edge; e->edge; e = e->edge) {
 			if(e->edge->vertex == cut) {//if next is the edge to the cut
@@ -53,7 +54,7 @@ public:
 		}
 		
 	}
-
+*/
 	virtual void drag(Point from, Point to) {//virtual can find specialization method
 		for(auto& a : map_) {
 			if(abs(a.second - from) < 20) {

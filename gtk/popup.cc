@@ -108,7 +108,8 @@ static void paste(Vertex<shared_ptr<MindNode>>* v)
 		command += to_paste->data->path + to_paste->data->name + ' ';
 		command += v->data->path + v->data->name;
 		system(command.data());
-		pv->cutNpaste(to_paste, v);
+		//main()
+		//pv->cutNpaste(to_paste, v);
 	}
 }
 

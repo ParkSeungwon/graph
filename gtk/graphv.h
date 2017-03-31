@@ -25,6 +25,9 @@ public:
 	}
 
 	virtual ~GraphView(){}//need this for specialization destructor
+	virtual void right_click(Point){}//if this line goes before drag unreasonable
+	//bug appears. drag also triggers this virtual method. may vector table is 
+	//wrong arranged?
 	virtual void drag(Point f, Point t) {
 		drawables_.clear();
 		for(auto& a : map_) {
@@ -39,11 +42,8 @@ public:
 	std::vector<std::shared_ptr<Drawable>>::const_iterator begin() const {
 		return drawables_.begin();
 	}
-	virtual void right_click(Point){}//if this line goes before drag unreasonable
-	//bug appears. drag also triggers this virtual method. may vector table is 
-	//wrong arranged?
+	//virtual void cutNpaste(V*, V*) {}
 	
-	virtual void cutNpaste(V*, V*) {}
 	std::vector<std::shared_ptr<Drawable>>::const_iterator end() const {
 		return drawables_.end();
 	}
