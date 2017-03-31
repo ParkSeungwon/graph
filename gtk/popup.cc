@@ -1,3 +1,4 @@
+#include"graphv.h"
 #include"popup.h"
 using namespace std;
 using namespace Gtk;
@@ -28,7 +29,8 @@ AttributeDialog::AttributeDialog() : Circle(outline, "circle"),
 	show_all_children();
 }
 
-static void shape_chooser(Vertex<shared_ptr<MindNode>>* v) {
+static void shape_chooser(Vertex<shared_ptr<MindNode>>* v) 
+{
 	auto mn = v->data;
 	AttributeDialog ad;
 	ad.name.set_text(mn->name);
@@ -57,7 +59,8 @@ static void shape_chooser(Vertex<shared_ptr<MindNode>>* v) {
 	}
 }
 
-static void color_chooser(Vertex<shared_ptr<MindNode>>* v) {
+static void color_chooser(Vertex<shared_ptr<MindNode>>* v) 
+{
 	Gtk::ColorChooserDialog dia;
 	if(dia.run() == Gtk::RESPONSE_OK) {
 		auto color = dia.get_rgba();
@@ -68,35 +71,60 @@ static void color_chooser(Vertex<shared_ptr<MindNode>>* v) {
 	}
 }
 
-static void app_chooser(Vertex<shared_ptr<MindNode>>* v) {
-	string file = v->data->name;
-	string ext = file.substr(file.rfind('.') + 1);
-	
+static void app_chooser(Vertex<shared_ptr<MindNode>>* v) 
+{
 	const char* extensions[] = {"pdf", "png", "jpg", "gif", "JPG", "xpm"};
 	const char* programs[] = {"nautilus ", "evince ", "gthumb ", "gedit "};
 
+	string file = v->data->name;
+	string ext = file.substr(file.rfind('.') + 1);
 	int i=0;
 	while(ext != extensions[i] && i < 6) i++;
 	
-	string s;
-	
-	if(v->data->type == MindNode::Dir) s = programs[0];
-	else if(!i) s = programs[1];
-	else if(i < 6) s = programs[2];
-	else s = programs[3];
-	
-	s += v->data->path + file + '&';
-	system(s.data());
+	string command;
+	if(v->data->type == MindNode::Dir) command = programs[0];
+	else if(!i) command = programs[1];
+	else if(i < 6) command = programs[2];
+	else command = programs[3];
+	command += v->data->path + file + '&';
+	system(command.data());
 }
 
-void popup(Vertex<shared_ptr<MindNode>>* v) {
+extern GraphV<shared_ptr<MindNode>>* pv;
+static Vertex<shared_ptr<MindNode>>* to_paste;
+static void cut(Vertex<shared_ptr<MindNode>>* v) 
+{
+	to_paste = v;
+}
+static void paste(Vertex<shared_ptr<MindNode>>* v)
+{
+	bool paste_to_sub = false, same_name = false;
+	sub_width_apply(v, [&paste_to_sub](shared_ptr<MindNode> sp) {
+			if(sp == to_paste->data) paste_to_sub = true; });
+	for(auto* e = v->edge; e; e = e->edge) 
+		if(e->vertex->data->name == to_paste->data->name) same_name = true;
+	if(!paste_to_sub && !same_name) {
+		string command = "mv ";
+		command += to_paste->data->path + to_paste->data->name + ' ';
+		command += v->data->path + v->data->name;
+		system(command.data());
+		pv->cutNpaste(to_paste, v);
+	}
+}
+
+
+
+
+void popup(Vertex<shared_ptr<MindNode>>* v) 
+{
 	int result;
 	{
 		Gtk::Dialog dia;
 		dia.add_button("_Shape",1);
 		dia.add_button("_Color",2);
 		dia.add_button("_Open",3);
-		dia.add_button("_Resize",4);
+		dia.add_button("_Cut",4);
+		dia.add_button("_Paste",5);
 		dia.add_button("Cancel",0);
 		result = dia.run();
 	}
@@ -105,7 +133,8 @@ void popup(Vertex<shared_ptr<MindNode>>* v) {
 		case 1: shape_chooser(v); break;
 		case 2: color_chooser(v); break;
 		case 3: app_chooser(v); break;
-		case 4:
+		case 4: cut(v); break;
+		case 5: paste(v); break;
 		default:;
 	}
 }

@@ -43,6 +43,7 @@ public:
 	//bug appears. drag also triggers this virtual method. may vector table is 
 	//wrong arranged?
 	
+	virtual void cutNpaste(V*, V*) {}
 	std::vector<std::shared_ptr<Drawable>>::const_iterator end() const {
 		return drawables_.end();
 	}

@@ -35,6 +35,24 @@ public:
 		for(auto* v = root; v; v = v->vertex) 
 			for(auto* e = v->edge; e; e = e->edge) if(e->vertex == s) return v;
 	}
+	virtual void cutNpaste(V* cut, V* to) {
+		E* to_paste;
+		for(E* e = get_parent(cut)->edge; e->edge; e = e->edge) {
+			if(e->edge->vertex == cut) {//if next is the edge to the cut
+				to_paste = e->edge;
+				to_paste->edge = nullptr;
+				e->edge = e->edge->edge;
+				break;
+			}
+		}
+		for(E* e = to->edge; e; e = e->edge) {
+			if(!e->edge) {
+				e->edge = to_paste;
+				break;
+			}
+		}
+		
+	}
 
 	virtual void drag(Point from, Point to) {//virtual can find specialization method
 		for(auto& a : map_) {
@@ -42,7 +60,7 @@ public:
 				auto* parent = get_parent(a.first);
 				a.second = to;
 				//apply lambda function to all sub of a.first vertex 
-				width_apply(a.first, [&](std::shared_ptr<MindNode> sp) {
+				sub_width_apply(a.first, [&](std::shared_ptr<MindNode> sp) {
 					for(auto& b : map_) if(b.first->data == sp && //if sub
 						abs(b.second - from) > 20)//if not clogged together
 								b.second += to - from;});//parallel move
@@ -88,13 +106,6 @@ protected:
 private:
 	int width_;
 
-	template<typename T> void width_apply(V* p, T func) {
-		for(auto* e = p->edge; e; e = e->edge) {
-			func(e->vertex->data);
-			if(e->vertex->data->type == MindNode::Dir) width_apply(e->vertex, func);
-		}
-	}
-	
 	void treeview(V* p, int x, int y, int h) {
 		if(!p) return;
 		map_[p] = {x, y};

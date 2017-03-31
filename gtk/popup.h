@@ -19,3 +19,13 @@ protected:
 
 void popup(Vertex<std::shared_ptr<MindNode>>* v);
 
+template<typename T> 
+void sub_width_apply(Vertex<std::shared_ptr<MindNode>>* v, T func) 
+{
+	for(auto* e = v->edge; e; e = e->edge) {
+		func(e->vertex->data);
+		if(e->vertex->data->type == MindNode::Dir) 
+			sub_width_apply(e->vertex, func);
+	}
+}
+	
