@@ -78,15 +78,15 @@ static void app_chooser(Vertex<shared_ptr<MindNode>>* v) {
 	int i=0;
 	while(ext != extensions[i] && i < 6) i++;
 	
-	string s;
+	string command;
 	
-	if(v->data->type == MindNode::Dir) s = programs[0];
-	else if(!i) s = programs[1];
-	else if(i < 6) s = programs[2];
-	else s = programs[3];
+	if(v->data->type == MindNode::Dir) command = programs[0];
+	else if(!i) command = programs[1];
+	else if(i < 6) command = programs[2];
+	else command = programs[3];
 	
-	s += v->data->path + file + '&';
-	system(s.data());
+	command += v->data->path + file + '&';
+	system(command.data());
 }
 
 void popup(Vertex<shared_ptr<MindNode>>* v) {

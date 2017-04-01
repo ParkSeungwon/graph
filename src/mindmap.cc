@@ -4,7 +4,6 @@
 #include"mindmap.h"
 using namespace std;
 
-
 MindNode::MindNode(string fname, MindNode::Type type)
 {
 	name = fname;
@@ -15,7 +14,7 @@ MindNode::MindNode(string fname, MindNode::Type type)
 
 void construct_graph(Graph<shared_ptr<MindNode>>& graph, string dir, 
 		shared_ptr<MindNode> parent)
-{
+{///read directory recursively and construct graph structure
 	if(dir.back() != '/') dir += '/';
 	auto filename_and_type = getdir(dir);
 	ifstream f(dir + ".mindmap");
@@ -37,7 +36,7 @@ void construct_graph(Graph<shared_ptr<MindNode>>& graph, string dir,
 }
 
 void save_graph(Vertex<std::shared_ptr<MindNode>>* v, std::string dir)
-{
+{///save .mindmap file at every directory
 	if(dir.back() != '/') dir += '/';
 	ofstream f(dir + ".mindmap");
 	for(auto* e = v->edge; e; e = e->edge) f << *e->vertex->data << endl;

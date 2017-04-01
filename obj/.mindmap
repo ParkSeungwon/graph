@@ -3,7 +3,7 @@ drawable.o 0 84 371 3 1 8 0 0 0 0
 dynamic.x 0 5 -75 3 1 8 0 0 0 0 
 gldrawable.o 0 151 416 3 1 8 0 0 0 0 
 glview.x 0 229 464 3 1 8 0 0 0 0 
-image.o 0 -163 159 3 1 8 0 0 0 0 
+image.o 0 -150 171 3 1 8 0 0 0 0 
 imageboardtest.x 0 -156 99 3 1 8 0 0 0 0 
 ls.o 0 -59 328 3 1 8 0 0 0 0 
 mind.x 0 -7 239 3 1 8 0 0 0 0 

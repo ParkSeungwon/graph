@@ -40,6 +40,24 @@ public:
 		for(auto& a : map_) {
 			if(abs(a.second - from) < 20) {
 				auto* parent = get_parent(a.first);
+				for(auto& c : map_) {
+					if(abs(c.second - to) < 20 && c.first->data->type == MindNode::Dir) {
+						bool same_name = false, paste_to_sub = false;
+						width_apply(a.first, [&](std::shared_ptr<MindNode> sp) {
+								if(sp == c.first->data) paste_to_sub = true; });
+						for(auto* e = c.first->edge; e; e = e->edge) 
+							if(e->vertex->data->name == a.first->data->name) 
+								same_name = true;
+						if(!paste_to_sub && !same_name) {
+							std::string command = "mv ";
+							command += a.first->data->path + a.first->data->name + ' ';
+							command += c.first->data->path + c.first->data->name;
+							system(command.data());
+							cutNpaste(a.first, c.first);
+						}
+						to += Point{100, 0};
+					}
+				}
 				a.second = to;
 				//apply lambda function to all sub of a.first vertex 
 				width_apply(a.first, [&](std::shared_ptr<MindNode> sp) {
@@ -94,7 +112,30 @@ private:
 			if(e->vertex->data->type == MindNode::Dir) width_apply(e->vertex, func);
 		}
 	}
-	
+
+	void cutNpaste(V* from, V* to) {
+		std::string from_path = from->data->path, to_path = to->data->path;
+		from->data->path = to_path;
+		width_apply(from->vertex, [&](std::shared_ptr<MindNode> sp) {
+				sp->path.replace(sp->path.find(from_path), from_path.size(), to_path);});
+		V* parent = get_parent(from);
+		E* tmp;
+		for(E* e = parent->edge; e; e = e->edge) {
+			if(e->edge->vertex == to) {
+				tmp = e->edge;
+				e->edge = e->edge->edge;
+				tmp->edge = nullptr;
+				break;
+			}
+		}
+		for(E* e = to->edge; e; e = e->edge) {
+			if(!e->edge) {
+				e->edge = tmp;
+				break;
+			}
+		}
+
+	}
 	void treeview(V* p, int x, int y, int h) {
 		if(!p) return;
 		map_[p] = {x, y};

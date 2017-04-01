@@ -7,7 +7,7 @@
 #include"special.h"
 using namespace std;
 
-extern GraphV<shared_ptr<MindNode>>* pv;
+extern GraphV<shared_ptr<MindNode>>* PV;//treeview.cc
 int main(int c, char** av)
 {
 	if(c < 2) return 0;
@@ -19,7 +19,7 @@ int main(int c, char** av)
 	GraphV<shared_ptr<MindNode>> gv3{graph.data()};
 //	graph.depth();
 //	graph.greedy();
-	pv = &gv3;
+	PV = &gv3;
 
 	int i=0;
 	auto app = Gtk::Application::create(i, av);
