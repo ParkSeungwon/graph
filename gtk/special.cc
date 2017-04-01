@@ -31,15 +31,17 @@ void GraphView<V, E, shared_ptr<MindNode>>::allocate_node(V* vt)
 
 V* GraphView<V, E, shared_ptr<MindNode>>::get_parent(V* s) 
 {///get parent node of son
-	if(s == root) return nullptr;
+	if(s == root || !s) return nullptr;
 	for(auto* v = root; v; v = v->vertex) 
 		for(auto* e = v->edge; e; e = e->edge) if(e->vertex == s) return v;
 }
 
 void GraphView<V, E, shared_ptr<MindNode>>::drag(Point from, Point to) 
 {///virtual can find specialization method
-	V *pf = pick(from), *pt = pick(to), *parent = get_parent(pf);
-	if(pf && pt && pt->data->type == MindNode::Dir) {
+	V *pf = pick(from), *pt = pick(to);
+	if(!pf) return;
+	V* parent = get_parent(pf);
+	if(pt && pt->data->type == MindNode::Dir) {
 		bool same_name = false, paste_to_sub = false;
 		width_apply(pf, [&](std::shared_ptr<MindNode> sp) {
 				if(sp == pt->data) paste_to_sub = true; });
@@ -53,10 +55,11 @@ void GraphView<V, E, shared_ptr<MindNode>>::drag(Point from, Point to)
 			cutNpaste(pf, pt);//move edge, !!!buggy
 		}
 		to += Point{100, 0};
+		pf->data->pt = Point{100,0};//this pt is point, confusing sorry
 	}
 	
 	vpNpos[pf] = to;
-	//apply lambda function to all sub of a.first vertex 
+	//apply lambda function to all sub of 1st argument 
 	width_apply(pf, [&](std::shared_ptr<MindNode> sp) {
 		for(auto& b : vpNpos) //if sub & not clogged together
 			if(b.first->data == sp && abs(b.second - from) > 20)
@@ -69,13 +72,10 @@ void GraphView<V, E, shared_ptr<MindNode>>::drag(Point from, Point to)
 
 void GraphView<V, E, shared_ptr<MindNode>>::right_click(Point pt) 
 {///popup to configure node
-	for(auto& a : vpNpos) {
-		if(abs(a.second - pt) < 20) {
-			popup(a.first);
-			break;
-		}
+	if(V* v = pick(pt)) {
+		popup(v);
+		generate_graph();
 	}
-	generate_graph();
 }
 
 std::vector<std::shared_ptr<Drawable>>::const_iterator 
@@ -99,11 +99,14 @@ void GraphView<V, E, shared_ptr<MindNode>>::treeview(int height)
 
 void GraphView<V, E, shared_ptr<MindNode>>::cutNpaste(V* from, V* to) 
 {///cut an edge from 'from' paste to 'to'
-	std::string from_path = from->data->path, to_path = to->data->path;
+	///deal with path
+	string from_path = from->data->path;
+	string to_path = to->data->path + to->data->name + '/';
 	from->data->path = to_path;
 	width_apply(from, [&](std::shared_ptr<MindNode> sp) {
 			sp->path.replace(sp->path.find(from_path), from_path.size(), to_path);});
 
+	///deal with edge
 	V* parent = get_parent(from);
 	E* tmp;
 	for(E* e = parent->edge, *prev = e; e; prev = e, e = e->edge) {//cut edge
@@ -121,11 +124,10 @@ void GraphView<V, E, shared_ptr<MindNode>>::cutNpaste(V* from, V* to)
 			break;
 		}
 	}
+
+	///change one arrow
 	for(auto& a : arrows_) 
 		if(get<0>(a) == parent && get<1>(a) == from) get<0>(a) = to;
-//	vpNpos.clear();
-//	arrows_.clear();
-//	allocate_node(root);
 }
 
 void GraphView<V, E, shared_ptr<MindNode>>::treeview(V* p, int x, int y, int h) 
