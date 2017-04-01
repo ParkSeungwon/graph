@@ -38,4 +38,5 @@ private:
 	void cutNpaste(V* from, V* to);
 	void treeview(V* p, int x, int y, int h);
 	void generate_graph();
+	V* pick(Point p);
 };

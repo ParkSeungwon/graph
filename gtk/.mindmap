@@ -6,7 +6,7 @@ image.cc 0 -268 120 3 1 8 0 192 85 64
 image.h 0 -136 -48 3 1 8 0 0 0 0 
 imageboardtest.cpp 0 -104 101 3 1 8 0 0 0 0 
 mindv.cpp 0 -63 237 3 1 8 0 0 0 0 
-popup.cc 0 23 122 3 1 8 0 0 0 0 
+popup.cc 0 -99 167 3 1 8 0 0 0 0 
 popup.h 0 193 -35 3 1 8 0 0 0 0 
 special.cc 0 82 -232 3 1 8 0 0 0 0 
 special.h 0 103 128 3 1 8 0 0 0 0 

@@ -38,38 +38,32 @@ V* GraphView<V, E, shared_ptr<MindNode>>::get_parent(V* s)
 
 void GraphView<V, E, shared_ptr<MindNode>>::drag(Point from, Point to) 
 {///virtual can find specialization method
-	for(auto& a : vpNpos) {
-		if(abs(a.second - from) < 20) {
-			auto* parent = get_parent(a.first);
-			for(auto& c : vpNpos) {
-				if(abs(c.second - to) < 20 && c.first->data->type == MindNode::Dir) {
-					bool same_name = false, paste_to_sub = false;
-					width_apply(a.first, [&](std::shared_ptr<MindNode> sp) {
-							if(sp == c.first->data) paste_to_sub = true; });
-					for(auto* e = c.first->edge; e; e = e->edge) 
-						if(e->vertex->data->name == a.first->data->name) 
-							same_name = true;
-					if(!paste_to_sub && !same_name) {
-						std::string command = "mv ";
-						command += a.first->data->path + a.first->data->name + ' ';
-						command += c.first->data->path + c.first->data->name;
-						system(command.data());
-						cutNpaste(a.first, c.first);
-					}
-					to += Point{100, 0};
-				}
-			}
-			a.second = to;
-			//apply lambda function to all sub of a.first vertex 
-			width_apply(a.first, [&](std::shared_ptr<MindNode> sp) {
-					for(auto& b : vpNpos) if(b.first->data == sp && //if sub
-							abs(b.second - from) > 20)//if not clogged together
-					b.second += to - from;});//parallel move
-			a.first->data->pt = parent ? to - vpNpos[parent] : 0;
-			std::cout << a.second << ' ' << a.first->data->pt << std::endl;
-			break;//select only one
+	V *pf = pick(from), *pt = pick(to), *parent = get_parent(pf);
+	if(pf && pt && pt->data->type == MindNode::Dir) {
+		bool same_name = false, paste_to_sub = false;
+		width_apply(pf, [&](std::shared_ptr<MindNode> sp) {
+				if(sp == pt->data) paste_to_sub = true; });
+		for(auto* e = pt->edge; e; e = e->edge) 
+			if(e->vertex->data->name == pf->data->name) same_name = true;
+		if(!paste_to_sub && !same_name) {
+			std::string command = "mv ";
+			command += pf->data->path + pf->data->name + ' ';
+			command += pt->data->path + pt->data->name;
+			system(command.data());//move file or directory
+			cutNpaste(pf, pt);//move edge, !!!buggy
 		}
+		to += Point{100, 0};
 	}
+	
+	vpNpos[pf] = to;
+	//apply lambda function to all sub of a.first vertex 
+	width_apply(pf, [&](std::shared_ptr<MindNode> sp) {
+		for(auto& b : vpNpos) //if sub & not clogged together
+			if(b.first->data == sp && abs(b.second - from) > 20)
+				b.second += to - from;//parallel move
+	});
+	pf->data->pt = parent ? to - vpNpos[parent] : 0;
+	//std::cout << a.second << ' ' << a.first->data->pt << std::endl;
 	generate_graph();
 }
 
@@ -125,9 +119,11 @@ void GraphView<V, E, shared_ptr<MindNode>>::cutNpaste(V* from, V* to)
 			break;
 		}
 	}
-	vpNpos.clear();
-	arrows_.clear();
-	allocate_node(root);
+	for(auto& a : arrows_) 
+		if(get<0>(a) == parent && get<1>(a) == from) get<0>(a) = to;
+//	vpNpos.clear();
+//	arrows_.clear();
+//	allocate_node(root);
 }
 
 void GraphView<V, E, shared_ptr<MindNode>>::treeview(V* p, int x, int y, int h) 
@@ -181,3 +177,8 @@ void GraphView<V, E, shared_ptr<MindNode>>::generate_graph()
 	}
 }
 
+V* GraphView<V, E, shared_ptr<MindNode>>::pick(Point p) 
+{//returns a V* at that position, if none return null
+	for(auto& a : vpNpos) if(abs(a.second - p)<20) return a.first;
+	return nullptr;
+}
