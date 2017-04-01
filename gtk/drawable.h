@@ -9,7 +9,7 @@
 #include"point.h"
 
 class Drawable
-{
+{///all the drawing dependent part should be inside the operator()()
 public:
 	virtual void operator()(const Cairo::RefPtr<Cairo::Context>& cr);
 	virtual void operator()();

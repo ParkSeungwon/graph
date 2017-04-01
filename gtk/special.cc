@@ -6,8 +6,8 @@ GraphView<V, E, shared_ptr<MindNode>>::GraphView(V* gr)
 	root = gr;
 	Point im{500, 500};
 	int i = 0, sz = 0;
-	allocate_node(gr);
-	generate_graph();
+	allocate_node(gr);//populate vpNpos, arrows_
+	generate_graph();//populate drawables_
 }
 
 GraphView<V, E, shared_ptr<MindNode>>::~GraphView() 
@@ -104,7 +104,7 @@ void GraphView<V, E, shared_ptr<MindNode>>::treeview(int height)
 }
 
 void GraphView<V, E, shared_ptr<MindNode>>::cutNpaste(V* from, V* to) 
-{
+{///cut an edge from 'from' paste to 'to'
 	std::string from_path = from->data->path, to_path = to->data->path;
 	from->data->path = to_path;
 	width_apply(from, [&](std::shared_ptr<MindNode> sp) {
@@ -112,7 +112,7 @@ void GraphView<V, E, shared_ptr<MindNode>>::cutNpaste(V* from, V* to)
 	V* parent = get_parent(from);
 	E* tmp;
 	for(E* e = parent->edge; e; e = e->edge) {//cut edge
-		if(e->edge->vertex == to) {
+		if(e->edge && e->edge->vertex == to) {
 			tmp = e->edge;
 			e->edge = e->edge->edge;
 			tmp->edge = nullptr;
@@ -125,6 +125,9 @@ void GraphView<V, E, shared_ptr<MindNode>>::cutNpaste(V* from, V* to)
 			break;
 		}
 	}
+	vpNpos.clear();
+	arrows_.clear();
+	allocate_node(root);
 }
 
 void GraphView<V, E, shared_ptr<MindNode>>::treeview(V* p, int x, int y, int h) 

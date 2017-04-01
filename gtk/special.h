@@ -22,8 +22,8 @@ public:
 protected:
 	V* root = nullptr;
 	std::map<V*, Point> vpNpos;
-	std::vector<std::tuple<V*, V*, int, int>> arrows_;
-	std::vector<std::shared_ptr<Drawable>> drawables_;
+	std::vector<std::tuple<V*, V*, int, int>> arrows_;//from,to,weight,v
+	std::vector<std::shared_ptr<Drawable>> drawables_;//vpNpos,arrows_->drawables
 
 private:
 	int width_;

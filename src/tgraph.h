@@ -14,7 +14,7 @@ template<typename T> class Edge
 {
 public:
 	int weight = 0;
-	int v = 0;
+	int v = 0;//for visit check or other uses like dijkstra route check
 	struct Vertex<T>* vertex = nullptr;
 	struct Edge<T>* edge = nullptr;
 };
@@ -23,11 +23,19 @@ template<typename T> class Vertex
 {
 public:
 	T data;
-	int v = 0;
+	int v = 0;//for visit check or other uses like parity bit
 	struct Edge<T>* edge = nullptr;
 	struct Vertex<T>* vertex = nullptr;
 };
 
+///This class does not make its own data structure it just deals with pointers 
+///and allocate memory for data. Thus enhance interoperability with C style data
+///structure. It arange data like below. V->vertex always points to the next line, 
+///E->edge always points to the next one, while E->vertex point to the other
+///edge irregularly with direction.
+/// V - E - E - E - E
+/// V - E - E
+/// V - E - E - E
 template<typename T> class Graph
 {
 public:

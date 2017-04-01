@@ -1,12 +1,22 @@
-//A class to view a graph data structure
+/**
+A class to view a graph data structure
+
+V Vertex should be a struct that has vertex, edge, data, v
+E Edge should have vertex, edge, weight, v
+D Data can be anything
+
+This class shows graph structure graphically. It should get the root node
+pointer which is tranferred by graph.data() to show the graph.
+This class does not draw to the canvas directly, it just make the data structure
+(drawables, which is separate from drawing dependency, have position or line etc)
+according to the graph structure, and store it in the vector. Then pass it to
+the drawing module.
+**/
 #pragma once
 #include<complex>
 #include"drawable.h"
 #include"src/parsetree.h"
 #define CIRCLE_SIZE 30.0
-//V Vertex should have vertex, edge, data, v
-//E Edge should have vertex, edge, weight, v
-//D Data can be anything
 template <typename V, typename E, typename D> class GraphView 
 {
 public:
