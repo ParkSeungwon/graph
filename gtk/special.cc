@@ -103,15 +103,18 @@ void GraphView<V, E, shared_ptr<MindNode>>::cutNpaste(V* from, V* to)
 	from->data->path = to_path;
 	width_apply(from, [&](std::shared_ptr<MindNode> sp) {
 			sp->path.replace(sp->path.find(from_path), from_path.size(), to_path);});
+
 	V* parent = get_parent(from);
 	E* tmp;
-	for(E* e = parent->edge; e; e = e->edge) {//cut edge
-		if(e->edge && e->edge->vertex == to) {
-			tmp = e->edge;
-			e->edge = e->edge->edge;
+	for(E* e = parent->edge, *prev = parent->edge; e; e = e->edge) {//cut edge
+		if(e->vertex == from) {
+			tmp = e;
+			if(e != parent->edge) prev->edge = e->edge;
+			else parent->edge = e->edge;
 			tmp->edge = nullptr;
 			break;
 		}
+		prev = e;
 	}
 	for(E* e = to->edge; e; e = e->edge) {//paste edge
 		if(!e->edge) {
