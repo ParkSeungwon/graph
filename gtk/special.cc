@@ -106,7 +106,7 @@ void GraphView<V, E, shared_ptr<MindNode>>::cutNpaste(V* from, V* to)
 
 	V* parent = get_parent(from);
 	E* tmp;
-	for(E* e = parent->edge, *prev = parent->edge; e; e = e->edge) {//cut edge
+	for(E* e = parent->edge, *prev = e; e; prev = e, e = e->edge) {//cut edge
 		if(e->vertex == from) {
 			tmp = e;
 			if(e != parent->edge) prev->edge = e->edge;
@@ -114,7 +114,6 @@ void GraphView<V, E, shared_ptr<MindNode>>::cutNpaste(V* from, V* to)
 			tmp->edge = nullptr;
 			break;
 		}
-		prev = e;
 	}
 	for(E* e = to->edge; e; e = e->edge) {//paste edge
 		if(!e->edge) {

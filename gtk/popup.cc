@@ -48,8 +48,8 @@ static void shape_chooser(Vertex<shared_ptr<MindNode>>* v) {
 			for(auto* e = v->edge; e; e = e->edge) //is present in the directory
 				if(e->vertex->data->name == ad.name.get_text()) same_name = true;
 			if(!same_name) {//rename it
-				string command = "mv ";
-				command += mn->path + mn->name + ' ' + mn->path + ad.name.get_text();
+				string command = "mv '";
+				command += mn->path + mn->name + "' '" + mn->path + ad.name.get_text() + "'";
 				system(command.data());
 				mn->name = ad.name.get_text();
 			}

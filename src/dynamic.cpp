@@ -13,7 +13,7 @@ V* get_parent(V* s, V* root)
 void move(V* from, V* to, V* root) {
 	V* parent = get_parent(from, root);
 	E *tmp;
-	for(E* e = parent->edge, *prev = parent->edge; e; e = e->edge) {//cut edge
+	for(E* e = parent->edge, *prev = parent->edge; e; prev = e, e = e->edge) {//cut edge
 		if(e->vertex == from) {
 			tmp = e;
 			if(e != parent->edge) prev->edge = e->edge;
@@ -21,7 +21,7 @@ void move(V* from, V* to, V* root) {
 			tmp->edge = nullptr;
 			break;
 		}
-		prev = e;
+		//prev = e;
 	}
 	for(E* e = to->edge; e; e = e->edge) {//paste edge
 		if(!e->edge) {
