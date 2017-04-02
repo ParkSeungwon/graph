@@ -14,7 +14,7 @@ struct MindNode
 	enum Shape {Circle, Rect, Diamond, Ellipse} outline = Ellipse;
 	enum Line {Plant, Direct} line = Direct;
 	enum Type {Dir = 4, File = 8} type;
-	unsigned char r,g,b,a;
+	unsigned char color[3][4];
 	short width, height;
 
 	MindNode(std::string filename, MindNode::Type type);

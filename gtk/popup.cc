@@ -57,14 +57,25 @@ static void shape_chooser(Vertex<shared_ptr<MindNode>>* v) {
 	}
 }
 
-static void color_chooser(Vertex<shared_ptr<MindNode>>* v) {
-	Gtk::ColorChooserDialog dia;
-	if(dia.run() == Gtk::RESPONSE_OK) {
-		auto color = dia.get_rgba();
-		v->data->r = color.get_red() * 255;
-		v->data->g = color.get_green() * 255;
-		v->data->b = color.get_blue() * 255;
-		v->data->a = color.get_alpha() * 255;
+static int color_chooser(Vertex<shared_ptr<MindNode>>* v) {
+	int result;
+	{
+		Gtk::Dialog dia;
+		dia.add_button("_Line",1);
+		dia.add_button("_Shape",2);
+		dia.add_button("_Text",3);
+		dia.add_button("Cancel",0);
+		result = dia.run();
+	}
+	if(result) {
+		Gtk::ColorChooserDialog dia;
+		if(dia.run() == Gtk::RESPONSE_OK) {
+			auto color = dia.get_rgba();
+			v->data->color[result-1][0] = color.get_red() * 255;
+			v->data->color[result-1][1] = color.get_green() * 255;
+			v->data->color[result-1][2] = color.get_blue() * 255;
+			v->data->color[result-1][3] = color.get_alpha() * 255;
+		}
 	}
 }
 
