@@ -162,23 +162,27 @@ void GraphView<V, E, shared_ptr<MindNode>>::generate_graph()
 		drawables_.push_back(std::make_shared<Arrow>(arrow));
 	}
 	for(auto& a : vpNpos) {//draw nodes according to shape of data
-		int sz = CIRCLE_SIZE / 2;
+		int h = CIRCLE_SIZE / 2;
 		auto sp = a.first->data;
 		if(!sp->show) continue;
 		int w = sp->name.size() * CIRCLE_SIZE / 10;
-		w = std::max(w, sz);
+		w = std::max(w, h);
+		if(sp->width && sp->height) {
+			w = sp->width / 2;
+			h = sp->height / 2;
+		}
 
 		Drawable* dr;
 		switch(sp->outline) {
 		case MindNode::Ellipse:
-			dr = new Ellipse{a.second - Point{w, sz}, a.second + Point{w, sz}};
+			dr = new Ellipse{a.second - Point{w, h}, a.second + Point{w, h}};
 			break;
 		case MindNode::Rect:
-			dr = new Box{a.second - Point{w*2, sz*2}, a.second + Point{w*2, sz*2}};
+			dr = new Box{a.second - Point{w, h}, a.second + Point{w, h}};
 			break;
 		case MindNode::Picture:
 			dr = new Pix{sp->path + sp->name, 
-				a.second - Point{w*3, sz*3}, a.second + Point{w*3, sz*3}};
+				a.second - Point{w, h}, a.second + Point{w, h}};
 			break;
 		}
 		

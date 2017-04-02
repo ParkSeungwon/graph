@@ -1,6 +1,8 @@
 #include<gtkmm.h>
 #include"mindmap.h"
 
+void popup(Vertex<std::shared_ptr<MindNode>>* v);
+
 class AttributeDialog : public Gtk::Dialog
 {///Popup window to set the attributes of a MindNode
 public:
@@ -17,5 +19,17 @@ protected:
 	Gtk::HBox hb1, hb2;
 };
 
-void popup(Vertex<std::shared_ptr<MindNode>>* v);
+class ResizeDialog : public Gtk::Dialog
+{
+public:
+	ResizeDialog();
+	Gtk::SpinButton width, height;
+	Gtk::CheckButton fixed_ratio;
 
+protected:
+	Gtk::Label wl, hl;
+	Gtk::HBox whb, hhb;
+	void on_change(char c);
+	void on_toggle();
+	float rate;
+};

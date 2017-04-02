@@ -60,7 +60,7 @@ istream& operator>>(istream& is, MindNode& r) {
 	getline(is, s);
 	stringstream ss;
 	ss << s;
-	ss >> r.show >> x >> y >> a >> b >> c;
+	ss >> r.show >> x >> y >> a >> b >> c >> r.width >> r.height;
 	for(int i=0; i<3; i++) for(int j=0; j<4; j++) ss >> color[i][j];
 	for(int i=0; i<3; i++) for(int j=0; j<4; j++) r.color[i][j] = color[i][j];
 	r.pt = {x, y}; 
@@ -75,6 +75,7 @@ ostream& operator<<(ostream& o, const MindNode& node)
 	o << node.name << endl << node.show << ' ';
 	o << node.pt.x() << ' ' << node.pt.y() << ' ';
 	o << node.outline << ' ' << node.line << ' ' << node.type << ' ' ;
+	o << node.width << ' ' << node.height << ' ';
 	for(int i=0; i<3; i++) for(int j=0; j<4; j++)  o << +node.color[i][j] << ' ';
 	return o;
 }

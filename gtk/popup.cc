@@ -28,6 +28,45 @@ AttributeDialog::AttributeDialog() : Picture(outline, "picture"),
 	show_all_children();
 }
 
+ResizeDialog::ResizeDialog() : fixed_ratio("fix rate"), wl("width"), hl("height"),
+	width(Gtk::Adjustment::create(1, 0, 1000, 1, 10, 0)), 
+	height(Gtk::Adjustment::create(1, 0, 1000, 1, 10, 0))
+{
+	set_size_request(100, 100);
+	Gtk::Box* box = get_content_area();
+	box->pack_start(fixed_ratio, PACK_SHRINK);
+	whb.pack_start(wl, PACK_SHRINK);
+	whb.pack_end(width, PACK_SHRINK);
+	hhb.pack_start(hl, PACK_SHRINK);
+	hhb.pack_end(height, PACK_SHRINK);
+	box->pack_start(whb, PACK_SHRINK);
+	box->pack_start(hhb, PACK_SHRINK);
+	width.set_numeric();
+	height.set_numeric();
+	width.signal_value_changed().connect(bind(&ResizeDialog::on_change, this, 'w'));
+	height.signal_value_changed().connect(bind(&ResizeDialog::on_change, this, 'h'));
+	fixed_ratio.signal_toggled().connect(bind(&ResizeDialog::on_toggle, this));
+	add_button("_Ok", 1);
+	add_button("_Cancel", 0);
+	show_all_children();
+}
+
+void ResizeDialog::on_change(char c) 
+{
+	if(fixed_ratio.get_active()) {
+		switch(c) {
+			case 'w': height.set_value(width.get_value() / rate); break;
+			case 'h': width.set_value(rate * height.get_value()); break;
+		}
+	}
+}
+
+void ResizeDialog::on_toggle()
+{
+	if(fixed_ratio.get_active()) rate = width.get_value() / height.get_value();
+}
+		
+
 static void shape_chooser(Vertex<shared_ptr<MindNode>>* v) {
 	auto mn = v->data;
 	AttributeDialog ad;
@@ -114,6 +153,15 @@ static void file_chooser(Vertex<shared_ptr<MindNode>>* v) {
 	}
 }
 
+static void resize(Vertex<shared_ptr<MindNode>>* v) {
+	ResizeDialog dia;
+	dia.width.set_value(v->data->width);
+	dia.height.set_value(v->data->height);
+	if(dia.run()) {
+		v->data->width = dia.width.get_value_as_int();
+		v->data->height = dia.height.get_value_as_int();
+	}
+}
 
 void popup(Vertex<shared_ptr<MindNode>>* v) {
 	int result;
@@ -132,7 +180,7 @@ void popup(Vertex<shared_ptr<MindNode>>* v) {
 		case 1: shape_chooser(v); break;
 		case 2: color_chooser(v); break;
 		case 3: app_chooser(v); break;
-		case 4:
+		case 4: resize(v); break;
 		case 5: file_chooser(v); break;
 		default:;
 	}
