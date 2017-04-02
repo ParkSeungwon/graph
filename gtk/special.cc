@@ -162,22 +162,25 @@ void GraphView<V, E, shared_ptr<MindNode>>::generate_graph()
 		int sz = CIRCLE_SIZE / 2;
 		int w = a.first->data->name.size() * CIRCLE_SIZE / 10;
 		w = std::max(w, sz);
-		if(a.first->data->outline == MindNode::Ellipse) {
-			Ellipse el{a.second - Point{w, sz}, a.second + Point{w, sz}};
-			el.txt(a.first->data->name);
-			el.set_rgb((double)a.first->data->r / 255, 
-				(double)a.first->data->g / 255, (double)a.first->data->b / 255);
-			drawables_.push_back(std::make_shared<Ellipse>(el));
-		} else if(a.first->data->outline == MindNode::Rect) {
-			Box bx{a.second - Point{w*2, sz*2}, a.second + Point{w*2, sz*2}};
-			bx.txt(a.first->data->name);
-			drawables_.push_back(std::make_shared<Box>(bx));
-		} else if(a.first->data->outline == MindNode::Diamond) {
-			Pix im{a.first->data->path + a.first->data->name, 
+
+		Drawable* dr;
+		switch(a.first->data->outline) {
+		case MindNode::Ellipse:
+			dr = new Ellipse{a.second - Point{w, sz}, a.second + Point{w, sz}};
+			break;
+		case MindNode::Rect:
+			dr = new Box{a.second - Point{w*2, sz*2}, a.second + Point{w*2, sz*2}};
+			break;
+		case MindNode::Diamond:
+			dr = new Pix{a.first->data->path + a.first->data->name, 
 				a.second - Point{w*3, sz*3}, a.second + Point{w*3, sz*3}};
-			im.txt(a.first->data->name);
-			drawables_.push_back(std::make_shared<Pix>(im));
+			break;
 		}
+		
+		dr->txt(a.first->data->name);
+		dr->set_rgb((double)a.first->data->r / 255, 
+				(double)a.first->data->g / 255, (double)a.first->data->b / 255);
+		drawables_.push_back(shared_ptr<Drawable>{dr});
 	}
 }
 
