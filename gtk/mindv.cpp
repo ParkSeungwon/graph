@@ -12,6 +12,8 @@ int main(int c, char** av)
 	if(c < 2) return 0;
 	Graph<shared_ptr<MindNode>> graph;
 	auto par = make_shared<MindNode>(av[1], MindNode::Dir);
+	par->width = 100;
+	par->height = 50;
 	graph.insert_vertex(par);
 	construct_graph(graph, av[1], par);
 	//cout << graph.dijkstra("daejun", "kangwon") << endl;;

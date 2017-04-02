@@ -135,7 +135,7 @@ static void app_chooser(Vertex<shared_ptr<MindNode>>* v) {
 	else if(i < 6) command = programs[2];
 	else command = programs[3];
 	
-	command += v->data->path + file + '&';
+	command += v->data->path + "'" + file + "'&";
 	system(command.data());
 }
 

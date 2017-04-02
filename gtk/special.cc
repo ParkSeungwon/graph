@@ -197,6 +197,7 @@ void GraphView<V, E, shared_ptr<MindNode>>::generate_graph()
 
 V* GraphView<V, E, shared_ptr<MindNode>>::pick(Point p) 
 {//returns a V* at that position, if none return null
-	for(auto& a : vpNpos) if(abs(a.second - p)<20) return a.first;
+	for(auto& a : vpNpos) 
+		if(abs(a.second - p)<20 && a.first->data->show) return a.first;
 	return nullptr;
 }

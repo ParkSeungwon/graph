@@ -10,7 +10,7 @@ MindNode::MindNode(string fname, MindNode::Type type)
 	name = fname;
 	this->type = type;
 	show = (type == Dir ? true : false);
-	outline = (type == Dir ? MindNode::Rect : MindNode::Ellipse);
+	outline = (type == Dir ? MindNode::Ellipse : MindNode::Rect);
 	for(int i=0; i<3; i++) color[i][3] = 255;
 }
 
