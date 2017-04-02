@@ -9,8 +9,6 @@ Pix::Pix(string file, Point s, Point e) : Box(s - Point{3,3}, e + Point{3,3})
 
 void Pix::operator()(const Cairo::RefPtr<Cairo::Context>& cr) 
 {///limited gtk dependency inside of this function
-	static Glib::RefPtr<Gdk::Pixbuf> image;
-	static int w, h;
 	if(!initialized) {
 		Point im = end - start;//width + i * height
 		image = Gdk::Pixbuf::create_from_file(filename);

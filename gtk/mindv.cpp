@@ -1,4 +1,3 @@
-#define NDEBUG
 #include<gtkmm.h>
 #include"treeview.h"
 #include"graphv.h"
