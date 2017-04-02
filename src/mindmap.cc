@@ -1,5 +1,6 @@
 #include<map>
 #include<dirent.h>
+#include<sstream>
 #include<iostream>
 #include"mindmap.h"
 using namespace std;
@@ -54,8 +55,12 @@ istream& operator>>(istream& is, MindNode& r) {
 	float x, y;
 	int a, b, c, color[3][4];
 	getline(is, r.name);
-	is >> r.show >> x >> y >> a >> b >> c;
-	for(int i=0; i<3; i++) for(int j=0; j<4; j++) is >> color[i][j];
+	string s;
+	getline(is, s);
+	stringstream ss;
+	ss << s;
+	ss >> r.show >> x >> y >> a >> b >> c;
+	for(int i=0; i<3; i++) for(int j=0; j<4; j++) ss >> color[i][j];
 	for(int i=0; i<3; i++) for(int j=0; j<4; j++) r.color[i][j] = color[i][j];
 	r.pt = {x, y}; 
 	r.outline = static_cast<MindNode::Shape>(a); 
@@ -69,7 +74,7 @@ ostream& operator<<(ostream& o, const MindNode& node)
 	o << node.name << endl << node.show << ' ';
 	o << node.pt.x() << ' ' << node.pt.y() << ' ';
 	o << node.outline << ' ' << node.line << ' ' << node.type << ' ' ;
-	for(int i=0; i<3; i++) for(int j=0; j<4; j++)  o << +color[i][j] << ' ';
+	for(int i=0; i<3; i++) for(int j=0; j<4; j++)  o << +node.color[i][j] << ' ';
 	return o;
 }
 

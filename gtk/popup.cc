@@ -61,9 +61,9 @@ static int color_chooser(Vertex<shared_ptr<MindNode>>* v) {
 	int result;
 	{
 		Gtk::Dialog dia;
-		dia.add_button("_Line",1);
-		dia.add_button("_Shape",2);
-		dia.add_button("_Text",3);
+		dia.add_button("_Text",1);
+		dia.add_button("_Line",2);
+		dia.add_button("_Shape",3);
 		dia.add_button("Cancel",0);
 		result = dia.run();
 	}

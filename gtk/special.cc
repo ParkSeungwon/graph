@@ -39,7 +39,7 @@ V* GraphView<V, E, shared_ptr<MindNode>>::get_parent(V* s)
 void GraphView<V, E, shared_ptr<MindNode>>::drag(Point from, Point to) 
 {///virtual can find specialization method
 	V *pf = pick(from), *pt = pick(to);
-	if(!pf) return;
+	if(!pf || pf == pt) return;
 	V* parent = get_parent(pf);
 	if(pt && pt->data->type == MindNode::Dir) {
 		bool same_name = false, paste_to_sub = false;
@@ -154,17 +154,19 @@ void GraphView<V, E, shared_ptr<MindNode>>::generate_graph()
 		Arrow arrow{d1, d2, 1};
 		arrow.txt(std::get<2>(a));//show weight
 		//if(std::get<3>(a)) arrow.set_rgb(0,0,1);//if v is marked
-		arrow.set_rgb((double)v->data->r / 255, (double)v->data->g / 255,
-				(double)v->data->b / 255);
+		auto sp = std::get<1>(a)->data;
+		arrow.set_rgba((double)sp->color[1][0] / 255, (double)sp->color[1][1] / 255, 
+				(double)sp->color[1][2] / 255, (double)sp->color[1][3] / 255);
 		drawables_.push_back(std::make_shared<Arrow>(arrow));
 	}
 	for(auto& a : vpNpos) {//draw nodes according to shape of data
 		int sz = CIRCLE_SIZE / 2;
-		int w = a.first->data->name.size() * CIRCLE_SIZE / 10;
+		auto sp = a.first->data;
+		int w = sp->name.size() * CIRCLE_SIZE / 10;
 		w = std::max(w, sz);
 
 		Drawable* dr;
-		switch(a.first->data->outline) {
+		switch(sp->outline) {
 		case MindNode::Ellipse:
 			dr = new Ellipse{a.second - Point{w, sz}, a.second + Point{w, sz}};
 			break;
@@ -172,14 +174,16 @@ void GraphView<V, E, shared_ptr<MindNode>>::generate_graph()
 			dr = new Box{a.second - Point{w*2, sz*2}, a.second + Point{w*2, sz*2}};
 			break;
 		case MindNode::Diamond:
-			dr = new Pix{a.first->data->path + a.first->data->name, 
+			dr = new Pix{sp->path + sp->name, 
 				a.second - Point{w*3, sz*3}, a.second + Point{w*3, sz*3}};
 			break;
 		}
 		
-		dr->txt(a.first->data->name);
-		dr->set_rgb((double)a.first->data->r / 255, 
-				(double)a.first->data->g / 255, (double)a.first->data->b / 255);
+		dr->txt(sp->name);
+		dr->set_rgb((double)sp->color[0][0] / 255, (double)sp->color[0][1] / 255, 
+					(double)sp->color[0][2] / 255);
+		dr->set_rgba((double)sp->color[2][0] / 255, (double)sp->color[2][1] / 255, 
+					(double)sp->color[2][2] / 255, (double)sp->color[2][3] / 255);
 		drawables_.push_back(shared_ptr<Drawable>{dr});
 	}
 }

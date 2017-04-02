@@ -15,6 +15,7 @@ public:
 	virtual void operator()();
 	void line_width(int w);
 	void set_rgb(double r, double g, double b);
+	void set_rgba(double r, double g, double b, double a);
 	template <typename T> void txt(T s) { 
 		std::stringstream ss;
 		ss << s;
@@ -26,6 +27,7 @@ public:
 	
 protected:
 	double r_ = 0, g_ = 0, b_ = 0, a_ = 1;
+	double color[4];
 	int line_width_ = 3;
 	std::string txt_;
 	Point start_, end_;

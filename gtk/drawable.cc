@@ -45,7 +45,7 @@ void Line::operator()(const Cairo::RefPtr<Cairo::Context>& cr)
 {
 	Drawable::operator()(cr);
 	cr->save();
-	cr->set_source_rgba(r_, g_, b_, 0.5);
+	cr->set_source_rgba(color[0], color[1], color[2], color[3]);
 	cr->set_line_width(line_width_);
 	cr->move_to(points_[0].x(), points_[0].y());
 	for(auto& a : points_) cr->line_to(a.x(), a.y());
@@ -77,6 +77,14 @@ Arrow::Arrow(Point s, Point e, int tip)
 	}
 }
 
+void Drawable::set_rgba(double r, double g, double b, double a) 
+{
+	color[0] = r;
+	color[1] = g;
+	color[2] = b;
+	color[3] = a;
+}
+
 Box::Box(Point s, Point e)
 {
 	start_ = s;
@@ -102,7 +110,7 @@ void Ellipse::operator()(const Cairo::RefPtr<Cairo::Context>& cr)
 	int w = abs(start_.x() - end_.x());
 	int h = abs(start_.y() - end_.y());
 	cr->save();
-	cr->set_source_rgba(r_, g_, b_, 0.5);
+	cr->set_source_rgba(color[0], color[1], color[2], color[3]);
 	cr->set_line_width(line_width_);
 	cr->begin_new_sub_path();//to avoid trailing line
 	cr->translate(c.x(), c.y());
