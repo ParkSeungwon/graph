@@ -70,6 +70,7 @@ void GraphView<V, E, shared_ptr<MindNode>>::drag(Point from, Point to)
 	generate_graph();
 }
 
+void popup(Vertex<std::shared_ptr<MindNode>>* v);
 void GraphView<V, E, shared_ptr<MindNode>>::right_click(Point pt) 
 {///popup to configure node
 	if(V* v = pick(pt)) {
@@ -146,6 +147,7 @@ void GraphView<V, E, shared_ptr<MindNode>>::generate_graph()
 	drawables_.clear();
 	for(auto& a : arrows_) {//reconfigure arrows tip positions according to vertex
 		V* v = std::get<1>(a);//position
+		if(!v->data->show) continue;
 		auto d1 = vpNpos[std::get<0>(a)];//starting point
 		auto d2 = vpNpos[v];//ending point
 		auto d3 = CIRCLE_SIZE * (d2 - d1) / abs(d2 - d1);
@@ -162,6 +164,7 @@ void GraphView<V, E, shared_ptr<MindNode>>::generate_graph()
 	for(auto& a : vpNpos) {//draw nodes according to shape of data
 		int sz = CIRCLE_SIZE / 2;
 		auto sp = a.first->data;
+		if(!sp->show) continue;
 		int w = sp->name.size() * CIRCLE_SIZE / 10;
 		w = std::max(w, sz);
 

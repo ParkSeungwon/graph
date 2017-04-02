@@ -101,12 +101,16 @@ static void app_chooser(Vertex<shared_ptr<MindNode>>* v) {
 }
 
 static void file_chooser(Vertex<shared_ptr<MindNode>>* v) {
-	Gtk::FileChooserDialog dia("Choose files to expose", Gtk::FILE_CHOOSER_ACTION_OPEN);
+	Gtk::FileChooserDialog dia("Choose files to expose or unexpose");
 	dia.set_select_multiple();
 	dia.set_current_folder(v->data->path + v->data->name);
 	dia.add_button("_Ok", 1);
 	dia.add_button("_Cancel", 0);
 	if(dia.run() == 1) {
+		string s = dia.get_filename();
+		for(Edge<shared_ptr<MindNode>>* e = v->edge; e; e = e->edge)
+			if(e->vertex->data->name == s.substr(s.rfind('/')+1))
+				e->vertex->data->show = !e->vertex->data->show;
 	}
 }
 
@@ -114,7 +118,7 @@ static void file_chooser(Vertex<shared_ptr<MindNode>>* v) {
 void popup(Vertex<shared_ptr<MindNode>>* v) {
 	int result;
 	{
-		Gtk::Dialog dia;
+		Gtk::Dialog dia("Selelct one");
 		dia.add_button("_Shape",1);
 		dia.add_button("_Color",2);
 		dia.add_button("_Open",3);

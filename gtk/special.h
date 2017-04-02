@@ -2,7 +2,6 @@
 #include"graphv.h"
 #include"mindmap.h"
 #include"image.h"
-#include"popup.h"
 typedef Vertex<std::shared_ptr<MindNode>> V;
 typedef Edge<std::shared_ptr<MindNode>> E;
 
