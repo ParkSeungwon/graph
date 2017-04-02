@@ -11,7 +11,7 @@ struct MindNode
 	std::string name, path;//equals directory name
 	bool show;
 	Point pt;//realative position to parent
-	enum Shape {Circle, Rect, Diamond, Ellipse} outline = Ellipse;
+	enum Shape {Picture, Rect, Diamond, Ellipse} outline = Ellipse;
 	enum Line {Plant, Direct} line = Direct;
 	enum Type {Dir = 4, File = 8} type;
 	unsigned char color[3][4];

@@ -176,7 +176,7 @@ void GraphView<V, E, shared_ptr<MindNode>>::generate_graph()
 		case MindNode::Rect:
 			dr = new Box{a.second - Point{w*2, sz*2}, a.second + Point{w*2, sz*2}};
 			break;
-		case MindNode::Diamond:
+		case MindNode::Picture:
 			dr = new Pix{sp->path + sp->name, 
 				a.second - Point{w*3, sz*3}, a.second + Point{w*3, sz*3}};
 			break;

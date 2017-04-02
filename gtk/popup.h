@@ -11,7 +11,7 @@ public:
 
 protected:
 	Gtk::RadioButton::Group outline, line;
-	Gtk::RadioButton Circle, Rect, Diamond, Ellipse;
+	Gtk::RadioButton Picture, Rect, Diamond, Ellipse;
 	Gtk::RadioButton Plant, Direct;
 	Gtk::Box* vb;
 	Gtk::HBox hb1, hb2;

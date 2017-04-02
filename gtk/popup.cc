@@ -2,7 +2,7 @@
 using namespace std;
 using namespace Gtk;
 
-AttributeDialog::AttributeDialog() : Circle(outline, "circle"), 
+AttributeDialog::AttributeDialog() : Picture(outline, "picture"), 
 	Rect(outline, "rect"), Diamond(outline, "diamond"), Ellipse(outline, "ellipse"), 
 	Plant(line, "plant"), Direct(line, "direct"), lb("Test")
 {
@@ -11,7 +11,7 @@ AttributeDialog::AttributeDialog() : Circle(outline, "circle"),
 	vb->pack_start(name);
 	vb->pack_start(hb1);
 	vb->pack_start(hb2);
-	hb1.pack_start(Circle, PACK_SHRINK);
+	hb1.pack_start(Picture, PACK_SHRINK);
 	hb1.pack_start(Rect, PACK_SHRINK);
 	hb1.pack_start(Diamond, PACK_SHRINK);
 	hb1.pack_start(Ellipse, PACK_SHRINK);
@@ -19,7 +19,7 @@ AttributeDialog::AttributeDialog() : Circle(outline, "circle"),
 	hb2.pack_start(Direct, PACK_SHRINK);
 	add_button("_Ok", 1);
 	add_button("_Cancel", 0);
-	outline_bts[0] = &Circle;
+	outline_bts[0] = &Picture;
 	outline_bts[1] = &Rect;
 	outline_bts[2] = &Diamond;
 	outline_bts[3] = &Ellipse;
