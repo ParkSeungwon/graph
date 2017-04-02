@@ -67,7 +67,7 @@ static int color_chooser(Vertex<shared_ptr<MindNode>>* v) {
 		dia.add_button("Cancel",0);
 		result = dia.run();
 	}
-	if(result) {
+	if(0 < result && result < 4) {
 		Gtk::ColorChooserDialog dia;
 		if(dia.run() == Gtk::RESPONSE_OK) {
 			auto color = dia.get_rgba();
@@ -100,6 +100,17 @@ static void app_chooser(Vertex<shared_ptr<MindNode>>* v) {
 	system(command.data());
 }
 
+static void file_chooser(Vertex<shared_ptr<MindNode>>* v) {
+	Gtk::FileChooserDialog dia("Choose files to expose", Gtk::FILE_CHOOSER_ACTION_OPEN);
+	dia.set_select_multiple();
+	dia.set_current_folder(v->data->path + v->data->name);
+	dia.add_button("_Ok", 1);
+	dia.add_button("_Cancel", 0);
+	if(dia.run() == 1) {
+	}
+}
+
+
 void popup(Vertex<shared_ptr<MindNode>>* v) {
 	int result;
 	{
@@ -108,6 +119,7 @@ void popup(Vertex<shared_ptr<MindNode>>* v) {
 		dia.add_button("_Color",2);
 		dia.add_button("_Open",3);
 		dia.add_button("_Resize",4);
+		if(v->data->type == MindNode::Dir) dia.add_button("_Expose", 5);
 		dia.add_button("Cancel",0);
 		result = dia.run();
 	}
@@ -117,6 +129,7 @@ void popup(Vertex<shared_ptr<MindNode>>* v) {
 		case 2: color_chooser(v); break;
 		case 3: app_chooser(v); break;
 		case 4:
+		case 5: file_chooser(v); break;
 		default:;
 	}
 }

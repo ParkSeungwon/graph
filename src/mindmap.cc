@@ -11,6 +11,7 @@ MindNode::MindNode(string fname, MindNode::Type type)
 	this->type = type;
 	show = (type == Dir ? true : false);
 	outline = (type == Dir ? MindNode::Rect : MindNode::Ellipse);
+	for(int i=0; i<3; i++) color[i][3] = 255;
 }
 
 void construct_graph(Graph<shared_ptr<MindNode>>& graph, string dir, 
