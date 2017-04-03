@@ -122,20 +122,27 @@ static void app_chooser(Vertex<shared_ptr<MindNode>>* v) {
 	string file = v->data->name;
 	string ext = file.substr(file.rfind('.') + 1);
 	
-	const char* extensions[] = {"pdf", "png", "jpg", "gif", "JPG", "xpm"};
-	const char* programs[] = {"nautilus ", "evince ", "gthumb ", "gedit "};
+	const char* extensions[] = {"pdf", "png", "jpg", "gif", "JPG", "xpm", "xoj", 
+		"pptx", "odp", "docx", "odt", "doc", "ppt"};
+	const char* programs[] = 
+		{"nautilus ", "evince ", "gthumb ", "gedit ", "libreoffice ", "xournal "};
 
-	int i=0;
-	while(ext != extensions[i] && i < 6) i++;
 	
 	string command;
 	
-	if(v->data->type == MindNode::Dir) command = programs[0];
-	else if(!i) command = programs[1];
-	else if(i < 6) command = programs[2];
-	else command = programs[3];
-	
-	command += v->data->path + "'" + file + "'&";
+	if(v->data->type == MindNode::Dir) {
+		command = programs[0] + v->data->path + file + '&';
+	} else {
+		int i=0;
+		while(ext != extensions[i] && i < 13) i++;
+		if(!i) command = programs[1];
+		else if(i < 6) command = programs[2];
+		else if(i == 6) command = programs[5];
+		else if(i < 13) command = programs[4];
+		else command = programs[3];
+
+		command += v->data->path + "'" + file + "'&";
+	}
 	system(command.data());
 }
 

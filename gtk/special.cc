@@ -19,7 +19,7 @@ GraphView<V, E, shared_ptr<MindNode>>::~GraphView()
 void GraphView<V, E, shared_ptr<MindNode>>::allocate_node(V* vt) 
 {//allocate all the sub nodes of vt
 	if(!vt) return;
-	if(vpNpos.find(vt) == vpNpos.end()) vpNpos[vt] = {500,500};
+	if(vpNpos.find(vt) == vpNpos.end()) vpNpos[vt] = {1000,1000};
 	for(E* e = vt->edge; e; e = e->edge) {//x, y is relative coord to parent
 		if(e->vertex) {
 			vpNpos[e->vertex] = vpNpos[vt] + e->vertex->data->pt;//edge와 v가 바뀜
@@ -158,7 +158,7 @@ void GraphView<V, E, shared_ptr<MindNode>>::generate_graph()
 		//if(std::get<3>(a)) arrow.set_rgb(0,0,1);//if v is marked
 		auto sp = std::get<1>(a)->data;
 		arrow.set_rgba((double)sp->color[1][0] / 255, (double)sp->color[1][1] / 255, 
-				(double)sp->color[1][2] / 255, (double)sp->color[1][3] / 255);
+				(double)sp->color[1][2] / 255, 0.5);//(double)sp->color[1][3] / 255);
 		drawables_.push_back(std::make_shared<Arrow>(arrow));
 	}
 	for(auto& a : vpNpos) {//draw nodes according to shape of data

@@ -14,6 +14,9 @@ int main(int c, char** av)
 	auto par = make_shared<MindNode>(av[1], MindNode::Dir);
 	par->width = 100;
 	par->height = 50;
+	auto pos = par->name.rfind('/');
+	par->path = par->name.substr(0, pos+1);
+	par->name = par->name.substr(par->name.rfind('/')+1);
 	graph.insert_vertex(par);
 	construct_graph(graph, av[1], par);
 	//cout << graph.dijkstra("daejun", "kangwon") << endl;;

@@ -2,6 +2,7 @@
 #include<dirent.h>
 #include<sstream>
 #include<iostream>
+#include<cctype>
 #include"mindmap.h"
 using namespace std;
 
@@ -57,7 +58,10 @@ istream& operator>>(istream& is, MindNode& r) {
 	int a, b, c, color[3][4];
 	getline(is, r.name);
 	string s;
-	getline(is, s);
+	while(getline(is, s)) {
+		if(isdigit(s[0])) break;
+		else r.name += '\n' + s;
+	}
 	stringstream ss;
 	ss << s;
 	ss >> r.show >> x >> y >> a >> b >> c >> r.width >> r.height;

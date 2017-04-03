@@ -9,7 +9,7 @@ void Drawable::operator()(const Cairo::RefPtr<Cairo::Context>& cr)
 	cr->save();
 	Point p{(start_ + end_) / 2.0};
 	if(txt_ != "") {
-		cr->set_source_rgba(r_, g_, b_, 0.5);
+		cr->set_source_rgba(r_, g_, b_, 1);
 		auto layout = Pango::Layout::create(cr);
 		layout->set_font_description(font_);
 		layout->set_text(txt_);
