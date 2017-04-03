@@ -158,7 +158,7 @@ void GraphView<V, E, shared_ptr<MindNode>>::generate_graph()
 		//if(std::get<3>(a)) arrow.set_rgb(0,0,1);//if v is marked
 		auto sp = std::get<1>(a)->data;
 		arrow.set_rgba((double)sp->color[1][0] / 255, (double)sp->color[1][1] / 255, 
-				(double)sp->color[1][2] / 255, 0.5);//(double)sp->color[1][3] / 255);
+				(double)sp->color[1][2] / 255, (double)sp->color[1][3] / 255);
 		drawables_.push_back(std::make_shared<Arrow>(arrow));
 	}
 	for(auto& a : vpNpos) {//draw nodes according to shape of data

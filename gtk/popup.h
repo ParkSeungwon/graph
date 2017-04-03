@@ -8,15 +8,16 @@ class AttributeDialog : public Gtk::Dialog
 public:
 	AttributeDialog();
 	Gtk::RadioButton *outline_bts[4], *line_bts[2];
-	Gtk::Label lb;
 	Gtk::Entry name;
+	Gtk::Scale arrow, shape;
 
 protected:
 	Gtk::RadioButton::Group outline, line;
 	Gtk::RadioButton Picture, Rect, Diamond, Ellipse;
 	Gtk::RadioButton Plant, Direct;
+	Gtk::Label sl, al;
 	Gtk::Box* vb;
-	Gtk::HBox hb1, hb2;
+	Gtk::HBox hb1, hb2, hb3, hb4;
 };
 
 class ResizeDialog : public Gtk::Dialog

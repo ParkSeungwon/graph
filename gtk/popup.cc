@@ -4,19 +4,27 @@ using namespace Gtk;
 
 AttributeDialog::AttributeDialog() : Picture(outline, "picture"), 
 	Rect(outline, "rect"), Diamond(outline, "diamond"), Ellipse(outline, "ellipse"), 
-	Plant(line, "plant"), Direct(line, "direct"), lb("Test")
+	Plant(line, "plant"), Direct(line, "direct"), sl("Shape"), al("Arrow"),
+	arrow(Gtk::Adjustment::create(1, 0, 255, 1, 10, 0)),
+	shape(Gtk::Adjustment::create(1, 0, 255, 1, 10, 0))
 {
 	set_size_request(100,100);
 	vb = get_content_area();
 	vb->pack_start(name);
 	vb->pack_start(hb1);
 	vb->pack_start(hb2);
+	vb->pack_start(hb3);
+	vb->pack_start(hb4);
 	hb1.pack_start(Picture, PACK_SHRINK);
 	hb1.pack_start(Rect, PACK_SHRINK);
 	hb1.pack_start(Diamond, PACK_SHRINK);
 	hb1.pack_start(Ellipse, PACK_SHRINK);
 	hb2.pack_start(Plant, PACK_SHRINK);
 	hb2.pack_start(Direct, PACK_SHRINK);
+	hb3.pack_start(al, PACK_SHRINK);
+	hb3.pack_start(arrow);
+	hb4.pack_start(sl, PACK_SHRINK);
+	hb4.pack_start(shape);
 	add_button("_Ok", 1);
 	add_button("_Cancel", 0);
 	outline_bts[0] = &Picture;
@@ -73,6 +81,8 @@ static void shape_chooser(Vertex<shared_ptr<MindNode>>* v) {
 	ad.name.set_text(mn->name);
 	ad.outline_bts[mn->outline]->set_active();
 	ad.line_bts[mn->line]->set_active();
+	ad.arrow.set_value(v->data->color[1][3]);
+	ad.shape.set_value(v->data->color[2][3]);
 	if(ad.run()) {
 		for(int i=0; i<5; i++) if(ad.outline_bts[i]->get_active()) {
 			mn->outline = static_cast<MindNode::Shape>(i);
@@ -82,6 +92,8 @@ static void shape_chooser(Vertex<shared_ptr<MindNode>>* v) {
 			mn->line = static_cast<MindNode::Line>(i);
 			break;
 		}
+		v->data->color[1][3] = ad.arrow.get_value();
+		v->data->color[2][3] = ad.shape.get_value();
 		bool same_name = false;
 		if(mn->name != ad.name.get_text()) {//if changed & no same name 
 			for(auto* e = v->edge; e; e = e->edge) //is present in the directory
