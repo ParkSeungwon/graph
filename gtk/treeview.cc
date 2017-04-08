@@ -36,6 +36,7 @@ bool SketchBook::on_button_press_event(GdkEventButton* e)
 		y = e->y;
 		return true;//does not propagate
 	} else if(e->button == 3) PV->right_click({e->x, e->y});
+	else if(e->button == 2) cout << "middle clicked" << endl;
 	return false;//propagate
 }
 bool Win::on_button_press_event(GdkEventButton* e)

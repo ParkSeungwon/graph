@@ -46,7 +46,7 @@ void Line::operator()(const Cairo::RefPtr<Cairo::Context>& cr)
 	Drawable::operator()(cr);
 	cr->save();
 	cr->set_source_rgba(color[0], color[1], color[2], color[3]);
-	cr->set_line_width(line_width_);
+	cr->set_line_width(line_width_*0.5);
 	cr->move_to(points_[0].x(), points_[0].y());
 	for(auto& a : points_) cr->line_to(a.x(), a.y());
 	cr->stroke();

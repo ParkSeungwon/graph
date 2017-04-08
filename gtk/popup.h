@@ -8,8 +8,8 @@ class AttributeDialog : public Gtk::Dialog
 public:
 	AttributeDialog();
 	Gtk::RadioButton *outline_bts[4], *line_bts[2];
-	Gtk::Entry name;
-	Gtk::Scale arrow, shape;
+	Gtk::Entry name;//file name
+	Gtk::Scale arrow, shape;//for alpha value setting
 
 protected:
 	Gtk::RadioButton::Group outline, line;
