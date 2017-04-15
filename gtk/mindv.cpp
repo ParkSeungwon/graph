@@ -28,6 +28,7 @@ int main(int c, char** av)
 	int i=0;
 	auto app = Gtk::Application::create(i, av);
 	Win win;
+	win.set_title("File Browser inspired by MindMap");
 //	Gtk::Button bt("save");
 //	win.vb_.pack_start(bt, Gtk::PACK_SHRINK);
 //	bt.signal_clicked().connect(bind(save_graph, graph.data(), av[1]));
