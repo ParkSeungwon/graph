@@ -30,6 +30,7 @@ void construct_graph(Graph<shared_ptr<MindNode>>& graph, string dir,
 			a.second == MindNode::Dir ? 
 			make_shared<MindNode>(a.first, MindNode::Dir) : 
 			make_shared<MindNode>(a.first, MindNode::File);
+		sp->pt = {0, 50};//default position
 		for(auto& m : vm) if(m.name == a.first) *sp = m;//initialize data according
 		sp->path = dir;
 		graph.insert_vertex(sp);						//to savefile

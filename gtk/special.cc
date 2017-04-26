@@ -19,7 +19,7 @@ GraphView<V, E, shared_ptr<MindNode>>::~GraphView()
 void GraphView<V, E, shared_ptr<MindNode>>::allocate_node(V* vt) 
 {//allocate all the sub nodes of vt
 	if(!vt) return;
-	if(vpNpos.find(vt) == vpNpos.end()) vpNpos[vt] = {1000,1000};
+	if(vpNpos.find(vt) == vpNpos.end()) vpNpos[vt] = {1000,1000};//if root
 	for(E* e = vt->edge; e; e = e->edge) {//x, y is relative coord to parent
 		if(e->vertex) {
 			vpNpos[e->vertex] = vpNpos[vt] + e->vertex->data->pt;//edge와 v가 바뀜
@@ -162,12 +162,12 @@ void GraphView<V, E, shared_ptr<MindNode>>::generate_graph()
 		drawables_.push_back(std::make_shared<Arrow>(arrow));
 	}
 	for(auto& a : vpNpos) {//draw nodes according to shape of data
-		int h = CIRCLE_SIZE / 2;
-		auto sp = a.first->data;
+		int h = CIRCLE_SIZE / 2;//vpNpos : vertex_pointer & position
+		auto sp = a.first->data;//shared_pointer of mindnode
 		if(!sp->show) continue;
-		int w = sp->name.size() * CIRCLE_SIZE / 10;
+		int w = sp->name.size() * CIRCLE_SIZE / 10;//approximate width
 		w = std::max(w, h);
-		if(sp->width && sp->height) {
+		if(sp->width && sp->height) {//if node has predefined width and height
 			w = sp->width / 2;
 			h = sp->height / 2;
 		}
