@@ -131,9 +131,9 @@ static int color_chooser(Vertex<shared_ptr<MindNode>>* v) {
 }
 
 static void app_chooser(Vertex<shared_ptr<MindNode>>* v) {
-	string file = v->data->name;
-	string command = "python /usr/local/bin/ext.py '";
-	command += v->data->path + file + "'";//for spaced file name
+	string command = 
+		"python -c 'import webbrowser,sys; webbrowser.open(sys.argv[1])' '";
+	command += v->data->path + v->data->name + "'";//for spaced file name
 	system(command.data());
 }
 

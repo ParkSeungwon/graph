@@ -62,6 +62,12 @@ public:
 protected:
 };
 
+class Diamond : public Line
+{
+public:
+	Diamond(Point s, Point e);
+};
+
 class Ellipse : public Drawable
 {
 public:

@@ -173,17 +173,13 @@ void GraphView<V, E, shared_ptr<MindNode>>::generate_graph()
 		}
 
 		Drawable* dr;
+		auto s = a.second - Point{w, h};
+		auto e = a.second + Point{w, h};
 		switch(sp->outline) {
-		case MindNode::Ellipse:
-			dr = new Ellipse{a.second - Point{w, h}, a.second + Point{w, h}};
-			break;
-		case MindNode::Rect:
-			dr = new Box{a.second - Point{w, h}, a.second + Point{w, h}};
-			break;
-		case MindNode::Picture:
-			dr = new Pix{sp->path + sp->name, 
-				a.second - Point{w, h}, a.second + Point{w, h}};
-			break;
+			case MindNode::Ellipse: dr = new Ellipse{s, e}; break;
+			case MindNode::Rect: 	dr = new Box{s, e}; break;
+			case MindNode::Diamond: dr = new Diamond{s, e}; break;
+			case MindNode::Picture: dr = new Pix{sp->path + sp->name, s, e}; 
 		}
 		
 		dr->txt(sp->name);

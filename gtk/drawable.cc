@@ -97,6 +97,20 @@ Box::Box(Point s, Point e)
 	points_.push_back(b);
 	points_.push_back(s);
 }
+Diamond::Diamond(Point s, Point e) 
+{
+	start_ = s;
+	end_ = e;
+	Point a{(s.x() + e.x())/2, s.y()};
+	Point b{s.x(), (s.y() + e.y())/2};
+	Point c{(s.x() + e.x())/2, e.y()};
+	Point d{e.x(), (s.y() + e.y())/2};
+	points_.push_back(a);
+	points_.push_back(b);
+	points_.push_back(c);
+	points_.push_back(d);
+	points_.push_back(a);
+}
 
 Ellipse::Ellipse(Point s, Point e)
 {
