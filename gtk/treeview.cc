@@ -8,7 +8,7 @@
 using namespace std;
 
 GraphV<shared_ptr<MindNode>>* PV;
-//GraphV<string>* pv;
+//GraphV<string>* PV;
 bool SketchBook::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) 
 {
 	for(auto& a : *PV) (*a)(cr);

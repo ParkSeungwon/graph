@@ -1,0 +1,55 @@
+16
+Aug
+Bar
+Bec
+Blu
+Bos
+ChNC
+ChVA
+Hya
+Kee
+Lag
+Man
+Nan
+New
+Roc
+Rut
+DC
+Aug Bos 149
+Aug Kee 187
+Bar Roc 49
+Bec Blu 35
+Bec DC 238
+Blu Bec 35
+Blu ChNC 142
+Blu DC 254
+Bos Aug 149
+Bos Hya 63
+Bos Roc 155
+ChNC Blu 142
+ChVA Lag 302
+ChVA Man 74
+Hya Bos 63
+Hya Lag 204
+Hya Nan 27
+Hya New 212
+Kee Aug 187
+Kee New 180
+Kee Rut 58
+Lag ChVA 302
+Lag Hya 204
+Lag Nan 207
+Man ChVA 74
+Man DC 26
+Nan Hya 27
+Nan Lag 207
+Nan New 216
+New Hya 212
+New Kee 180
+New Nan 216
+Roc Bar 49
+Roc Bos 155
+Rut Kee 58
+DC Bec 238
+DC Blu 254
+DC Man 26

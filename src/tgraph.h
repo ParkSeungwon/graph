@@ -6,7 +6,7 @@
 #include<map>
 #include<vector>
 #include<stack>
-#define min(a, b) a < b ? a : b
+//#define min(a, b) a < b ? a : b
 
 template <typename T> class Vertex;
 
