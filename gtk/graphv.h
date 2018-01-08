@@ -18,7 +18,7 @@ the drawing module.
 #include"src/parsetree.h"
 #define CIRCLE_SIZE 30.0
 template <typename V, typename E, typename D> class GraphView 
-{
+{//Vertex Edge Drawable
 public:
 	GraphView(V* gr) {
 		root = gr;

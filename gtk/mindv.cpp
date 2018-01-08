@@ -6,7 +6,6 @@
 #include"special.h"
 using namespace std;
 
-extern GraphV<shared_ptr<MindNode>>* PV;//treeview.cc
 int main(int c, char** av)
 {
 	if(c < 2) return 0;
@@ -23,11 +22,10 @@ int main(int c, char** av)
 	GraphV<shared_ptr<MindNode>> gv3{graph.data()};
 //	graph.depth();
 //	graph.greedy();
-	PV = &gv3;
 
 	int i=0;
 	auto app = Gtk::Application::create(i, av);
-	Win win;
+	Win win{&gv3};
 	win.set_title("File Browser inspired by MindMap");
 //	Gtk::Button bt("save");
 //	win.vb_.pack_start(bt, Gtk::PACK_SHRINK);
