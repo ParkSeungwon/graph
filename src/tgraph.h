@@ -15,8 +15,8 @@ template<typename T> class Edge
 public:
 	int weight = 0;
 	int v = 0;//for visit check or other uses like dijkstra route check
-	struct Vertex<T>* vertex = nullptr;
-	struct Edge<T>* edge = nullptr;
+	struct Vertex<T>* vertex = nullptr;//pointing to
+	struct Edge<T>* edge = nullptr;//next edge
 };
 
 template<typename T> class Vertex
@@ -24,8 +24,8 @@ template<typename T> class Vertex
 public:
 	T data;
 	int v = 0;//for visit check or other uses like parity bit
-	struct Edge<T>* edge = nullptr;
-	struct Vertex<T>* vertex = nullptr;
+	struct Edge<T>* edge = nullptr;//edge
+	struct Vertex<T>* vertex = nullptr;//below vertex
 };
 
 ///This class does not make its own data structure it just deals with pointers 
@@ -36,6 +36,7 @@ public:
 /// V - E - E - E - E
 /// V - E - E
 /// V - E - E - E
+
 template<typename T> class Graph
 {
 public:
@@ -57,19 +58,6 @@ public:
 		va->edge = insert(va->edge, vb, weight);
 	}
 	
-	void read_file(std::string file) {
-		T n1, n2;
-		std::ifstream f(file);
-		int vc;
-		f >> vc;
-		for(int i=0; i<vc; i++) {
-			f >> n1;
-			insert_vertex(n1);
-		}
-		int wt;
-		while(f >> n1 >> n2 >> wt) insert_edge(n1, n2, wt);
-	}
-
 	void view() {
 		for(Vertex<T>* p = root; p; p = p->vertex) {
 			std::cout << p->data << " : ";
@@ -328,4 +316,36 @@ private:
 };
 
 
+template<class T> std::istream& operator>>(std::istream& is, Graph<T>& r)
+{
+	T n1, n2; int vc, wt;
+	is >> vc;
+	for(int i=0; i<vc; i++) {
+		is >> n1;
+		r..nsert_vertex(n1);
+	}
+	while(is >> n1 >> n2 >> wt) r.insert_edge(n1, n2, wt);
+	return is;
+}
+template<class T> std::ostream& operator<<(std::ostream& o, const Graph<T>& r)
+{
+	int k=0;
+	std::vector<T> v;
+	struct E {
+		T n1, n2;
+		int wt;
+	};
+	std::vector<E> v2;
+	for(auto* p = r.data(); p; p = p->vertex) {
+		k++;
+		v.push_back(p->data);
+		for(auto* e = p->edge; e; e = e->edge) 
+			v2.push_back({p->data, e->vertex->data, e->weight});
+	}
+	o << k << endl;
+	for(const auto& a : v) o << a << endl;
+	o << endl;
+	for(const auto& a : v2) o << a.n1 << endl << a.n2 << endl << a.wt << endl;
+	return o;
+}
 
