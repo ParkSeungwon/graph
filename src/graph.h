@@ -48,6 +48,22 @@ public:
 	void insert_vertex(T n) {
 		root = insert(root, n);
 	}
+
+	T find_parent(T n) {
+		for(auto* v = root; v; v = v->vertex) for(auto* e = v->edge; e; e = e->edge) 
+			if(e->vertex->data == n) return v->data;
+		throw "no parent";
+	}
+
+	void remove_edge(T a, T b) {
+		for(auto* v = root; v; v = v->vertex) if(v->data == a) 
+			v->edge = remove_edge(v->edge, b);//defined in private
+	}
+
+	void remove_vertex(T n) {
+		for(auto* v = root; v; v = v->vertex) v->edge = remove_edge(v->edge, n);
+		root = remove_vertex(root, n);//defined in private
+	}
 	
 	void insert_edge(T a, T b, int weight) {
 		Vertex<T> *va, *vb;
@@ -56,15 +72,6 @@ public:
 			if(p->data == b) vb = p;
 		}
 		va->edge = insert(va->edge, vb, weight);
-	}
-	
-	void view() {
-		for(Vertex<T>* p = root; p; p = p->vertex) {
-			std::cout << p->data << " : ";
-			for(Edge<T>* e = p->edge; e; e = e->edge) 
-				if(e->vertex) std::cout << '<' << p->data << ',' << e->vertex->data << '>' << e->weight << ' '; 
-			std::cout << std::endl;
-		}
 	}
 	
 	Vertex<T>* data() {//this is to make compatible with C structure, 
@@ -186,6 +193,30 @@ private:
 	std::map<Vertex<T>*, std::vector<Edge<T>*>> waypoint;
 	std::map<Vertex<T>*, int> union_set;
 	
+	Vertex<T>* remove_vertex(Vertex<T>* v, T n) {
+		if(!v) return nullptr;
+		if(v->data == n) {
+			auto* tmp = v->vertex;
+			efree(v->edge);
+			delete v;
+			return tmp;
+		} else {
+			v->vertex = remove_vertex(v->vertex, n);
+			return v;
+		}
+	}
+	Edge<T>* remove_edge(Edge<T>* e, T b) {
+		if(!e) return nullptr;
+		if(e->vertex->data == b) {
+			auto* tmp = e->edge;
+			delete e;
+			return tmp;
+		} else {
+			e->edge = remove_edge(e->edge, b);
+			return e;
+		}
+	}
+
 	Vertex<T>* find_closest() {//dijkstra
 		int min = INT_MAX / 2;
 		Vertex<T>* p = nullptr;

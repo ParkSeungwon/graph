@@ -1,4 +1,4 @@
-#include"tgraph.h"
+#include"graph.h"
 using namespace std;
 typedef Vertex<int> V;
 typedef Edge<int> E;

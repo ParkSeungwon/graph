@@ -4,16 +4,25 @@
 #include<iostream>
 #include<cctype>
 #include"json/json.h"
-#include"mindmap.h"
+#include"mindnode.h"
 using namespace std;
+
+Point::Point(int x, int y) : complex<double>(x, y) {}
+Point::Point(complex<double> im) : complex<double>(im) {}
+int Point::x() const {return real();}
+int Point::y() const {return imag();}
 
 MindNode::MindNode(string fname, MindNode::Type type)
 {
 	name = fname;
 	this->type = type;
-	show = (type == Dir ? true : false);
-	outline = (type == Dir ? MindNode::Ellipse : MindNode::Rect);
+	show = type == Dir ? true : false;
 	for(int i=0; i<3; i++) color[i][3] = 255;
+	switch(type) {
+		case Dir: outline = Ellipse; break;
+		case Virtual: color[2][3] = 0;//transparent shape color
+		case File: outline = Rect; break;
+	}
 }
 
 bool MindNode::operator==(const MindNode& r) 
@@ -33,9 +42,9 @@ istream& operator>>(istream& is, MindNode& r) {
 	r.Type = static_cast<MindNode::Type>(jv["Type"]);
 	r.Shape = static_cast<MindNode::Shape>(jv["Shape"]);
 	for(int i=0; i<3; i++) for(int j=0; j<4; j++) r.color[i][j] = jv["color"][i][j];
-	r.memo = jv["memo"];
 	r.width = jv["width"];
 	r.height = jv["height"];
+	r.tooltip = jv["tooltip"]
 	return is;
 }
 
@@ -60,7 +69,7 @@ ostream& operator<<(ostream& o, const MindNode& node)
 		col[i] = c;
 	}
 	jv["color"] = col;
-	jv["memo"] = node.memo;
+	jv["tooltip"] = node.tooltip;
 	jv["width"] = node.width;
 	jv["height"] = node.height;
 

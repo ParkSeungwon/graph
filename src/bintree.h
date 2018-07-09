@@ -1,6 +1,6 @@
 #pragma once
 #include<algorithm>
-#include"tgraph.h"
+#include"graph.h"
 
 template <typename T> class Tree : public Graph<T>
 {
