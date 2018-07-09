@@ -1,17 +1,16 @@
 #pragma once
 #include<vector>
 #include<memory>
+#include"graphv.h"
 
-class Drawable;
 class MindNode;
-template <class T> class GraphV;
 class SketchBook : public Gtk::DrawingArea
 {
 public:
-	SketchBook(GraphV<std::shared_ptr<MindNode>>*);
+	SketchBook(Graph<std::shared_ptr<MindNode>>& graph);
 
 protected:
-	GraphV<std::shared_ptr<MindNode>>* p_drawables_;
+	GraphV<std::shared_ptr<MindNode>> gv_;
 	bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr);
 	bool on_button_press_event(GdkEventButton* e);
 	bool on_button_release_event(GdkEventButton* e);
@@ -24,7 +23,7 @@ private:
 class Win : public Gtk::Window
 {
 public:
-	Win(GraphV<std::shared_ptr<MindNode>>*);
+	Win(Graph<std::shared_ptr<MindNode>>& graph);
 
 protected:
 	bool on_button_press_event(GdkEventButton* e);

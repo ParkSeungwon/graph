@@ -13,7 +13,7 @@ struct MindNode
 	Point pt;//realative position to parent
 	enum Shape {Picture, Rect, Diamond, Ellipse} outline = Ellipse;
 	enum Line {Plant, Direct} line = Direct;
-	enum Type {Dir = 4, File = 8} type;
+	enum Type {Dir = 4, File = 8} type;//add memo type
 	unsigned char color[3][4];//3 : text arrow shape, 4 : r g b a
 	short width, height;
 
