@@ -4,6 +4,7 @@
 #include<fstream>
 #include<iostream>
 #include<map>
+#include<complex>
 #include<vector>
 #include<stack>
 //#define min(a, b) a < b ? a : b
@@ -12,7 +13,8 @@ template <typename T> struct Vertex;
 
 template<typename T> struct Edge
 {
-	int weight = 0;
+	std::complex<double> weight = 0;//can express position with real, imag
+								//			 distance with abs
 	int v = 0;//for visit check or other uses like dijkstra route check
 	Vertex<T>* vertex = nullptr;//pointing to
 	Edge<T>* edge = nullptr;//next edge
@@ -81,7 +83,7 @@ public:
 		clearv();
 	}	
 	
-	void insert_edge(T a, T b, int weight) {
+	void insert_edge(T a, T b, std::complex<double> weight) {
 		Vertex<T> *va, *vb;
 		for(Vertex<T>* p = root; p; p = p->vertex) {
 			if(p->data == a) va = p;
@@ -119,7 +121,7 @@ public:
 				A[q->data][p->data] = INT_MAX / 2;
 		for(Vertex<T>* q = root; q; q = q->vertex) 
 			for(Edge<T>* e = q->edge; e; e = e->edge) 
-				A[q->data][e->vertex->data] = e->weight;
+				A[q->data][e->vertex->data] = abs(e->weight);
 		
 		for(Vertex<T>* k = root; k; k = k->vertex) 
 			for(Vertex<T>* i = root; i; i = i->vertex) 
@@ -186,7 +188,7 @@ protected:
 		return p;
 	}
 	
-	Edge<T>* insert(Edge<T>* e, Vertex<T>* v, int weight) {
+	Edge<T>* insert(Edge<T>* e, Vertex<T>* v, std::complex<double> weight) {
 		if(!e) {//recursively insert edge in at the end of e pointint to v
 			e = new Edge<T>;
 			e->vertex = v;
@@ -245,8 +247,8 @@ private:
 		}
 		p->v = 1;
 		for(Edge<T>* e = p->edge; e; e = e->edge) if(!e->vertex->v) {
-			if(distance[e->vertex] > distance[p] + e->weight) {
-				distance[e->vertex] = distance[p] + e->weight;
+			if(distance[e->vertex] > distance[p] + abs(e->weight)) {
+				distance[e->vertex] = distance[p] + abs(e->weight);
 				waypoint[e->vertex] = waypoint[p];
 				waypoint[e->vertex].push_back(e);
 			}
@@ -312,8 +314,8 @@ private:
 			if(p->v) {
 				for(Edge<T>* e = p->edge; e; e = e->edge) {
 					if(e->v) continue;
-					if(e->weight < min && !e->vertex->v) {
-						min = e->weight;
+					if(abs(e->weight) < min && !e->vertex->v) {
+						min = abs(e->weight);
 						me = e;
 					}
 				}
@@ -350,8 +352,8 @@ private:
 		Vertex<T>* vt;
 		for(Vertex<T>* p = root; p; p = p->vertex) {
 			for(Edge<T>* e = p->edge; e; e = e->edge) {
-				if(!e->v && e->weight < min) {
-					min = e->weight;
+				if(!e->v && abs(e->weight) < min) {
+					min = abs(e->weight);
 					eg = e;
 					vt = p;
 				}
@@ -368,7 +370,7 @@ private:
 
 template<class T> std::istream& operator>>(std::istream& is, Graph<T>& r)
 {
-	T n1, n2; int vc, wt;
+	T n1, n2; int vc; std::complex<double> wt;
 	is >> vc;
 	for(int i=0; i<vc; i++) {
 		is >> n1;
@@ -383,7 +385,7 @@ template<class T> std::ostream& operator<<(std::ostream& o, const Graph<T>& r)
 	std::vector<T> v;
 	struct E {
 		T n1, n2;
-		int wt;
+		std::complex<double> wt;
 	};
 	std::vector<E> v2;
 	for(const auto* p = r.data(); p; p = p->vertex) {

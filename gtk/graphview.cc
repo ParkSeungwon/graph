@@ -1,35 +1,22 @@
 #include"graphview.h"
-#define CIRCLE_SIZE 100.0
+#define CIRCLE_SIZE 10.0
 using namespace std;
 
-GraphView::GraphView(string path)
-{//can allocate only a part of a graph
-	ifstream f("~/.mindmap");
-	f >> *this;
-	root = find_vertex(MindNode{path, MindNode::File});
-}
-
-GraphView::~GraphView() 
-{
-	ofstream f("~/.mindmap");
-	f << *this;
-}
-
-void GraphView::generate_drawables()
+void GraphView::generate_drawables(const MindNode& m)
 {
 	vpNpos.clear();
 	arrows_.clear();
-	allocate_node(root);//recursively populate vpNpos, arrows_
+	allocate_node(root = find_vertex(m));//recursively populate vpNpos, arrows_
 	generate_graph();//populate drawables_
 }
 
 void GraphView::allocate_node(V* vt) 
 {//allocate all the sub nodes of vt
 	if(!vt) return;
-	if(vpNpos.find(vt) == vpNpos.end()) vpNpos[vt] = {1000,1000};//if root
+	if(vpNpos.find(vt) == vpNpos.end()) vpNpos[vt] = {300,300};//if root
 	for(E* e = vt->edge; e; e = e->edge) {//x, y is relative coord to parent
 		if(e->vertex) {
-			vpNpos[e->vertex] = vpNpos[vt] + Point{e->weight / 10000, e->weight % 10000};//edge와 v가 바뀜
+			vpNpos[e->vertex] = vpNpos[vt] + e->weight;//edge와 v가 바뀜
 			arrows_.push_back(std::make_tuple(vt, e->vertex, e->weight, e->v));
 			allocate_node(e->vertex);
 		}
@@ -41,16 +28,9 @@ void GraphView::drag(Point from, Point to)
 	V *pf = pick(from);
 	if(!pf) return;
 	V* parent = find_vertex(find_parent(pf->data));
-	for(auto* e = parent->edge; e; e = e->edge) {
-		if(e->vertex == pf) {
-			int x = e->weight / 10000;
-			int y = e->weight % 10000;
-			Point pt{x, y};
-			pt += to - from;
-			e->weight = pt.x() * 10000 + pt.y();
-		}
-	}
-	generate_drawables();
+	for(auto* e = parent->edge; e; e = e->edge) 
+		if(e->vertex == pf) e->weight += to - from;
+	generate_drawables(root->data);
 }
 
 void popup(V* v);
@@ -77,7 +57,7 @@ void GraphView::cutNpaste(MindNode m, MindNode to)
 	auto p = find_parent(m);
 	remove_edge(p, m);
 	insert_edge(to, m, 30 * 10000 + 30);
-	generate_drawables();
+	generate_drawables(root->data);
 }
 
 void GraphView::generate_graph() 

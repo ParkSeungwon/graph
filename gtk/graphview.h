@@ -9,9 +9,7 @@ typedef Edge<MindNode> E;
 class GraphView : public Graph<MindNode>
 {//template specialization for MindNode
 public:
-	GraphView(std::string full_path);
-	virtual ~GraphView();
-	void generate_drawables();
+	void generate_drawables(const MindNode& m);
 	virtual void drag(Point from, Point to);
 	virtual void right_click(Point pt);	
 	std::vector<std::shared_ptr<Drawable>>::const_iterator begin() const;	
@@ -20,7 +18,7 @@ public:
 protected:
 	V* root = nullptr;
 	std::map<V*, Point> vpNpos;//vertex pointer & absolute drawing position of that vertex 
-	std::vector<std::tuple<V*, V*, int, int>> arrows_;//from,to,weight,v
+	std::vector<std::tuple<V*, V*, std::complex<double>, int>> arrows_;//from,to,weight,v
 	std::vector<std::shared_ptr<Drawable>> drawables_;//vpNpos,arrows_->drawables
 
 private:

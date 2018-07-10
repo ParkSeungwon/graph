@@ -7,7 +7,7 @@ class MindNode;
 class SketchBook : public Gtk::DrawingArea
 {
 public:
-	SketchBook(std::string s);
+	SketchBook();
 
 protected:
 	GraphView gv_;
@@ -23,7 +23,7 @@ private:
 class Win : public Gtk::Window
 {
 public:
-	Win(std::string s);
+	Win();
 
 protected:
 	bool on_button_press_event(GdkEventButton* e);

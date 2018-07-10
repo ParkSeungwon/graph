@@ -7,7 +7,7 @@
 #include"src/parsetree.h"
 using namespace std;
 
-SketchBook::SketchBook(string s) : gv_{s}
+SketchBook::SketchBook()
 {
 	set_size_request(5000, 5000);
 	add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK);
@@ -44,7 +44,7 @@ bool Win::on_button_press_event(GdkEventButton* e)
 	cout << e->x << ' ' << e->y << endl;
 	return true;
 }
-Win::Win(string s) : sketch_{s}
+Win::Win()
 {
 	add(scwin_);
 	scwin_.add(sketch_);

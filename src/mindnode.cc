@@ -15,7 +15,8 @@ int Point::y() const {return imag();}
 MindNode::MindNode() {}
 MindNode::MindNode(string fname, MindNode::Type type)
 {
-	name = fname;
+	full_path = fname;
+	name = full_path.substr(0, full_path.rfind('/'));
 	this->type = type;
 	show = type == Dir ? true : false;
 	for(int i=0; i<3; i++) for(int j=0; j<4; j++) color[i][j] = 255;
@@ -24,6 +25,8 @@ MindNode::MindNode(string fname, MindNode::Type type)
 		case Virtual: color[2][3] = 0;//transparent shape color
 		case File: outline = Rect; break;
 	}
+	width = name.size() * 10;
+	height = 30;
 }
 
 bool MindNode::operator==(const MindNode& r) 

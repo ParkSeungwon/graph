@@ -11,7 +11,7 @@ int main(int c, char** av)
 
 	int i=0;
 	auto app = Gtk::Application::create(i, av);
-	Win win{av[1]};
+	Win win;
 	win.set_title("File Browser inspired by MindMap");
 	win.show_all_children();
 	return app->run(win);
