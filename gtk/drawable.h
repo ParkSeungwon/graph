@@ -6,7 +6,7 @@
 #include<string>
 #include<sstream>
 #include<gtkmm.h>
-#include"point.h"
+#include"mindnode.h"
 
 class Drawable
 {///all the drawing dependent part should be inside the operator()()

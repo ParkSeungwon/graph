@@ -1,4 +1,4 @@
-CFLAG = -g -c -std=c++14 -fmax-errors=1
+CFLAG = -g -c -std=c++17 -fmax-errors=1
 INCLUDE = -I../ -I../gtk/ -I/usr/include/jsoncpp
 CC = g++
 OBJ = $(patsubst %.cc, ../obj/%.o, $(wildcard *.cc))

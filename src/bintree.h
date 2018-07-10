@@ -26,11 +26,6 @@ public:
 		return Graph<T>::root;
 	}
 
-	void view() {
-		connect();
-		Graph<T>::view();
-	}
-		
 protected:
 	std::vector<Vertex<T>*> vts;
 	

@@ -1,9 +1,10 @@
 all : 
-	make -C gtk/
 	make -C src/
-	make -C gl/
+#	make -C gtk/
+#	make -C gl/
 	make -C tst/
 	make -C obj/
+	./catch.x
 
 PHONY : clean
 

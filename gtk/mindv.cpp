@@ -1,5 +1,5 @@
 #include<gtkmm.h>
-#include"treeview.h"
+#include"sketch.h"
 #include"graphv.h"
 #include"src/parsetree.h"
 #include"mindmap.h"

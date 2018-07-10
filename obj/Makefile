@@ -8,8 +8,8 @@ gtkmmLIB = $(shell pkg-config gtkmm-3.0 --libs)
 all : $(EXE) $(TST)
 
 ../%.x : %.x $(OBJ)
-	$(CC) -o $@ $< $(OBJ) -lzezeon -lmysqlcppconn $(gtkmmLIB)
+	$(CC) -o $@ $< $(OBJ) -ljsoncpp $(gtkmmLIB)
 
 ../%.x : %.tx $(OBJ) $(TOBJ)
-	$(CC) -o $@ $< $(OBJ) $(TOBJ) -lzezeon -lmysqlcppconn $(gtkmmLIB)
+	$(CC) -o $@ $< $(OBJ) $(TOBJ) -ljsoncpp $(gtkmmLIB)
 

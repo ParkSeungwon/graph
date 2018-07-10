@@ -8,35 +8,34 @@
 #include<stack>
 //#define min(a, b) a < b ? a : b
 
-template <typename T> class Vertex;
+template <typename T> struct Vertex;
 
-template<typename T> class Edge
+template<typename T> struct Edge
 {
-public:
 	int weight = 0;
 	int v = 0;//for visit check or other uses like dijkstra route check
-	struct Vertex<T>* vertex = nullptr;//pointing to
-	struct Edge<T>* edge = nullptr;//next edge
+	Vertex<T>* vertex = nullptr;//pointing to
+	Edge<T>* edge = nullptr;//next edge
 };
 
-template<typename T> class Vertex
+template<typename T> struct Vertex
 {
-public:
 	T data;
 	int v = 0;//for visit check or other uses like parity bit
-	struct Edge<T>* edge = nullptr;//edge
-	struct Vertex<T>* vertex = nullptr;//below vertex
+	Edge<T>* edge = nullptr;//edge
+	Vertex<T>* vertex = nullptr;//below vertex
 };
 
-///This class does not make its own data structure it just deals with pointers 
-///and allocate memory for data. Thus enhance interoperability with C style data
-///structure. It arange data like below. V->vertex always points to the next line, 
-///E->edge always points to the next one, while E->vertex point to the other
-///edge irregularly with direction.
-/// V - E - E - E - E
-/// V - E - E
-/// V - E - E - E
-
+/****************
+This class does not make its own data structure it just deals with pointers 
+and allocate memory for data. Thus enhance interoperability with C style data
+structure. It arange data like below. V->vertex always points to the next line, 
+E->edge always points to the next one, while E->vertex point to the other side of
+vertex with direction. To indicate 2way direction needs 2 edge.
+ V - E - E - E - E
+ V - E - E
+ V - E - E - E
+***************/
 template<typename T> class Graph
 {
 public:
@@ -55,6 +54,11 @@ public:
 		throw "no parent";
 	}
 
+	Vertex<T>* find_vertex(T n) {
+		for(auto* v = root; v; v = v->vertex) if(v->data == n) return v;
+		return nullptr;
+	}
+
 	void remove_edge(T a, T b) {
 		for(auto* v = root; v; v = v->vertex) if(v->data == a) 
 			v->edge = remove_edge(v->edge, b);//defined in private
@@ -64,6 +68,18 @@ public:
 		for(auto* v = root; v; v = v->vertex) v->edge = remove_edge(v->edge, n);
 		root = remove_vertex(root, n);//defined in private
 	}
+
+	template<class F> void sub_apply(T from, F func) {
+		auto* v = find_vertex(from);
+		for(auto* e = v->edge; e; e = e->edge) {
+			if(!e->v) {
+				e->v = 1;
+				func(e->vertex->data);
+				sub_apply(e->vertex->data, func);
+			}
+		}
+		clearv();
+	}	
 	
 	void insert_edge(T a, T b, int weight) {
 		Vertex<T> *va, *vb;
@@ -76,6 +92,9 @@ public:
 	
 	Vertex<T>* data() {//this is to make compatible with C structure, 
 		return root;//return root pointer, GraphV will access it.
+	}
+	Vertex<T>* data() const {
+		return root;
 	}
 	
 	void prim() {
@@ -353,7 +372,7 @@ template<class T> std::istream& operator>>(std::istream& is, Graph<T>& r)
 	is >> vc;
 	for(int i=0; i<vc; i++) {
 		is >> n1;
-		r..nsert_vertex(n1);
+		r.insert_vertex(n1);
 	}
 	while(is >> n1 >> n2 >> wt) r.insert_edge(n1, n2, wt);
 	return is;
@@ -367,16 +386,16 @@ template<class T> std::ostream& operator<<(std::ostream& o, const Graph<T>& r)
 		int wt;
 	};
 	std::vector<E> v2;
-	for(auto* p = r.data(); p; p = p->vertex) {
+	for(const auto* p = r.data(); p; p = p->vertex) {
 		k++;
 		v.push_back(p->data);
 		for(auto* e = p->edge; e; e = e->edge) 
 			v2.push_back({p->data, e->vertex->data, e->weight});
 	}
-	o << k << endl;
-	for(const auto& a : v) o << a << endl;
-	o << endl;
-	for(const auto& a : v2) o << a.n1 << endl << a.n2 << endl << a.wt << endl;
+	o << k << std::endl;
+	for(const auto& a : v) o << a << std::endl;
+	o << std::endl;
+	for(const auto& a : v2) o << a.n1 << std::endl << a.n2 << std::endl << a.wt << std::endl;
 	return o;
 }
 
