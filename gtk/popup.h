@@ -1,5 +1,5 @@
 #include<gtkmm.h>
-#include"mindmap.h"
+#include"mindnode.h"
 
 void popup(Vertex<std::shared_ptr<MindNode>>* v);
 

@@ -12,6 +12,7 @@ Point::Point(complex<double> im) : complex<double>(im) {}
 int Point::x() const {return real();}
 int Point::y() const {return imag();}
 
+MindNode::MindNode() {}
 MindNode::MindNode(string fname, MindNode::Type type)
 {
 	name = fname;

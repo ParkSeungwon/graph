@@ -8,7 +8,7 @@ typedef Edge<MindNode> E;
 class GraphView : public Graph<MindNode>
 {//template specialization for MindNode
 public:
-	Graphview();
+	GraphView();
 	virtual ~GraphView();
 	void generate_drawables(V* from);
 	virtual void drag(Point from, Point to);
@@ -26,7 +26,7 @@ private:
 	int width_;
 
 	void allocate_node(V* vt);
-	void cutNpaste(V* from, V* to);
+	void cutNpaste(MindNode m, MindNode to);
 	void treeview(V* p, int x, int y, int h);
 	void generate_graph();
 	V* pick(Point p);

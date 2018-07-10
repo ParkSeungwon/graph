@@ -26,6 +26,7 @@ struct MindNode
 	short width, height;
 	std::string tooltip;
 
+	MindNode();
 	MindNode(std::string filename, MindNode::Type type);
 	bool operator==(const MindNode& r);
 };
