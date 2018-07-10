@@ -1,3 +1,4 @@
+#pragma once
 #include"drawable.h"
 
 class Pix : public Box

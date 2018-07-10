@@ -76,40 +76,40 @@ void ResizeDialog::on_toggle()
 }
 		
 
-static void shape_chooser(Vertex<shared_ptr<MindNode>>* v) {
+static void shape_chooser(Vertex<MindNode>* v) {
 	auto mn = v->data;
 	AttributeDialog ad;
-	ad.name.set_text(mn->name);
-	ad.outline_bts[mn->outline]->set_active();
-	ad.line_bts[mn->line]->set_active();
-	ad.arrow.set_value(v->data->color[1][3]);
-	ad.shape.set_value(v->data->color[2][3]);
+	ad.name.set_text(mn.name);
+	ad.outline_bts[mn.outline]->set_active();
+	ad.line_bts[mn.line]->set_active();
+	ad.arrow.set_value(v->data.color[1][3]);
+	ad.shape.set_value(v->data.color[2][3]);
 	if(ad.run()) {
 		for(int i=0; i<5; i++) if(ad.outline_bts[i]->get_active()) {
-			mn->outline = static_cast<MindNode::Shape>(i);
+			mn.outline = static_cast<MindNode::Shape>(i);
 			break;
 		}
 		for(int i=0; i<2; i++) if(ad.line_bts[i]->get_active()) {
-			mn->line = static_cast<MindNode::Line>(i);
+			mn.line = static_cast<MindNode::Line>(i);
 			break;
 		}
-		v->data->color[1][3] = ad.arrow.get_value();
-		v->data->color[2][3] = ad.shape.get_value();
+		v->data.color[1][3] = ad.arrow.get_value();
+		v->data.color[2][3] = ad.shape.get_value();
 		bool same_name = false;
-		if(mn->name != ad.name.get_text()) {//if changed & no same name 
+		if(mn.name != ad.name.get_text()) {//if changed & no same name 
 			for(auto* e = v->edge; e; e = e->edge) //is present in the directory
-				if(e->vertex->data->name == ad.name.get_text()) same_name = true;
+				if(e->vertex->data.name == ad.name.get_text()) same_name = true;
 			if(!same_name) {//rename it
 				string command = "mv '";
-				command += mn->full_path + mn->name + "' '" + mn->path + ad.name.get_text() + "'";
+				command += mn.full_path + "' '" + mn.full_path.substr(0, mn.full_path.rfind('/')) + ad.name.get_text() + "'";
 				system(command.data());
-				mn->name = ad.name.get_text();
+				mn.name = ad.name.get_text();
 			}
 		}
 	}
 }
 
-static int color_chooser(Vertex<shared_ptr<MindNode>>* v) {
+static int color_chooser(Vertex<MindNode>* v) {
 	int result;
 	{
 		Gtk::Dialog dia;
@@ -123,46 +123,46 @@ static int color_chooser(Vertex<shared_ptr<MindNode>>* v) {
 		Gtk::ColorChooserDialog dia;
 		if(dia.run() == Gtk::RESPONSE_OK) {
 			auto color = dia.get_rgba();
-			v->data->color[result-1][0] = color.get_red() * 255;
-			v->data->color[result-1][1] = color.get_green() * 255;
-			v->data->color[result-1][2] = color.get_blue() * 255;
-			v->data->color[result-1][3] = color.get_alpha() * 255;
+			v->data.color[result-1][0] = color.get_red() * 255;
+			v->data.color[result-1][1] = color.get_green() * 255;
+			v->data.color[result-1][2] = color.get_blue() * 255;
+			v->data.color[result-1][3] = color.get_alpha() * 255;
 		}
 	}
 }
 
-static void app_chooser(Vertex<shared_ptr<MindNode>>* v) {
+static void app_chooser(Vertex<MindNode>* v) {
 	string command = 
 		"python -c 'import webbrowser,sys; webbrowser.open(sys.argv[1])' '";
-	command += v->data->path + v->data->name + "'";//for spaced file name
+	command += v->data.full_path + "'";//for spaced file name
 	system(command.data());
 }
 
-static void file_chooser(Vertex<shared_ptr<MindNode>>* v) {
+static void file_chooser(Vertex<MindNode>* v) {
 	Gtk::FileChooserDialog dia("Choose files to expose or unexpose");
 	dia.set_select_multiple();
-	dia.set_current_folder(v->data->path + v->data->name);
+	dia.set_current_folder(v->data.full_path);
 	dia.add_button("_Ok", 1);
 	dia.add_button("_Cancel", 0);
 	if(dia.run() == 1) {
 		string s = dia.get_filename();
-		for(Edge<shared_ptr<MindNode>>* e = v->edge; e; e = e->edge)
-			if(e->vertex->data->name == s.substr(s.rfind('/')+1))
-				e->vertex->data->show = !e->vertex->data->show;
+		for(Edge<MindNode>* e = v->edge; e; e = e->edge)
+			if(e->vertex->data.full_path == s)
+				e->vertex->data.show = !e->vertex->data.show;
 	}
 }
 
-static void resize(Vertex<shared_ptr<MindNode>>* v) {
+static void resize(Vertex<MindNode>* v) {
 	ResizeDialog dia;
-	dia.width.set_value(v->data->width);
-	dia.height.set_value(v->data->height);
+	dia.width.set_value(v->data.width);
+	dia.height.set_value(v->data.height);
 	if(dia.run()) {
-		v->data->width = dia.width.get_value_as_int();
-		v->data->height = dia.height.get_value_as_int();
+		v->data.width = dia.width.get_value_as_int();
+		v->data.height = dia.height.get_value_as_int();
 	}
 }
 
-void popup(Vertex<shared_ptr<MindNode>>* v) {
+void popup(Vertex<MindNode>* v) {
 	int result;
 	{
 		Gtk::Dialog dia("Selelct one");
@@ -170,7 +170,7 @@ void popup(Vertex<shared_ptr<MindNode>>* v) {
 		dia.add_button("_Color",2);
 		dia.add_button("_Open",3);
 		dia.add_button("_Resize",4);
-		if(v->data->type == MindNode::Dir) dia.add_button("_Expose", 5);
+		if(v->data.type == MindNode::Dir) dia.add_button("_Expose", 5);
 		dia.add_button("Cancel",0);
 		result = dia.run();
 	}

@@ -2,12 +2,12 @@
 #include<iostream>
 #include"drawable.h"
 #include"sketch.h"
-#include"mindmap.h"
-#include"tgraph.h"
+#include"src/mindnode.h"
+#include"src/graph.h"
 #include"src/parsetree.h"
 using namespace std;
 
-SketchBook::SketchBook(Graph<shared_ptr<MindNode>>& graph) : gv_{graph.data()}
+SketchBook::SketchBook(string s) : gv_{s}
 {
 	set_size_request(5000, 5000);
 	add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK);
@@ -44,11 +44,11 @@ bool Win::on_button_press_event(GdkEventButton* e)
 	cout << e->x << ' ' << e->y << endl;
 	return true;
 }
-Win::Win(Graph<shared_ptr<MindNode>>& graph) : sketch_{graph}
+Win::Win(string s) : sketch_{s}
 {
 	add(scwin_);
 	scwin_.add(sketch_);
-	add(sketch_);
+//	add(sketch_);
 	set_default_size(1000, 900);
 	show_all_children();
 }

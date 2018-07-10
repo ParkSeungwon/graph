@@ -2,10 +2,11 @@
 #define CIRCLE_SIZE 100.0
 using namespace std;
 
-GraphView::GraphView()
+GraphView::GraphView(string path)
 {//can allocate only a part of a graph
 	ifstream f("~/.mindmap");
 	f >> *this;
+	root = find_vertex(MindNode{path, MindNode::File});
 }
 
 GraphView::~GraphView() 
@@ -14,11 +15,11 @@ GraphView::~GraphView()
 	f << *this;
 }
 
-void GraphView::generate_drawables(V* from)
+void GraphView::generate_drawables()
 {
 	vpNpos.clear();
 	arrows_.clear();
-	allocate_node(root = from);//recursively populate vpNpos, arrows_
+	allocate_node(root);//recursively populate vpNpos, arrows_
 	generate_graph();//populate drawables_
 }
 
@@ -49,7 +50,7 @@ void GraphView::drag(Point from, Point to)
 			e->weight = pt.x() * 10000 + pt.y();
 		}
 	}
-	generate_drawables(root);
+	generate_drawables();
 }
 
 void popup(V* v);
@@ -75,8 +76,8 @@ void GraphView::cutNpaste(MindNode m, MindNode to)
 {//cut mindnode m and paste under to
 	auto p = find_parent(m);
 	remove_edge(p, m);
-	insert_edge(to, m, 10000100);
-	generate_drawables(root);
+	insert_edge(to, m, 30 * 10000 + 30);
+	generate_drawables();
 }
 
 void GraphView::generate_graph() 
