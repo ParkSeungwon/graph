@@ -54,7 +54,7 @@ protected:
 	Vertex<T>* root = nullptr;
 	Vertex<T>* insert(Vertex<T>* p, T n) {
 		if(!p) {
-			p = (Vertex<T>*)malloc(sizeof(Vertex<T>));
+			p = new Vertex<T>;
 			p->data = n;
 			p->v = 0;
 			p->edge = nullptr;
@@ -66,7 +66,7 @@ protected:
 	}
 	Edge<T>* insert(Edge<T>* e, Vertex<T>* v, int weight) {
 		if(!e) {
-			e = (Edge<T>*)malloc(sizeof(Edge<T>));
+			e = new Edge<T>;
 			e->edge = nullptr;
 			e->vertex = v;
 			e->weight = weight;
@@ -81,13 +81,13 @@ private:
 	void efree(Edge<T>* e) {
 		if(!e) return;
 		efree(e->edge);
-		free(e);
+		delete e;
 	}
 	void gfree(Vertex<T>* p) {
 		if(!p) return;
 		efree(p->edge);
 		gfree(p->vertex);
-		free(p);
+		delete p;
 	}
 };
 
@@ -107,13 +107,13 @@ private:
 		if(!p) return n;
 		if(!p->edge) p->edge = Graph<T>::insert(p->edge, n, 0);//no son
 		else if(!p->edge->edge) {//1 son
-			int son = p->edge->vertex->data;
+			T son = p->edge->vertex->data;
 			if(n->data < p->data && p->data < son || son < p->data && p->data < n->data)
 				p->edge = Graph<T>::insert(p->edge, n, 0);
 			else p->edge->vertex = insert(p->edge->vertex, n);
 		} else {//2 son
-			int son1 = p->edge->vertex->data;
-			int son2 = p->edge->edge->vertex->data;
+			T son1 = p->edge->vertex->data;
+			T son2 = p->edge->edge->vertex->data;
 			Vertex<T>* f = (n->data < p->data == son1 < son2) //follow correct line
 				? p->edge->vertex : p->edge->edge->vertex;
 			f = insert(f, n);
