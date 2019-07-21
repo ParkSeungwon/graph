@@ -36,3 +36,4 @@ find
 .
 -size
 +3M
+./.git/objects/pack/pack-0751aabfd6d3d1957227309ade01a6f476f3f2dd.pack
